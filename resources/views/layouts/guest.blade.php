@@ -22,10 +22,8 @@
         <!-- Sidenav Menu End  -->
 
         {{-- dark:bg-[radial-gradient(#f3f4f6_1px,transparent_1px)] --}}
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 ">
-
+        <div class="">
             {{ $slot }}
-
         </div>
         @include('layouts.guestfooter')
 

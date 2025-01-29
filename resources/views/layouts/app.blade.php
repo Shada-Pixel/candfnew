@@ -51,7 +51,7 @@
             <!-- Start Page Content here -->
             <!-- ============================================================== -->
 
-            <div class="page-content bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('https://picsum.photos/1080/720');">
+            <div class="page-content bg-cover bg-center bg-no-repeat bg-fixed" style="background-image: url('{{ asset('images/background.jpg') }}');">
 
                 <!-- Topbar Start -->
                 @include('layouts.adminheader')

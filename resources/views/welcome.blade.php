@@ -3,7 +3,7 @@
     <main>
 
         {{-- Hero --}}
-        <section class="w-full min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 herobgo bg-cover bg-center" style="background-image: url('{{ asset('images/background.jpg') }}');">
+        <section class="w-full min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 herobgo bg-cover bg-center bg-red-500" style="background-image: url('{{ asset('images/background.jpg') }}');">
             <div class="">
                 <!-- filepath: welcome.blade.php -->
                 <div class="relative z-10 flex flex-col justify-center items-center h-full text-center">

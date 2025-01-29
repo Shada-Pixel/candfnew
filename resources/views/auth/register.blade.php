@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    {{-- <form method="POST" action="{{ route('register') }}">
         @csrf
 
         <!-- Name -->
@@ -48,5 +48,14 @@
                 {{ __('Register') }}
             </x-primary-button>
         </div>
-    </form>
+    </form> --}}
+
+    <!-- Session Status -->
+    <section class="page-content bg-cover bg-center bg-no-repeat bg-fixed min-h-screen flex justify-center items-center" style="background-image: url('{{ asset('images/background.jpg') }}');">
+        <div class="p-6 bg-white shadow-md rounded-lg">
+
+            <p class="text-gray-800 font-bold text-5xl"> Registration feature is closed by authurity.</p>
+
+        </div>
+    </section>
 </x-guest-layout>

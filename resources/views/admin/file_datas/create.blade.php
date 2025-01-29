@@ -32,14 +32,14 @@
 
                     <h2 class="text-xl">Receive New File</h2>
                     <div class="">
-                        <a href="{{route('file_datas.index')}}">
-                            <button class="font-mont px-4 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">All Files</button>
+                        <a href="{{route('dashboard')}}">
+                            <button class="font-mont px-4 py-2 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">Dashboard</button>
                         </a>
                         <a href="{{route('agents.create')}}">
-                            <button class="font-mont px-4 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">New Agent</button>
+                            <button class="font-mont px-4 py-2 bg-sky-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">New Agent</button>
                         </a>
                         <a href="{{route('ie_datas.index')}}">
-                            <button class="font-mont px-4 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">New Imp/Exp</button>
+                            <button class="font-mont px-4 py-2 bg-indigo-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">New Imp/Exp</button>
                         </a>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                             </div> <!-- end -->
 
                             <div class="col-span-3 pt-auto">
-                                <button type="submit" class="font-mont mt-2 px-10 py-4 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 relative after:absolute after:content-['SURE!'] after:flex after:justify-center after:items-center after:text-white after:w-full after:h-full after:z-10 after:top-full after:left-0 after:bg-seagreen overflow-hidden hover:after:top-0 after:transition-all after:duration-300"
+                                <button type="submit" class="font-mont mt-2 px-10 py-4 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 relative after:absolute after:content-['SURE!'] after:flex after:justify-center after:items-center after:text-white after:w-full after:h-full after:z-10 after:top-full after:left-0 after:bg-seagreen overflow-hidden hover:after:top-0 after:transition-all after:duration-300"
                                     id="baccountSaveBtn">Submit</button>
                             </div><!-- end -->
                         </div>

@@ -84,8 +84,8 @@
                                     <option value="lodgement_no">Lodgement Number</option>
                                 </select>
                                 <input type="text" name="search" id="search" class="form-input" placeholder="Search">
-                                <button type="submit" class="font-mont cursor-pointer px-4 py-3 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">Search</button>
-                                <a href="{{route('dashboard')}}" class="font-mont cursor-pointer px-4 py-3 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 ">
+                                <button type="submit" class="font-mont cursor-pointer px-4 py-3 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Search</button>
+                                <a href="{{route('dashboard')}}" class="font-mont cursor-pointer px-4 py-3 bg-indigo-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110">
                                     Reset
                                 </a>
                             </div>
@@ -94,13 +94,13 @@
                     <div class="">
 
                         <a href="{{route('file_datas.create')}}">
-                            <button type="submit" class="font-mont px-4 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">Receive File</button>
+                            <button type="submit" class="font-mont px-4 py-2 bg-red-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Receive File</button>
                         </a>
                         <a href="{{route('ie_datas.index')}}">
-                            <button type="submit" class="font-mont px-4 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">Emp/Exp</button>
+                            <button type="submit" class="font-mont px-4 py-2 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Emp/Exp</button>
                         </a>
                         <a href="{{route('agents.index')}}">
-                            <button type="submit" class="font-mont px-4 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">Agents</button>
+                            <button type="submit" class="font-mont px-4 py-2 bg-indigo-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Agents</button>
                         </a>
                     </div>
                 </div>

@@ -316,7 +316,7 @@
             @endrole
 
 
-            @role('developer|admin')
+            @role('developer')
             <hr>
             {{-- Development --}}
             <li class="menu-item">

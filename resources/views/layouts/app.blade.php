@@ -57,7 +57,7 @@
                 @include('layouts.adminheader')
                 <!-- Topbar End -->
 
-                <main class="p-6 relative">
+                <main class="p-6 relative bg-gray-300 h-full backdrop-blur-xs bg-opacity-70">
                     {{-- for php flash --}}
                     <x-auth-session-status :status="Session::get('message')" id="notificationflush" onclick="hideflash()"></x-auth-session-status>
                     {{-- for ajax flash --}}

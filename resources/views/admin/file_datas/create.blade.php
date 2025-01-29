@@ -56,7 +56,7 @@
                                 <label for="lodgement_no" class="block mb-2">Lodgement No</label>
                                 <div class="flex items-center justify-between">
                                     <span style="padding-top: 5px;padding-right: 10px">{{date('Y').'-'}}</span>
-                                    <input type="text" class="form-input" id="lodgement_no" name="lodgement_no" required value="{{$next_lodgement_no}}">
+                                    <input type="text" class="form-input" id="lodgement_no" name="lodgement_no"  value="{{$next_lodgement_no}}" @role('extra') required @endrole>
                                 </div>
                             </div> <!-- end -->
 
@@ -90,19 +90,19 @@
 
                             <div class="">
                                 <label for="impexp" class="block mb-2">Importer/Exporter</label>
-                                <input type="text" class="form-input" id="impexp" name="impexp" placeholder="Importer/Exporter" @role('operator') autofocus @endrole>
+                                <input type="text" class="form-input" id="impexp" name="impexp" placeholder="Importer/Exporter" @role('operator') autofocus @endrole @role('extra') required @endrole>
 
                             </div> <!-- end -->
 
 
                             <div class="">
                                 <label for="be_number" class="block mb-2">B/E Number</label>
-                                <input type="text" class="form-input" id="be_number" name="be_number" placeholder="B/E Number">
+                                <input type="text" class="form-input" id="be_number" name="be_number" placeholder="B/E Number" @role('extra') required @endrole>
                             </div> <!-- end -->
 
                             <div class="">
                                 <label for="be_date" class="block mb-2">B/E Date</label>
-                                <input type="date" class="form-input skipme" id="be_date" name="be_date" placeholder="B/E Date" value="{{ date('Y-m-d') }}">
+                                <input type="date" class="form-input skipme" id="be_date" name="be_date" placeholder="B/E Date" value="{{ date('Y-m-d') }}" @role('extra') required @endrole>
                             </div> <!-- end -->
 
 

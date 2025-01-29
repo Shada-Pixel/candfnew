@@ -189,6 +189,7 @@
                     </li>
                 </ul>
             </li> --}}
+            @role('admin')
 
 
             {{-- User --}}
@@ -312,7 +313,12 @@
                 </ul>
             </li>
 
+            @endrole
+
+
+            @role('developer|admin')
             <hr>
+            {{-- Development --}}
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
                     <span class="menu-icon"><i class="mdi mdi-developer-board"></i></span>
@@ -348,6 +354,7 @@
                     </li>
                 </ul>
             </li>
+            @endrole
         </ul>
     </div>
 </div>

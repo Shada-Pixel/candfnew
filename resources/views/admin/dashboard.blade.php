@@ -94,7 +94,7 @@
                     <div class="">
 
                         <a href="{{route('file_datas.create')}}">
-                            <button type="submit" class="font-mont px-4 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">Recive File</button>
+                            <button type="submit" class="font-mont px-4 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">Receive File</button>
                         </a>
                         <a href="{{route('ie_datas.index')}}">
                             <button type="submit" class="font-mont px-4 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">Emp/Exp</button>

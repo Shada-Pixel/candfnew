@@ -25,7 +25,7 @@
     <div class="flex flex-col gap-6">
 
         {{-- Form --}}
-        <div class="card flex-grow max-w-4xl mx-auto bg-[url('{{asset('bcnf.png')}}')] bg-cover bg-center bg-no-repeat">
+        <div class="card flex-grow max-w-xl mx-auto bg-[url('{{asset('bcnf.png')}}')] bg-cover bg-center bg-no-repeat">
             <div class="p-6">
 
                 <div class="flex justify-between items-center mb-4">
@@ -33,13 +33,13 @@
                     <h2 class="text-xl">Receive New File</h2>
                     <div class="">
                         <a href="{{route('file_datas.index')}}">
-                            <button class="font-mont px-4 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">All Files</button>
+                            <button class="font-mont px-2 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">All Files</button>
                         </a>
                         <a href="{{route('agents.create')}}">
-                            <button class="font-mont px-4 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">New Agent</button>
+                            <button class="font-mont px-2 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">New Agent</button>
                         </a>
                         <a href="{{route('ie_datas.index')}}">
-                            <button class="font-mont px-4 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">New Imp/Exp</button>
+                            <button class="font-mont px-2 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">New Imp/Exp</button>
                         </a>
                     </div>
                 </div>

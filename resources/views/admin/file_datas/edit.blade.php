@@ -25,21 +25,21 @@
     <div class="flex flex-col gap-6">
 
         {{-- Form --}}
-        <div class="card flex-grow max-w-xl mx-auto bg-[url('{{asset('bcnf.png')}}')] bg-cover bg-center bg-no-repeat">
+        <div class="card flex-grow max-w-2xl mx-auto">
             <div class="p-6">
 
                 <div class="flex justify-between items-center mb-4">
 
                     <h2 class="text-xl">Receive New File</h2>
                     <div class="">
-                        <a href="{{route('file_datas.index')}}">
-                            <button class="font-mont px-2 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">All Files</button>
+                        <a href="{{route('dashboard')}}">
+                            <button class="font-mont px-2 py-2 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Dashboard</button>
                         </a>
                         <a href="{{route('agents.create')}}">
-                            <button class="font-mont px-2 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">New Agent</button>
+                            <button class="font-mont px-2 py-2 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">New Agent</button>
                         </a>
                         <a href="{{route('ie_datas.index')}}">
-                            <button class="font-mont px-2 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">New Imp/Exp</button>
+                            <button class="font-mont px-2 py-2 bg-indigo-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">New Imp/Exp</button>
                         </a>
                     </div>
                 </div>
@@ -50,8 +50,7 @@
                     <div class="">
 
                         {{-- Section One --}}
-                        <div class="grid grid-cols-3 gap-4 mb-4">
-
+                        <div class="grid grid-cols-4 gap-4 mb-4 bg-center bg-no-repeat bg-contain bg-opacity-10 backdrop-blur-2xl" style="background-image: url('{{asset('bcnft.png')}}');">
                             <div>
                                 <label for="lodgement_no" class="block mb-2">Lodgement No</label>
                                 <div class="flex items-center justify-between">
@@ -59,17 +58,18 @@
                                     <input type="text" class="form-input" id="lodgement_no" name="lodgement_no" required value="{{$file_data->lodgement_no ?? ''}}">
                                 </div>
                             </div> <!-- end -->
+                            <div class="">
+
+                            </div><!-- end -->
 
                             <div class="">
                                 <label for="lodgement_date" class="block mb-2">Lodgement Date</label>
                                 <input type="date" class="form-input skipme" id="lodgement_date" name="lodgement_date" placeholder="Lodgement Date" required value="{{ $file_data->lodgement_date ?? date('Y-m-d') }}">
                             </div> <!-- end -->
-                            <div class="">
-
-                            </div><!-- end -->
 
 
-                            <div class="">
+
+                            <div class="col-span-2">
                                 <label for="agentain" class="block mb-2">Agent AIN</label>
                                 <input type="text" class="form-input" id="agentain" name="agentain" required @role('extra') autofocus @endrole value="{{ $file_data->agent->name ?? '' }}">
                             </div> <!-- end -->
@@ -88,7 +88,7 @@
                             </div> <!-- end -->
 
 
-                            <div class="">
+                            <div class="col-span-2">
                                 <label for="impexp" class="block mb-2">Importer/Exporter</label>
                                 <input type="text" class="form-input" id="impexp" name="impexp" placeholder="Importer/Exporter" required @role('operator') autofocus @endrole value="{{ $file_data->ie_data->name ?? '' }}">
 
@@ -106,14 +106,22 @@
                             </div> <!-- end -->
 
 
-                            <div class="">
+                            <div class="w-20">
                                 <label for="page" class="block mb-2">Item</label>
                                 <input type="number" class="form-input " id="page" name="page" placeholder="Page" max="999" value="{{ $file_data->page ?? 00 }}">
                             </div> <!-- end -->
 
-                            <div class="col-span-3 pt-auto">
-                                <button type="submit" class="font-mont mt-2 px-10 py-4 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 relative after:absolute after:content-['SURE!'] after:flex after:justify-center after:items-center after:text-white after:w-full after:h-full after:z-10 after:top-full after:left-0 after:bg-seagreen overflow-hidden hover:after:top-0 after:transition-all after:duration-300"
+
+                            <div class=""></div><!-- end -->
+
+                            <div class="self-end">
+                                <button type="submit" class="font-mont px-10 py-4 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 relative after:absolute after:content-['SURE!'] after:flex after:justify-center after:items-center after:text-white after:w-full after:h-full after:z-10 after:top-full after:left-0 after:bg-seagreen overflow-hidden hover:after:top-0 after:transition-all after:duration-300 hover:scale-110"
                                     id="baccountSaveBtn">Submit</button>
+                            </div><!-- end -->
+
+                            <div class="self-end">
+                                <button class="font-mont px-10 py-4 bg-red-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 relative after:absolute after:content-['SURE!'] after:flex after:justify-center after:items-center after:text-white after:w-full after:h-full after:z-10 after:top-full after:left-0 after:bg-seagreen overflow-hidden hover:after:top-0 after:transition-all after:duration-300 hover:scale-110"
+                                    id="baccountSaveBtn">Print</button>
                             </div><!-- end -->
                         </div>
 

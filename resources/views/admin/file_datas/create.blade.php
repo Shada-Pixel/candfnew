@@ -25,7 +25,7 @@
     <div class="flex flex-col gap-6">
 
         {{-- Form --}}
-        <div class="card flex-grow max-w-2xl mx-auto bg-[url('{{asset('bcnf.png')}}')] bg-cover bg-center bg-no-repeat">
+        <div class="card flex-grow max-w-2xl mx-auto">
             <div class="p-6">
 
                 <div class="flex justify-between items-center mb-4">
@@ -81,7 +81,7 @@
 
                             <div class="">
                                 <label for="manifest_date" class="block mb-2">Manifest Date</label>
-                                <input type="text" class="form-input skipme" id="manifest_date" name="manifest_date" placeholder="Manifest Date" required value="{{ date('Y-m-d') }}">
+                                <input type="date" class="form-input skipme" id="manifest_date" name="manifest_date" placeholder="Manifest Date" required value="{{ date('Y-m-d') }}">
 
                             </div> <!-- end -->
 
@@ -103,9 +103,9 @@
                             </div> <!-- end -->
 
 
-                            <div class="">
+                            <div class=" @role('extra') hidden @endrole">
                                 <label for="page" class="block mb-2">Item</label>
-                                <input type="number" class="form-input " id="page" name="page" placeholder="Page" max="999" value="00">
+                                <input type="number" class="form-input w-20" id="page" name="page" placeholder="Page" max="999" value="00">
                             </div> <!-- end -->
                             <div class=""></div>
 
@@ -181,10 +181,14 @@
                         }
                     }
                 });
+
+                // Focus and select the input field
+                $('#agentain').focus().select();
             });
 
 
 
         </script>
     </x-slot>
+
 </x-app-layout>

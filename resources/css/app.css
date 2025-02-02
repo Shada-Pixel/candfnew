@@ -21,3 +21,7 @@
     line-height: 1.5rem;
     --tw-shadow: 0 0 #0000;
   }
+
+table.dataTable tbody th, table.dataTable tbody td {
+	padding: 4px 4px !important;
+}

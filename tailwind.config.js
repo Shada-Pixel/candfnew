@@ -40,11 +40,15 @@ export default {
                 scrollabs: {
                     "0%": { transform: "translateX(calc(100% + 1rem))"},
                     "100%": {transform: "translateX(0)" }
-                }
+                },
+                marquee: {
+                    '100%': { transform: 'translateX(-50%)' }
+                },
             },
             animation: {
                 scroll: 'scroll 10s linear infinite',
-                scrollabs: 'scrollabs'
+                scrollabs: 'scrollabs',
+                marquee: 'marquee var(--marquee-duration) linear infinite',
             },
             backgroundImage: {
                 'herobgo': "url('/images/background.jpg')",

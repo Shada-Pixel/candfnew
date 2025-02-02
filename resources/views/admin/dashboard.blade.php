@@ -10,55 +10,55 @@
     </x-slot>
 
     {{-- Page Content --}}
-    <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-4">
 
 
-        <div class="grid xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-6">
+        <div class="grid xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
             <!-- card-start -->
             <div class="card bg-cyan-300">
-                <div class="p-6">
+                <div class="px-4 py-2">
                     <div class="flex items-center justify-between">
-                        <h4 class="card-title">Total File</h4>
-                        <div class="text-end">
-                            <h2 class="text-3xl font-normal">{{$todayFileDataCount}}</h2>
+                        <div class="text-start">
+                            <h4 class="card-title">Total File</h4>
                             <p class="text-gray-400 font-normal">Today</p>
                         </div>
+                        <h2 class="text-3xl font-normal">{{$todayFileDataCount}}</h2>
                     </div>
                 </div>
             </div> <!-- card-end -->
             <!-- card-start -->
             <div class="card bg-sky-300">
-                <div class="p-6">
+                <div class="px-4 py-2">
                     <div class="flex items-center justify-between">
-                        <h4 class="card-title">Total Delivered</h4>
-                        <div class="text-end">
-                            <h2 class="text-3xl font-normal">{{$deliveredFileDataCount}}</h2>
+                        <div class="text-start">
+                            <h4 class="card-title">Total Delivered</h4>
                             <p class="text-gray-400 font-normal">All Time</p>
                         </div>
+                        <h2 class="text-3xl font-normal">{{$deliveredFileDataCount}}</h2>
                     </div>
                 </div>
             </div> <!-- card-end -->
             <!-- card-start -->
             <div class="card bg-blue-300">
-                <div class="p-6">
+                <div class="px-4 py-2">
                     <div class="flex items-center justify-between">
-                        <h4 class="card-title">Total Printed</h4>
-                        <div class="text-end">
-                            <h2 class="text-3xl font-normal">{{$printedFileDataCount}}</h2>
+                        <div class="text-start">
+                            <h4 class="card-title">Total Printed</h4>
                             <p class="text-gray-400 font-normal">All time</p>
                         </div>
+                        <h2 class="text-3xl font-normal">{{$printedFileDataCount}}</h2>
                     </div>
                 </div>
             </div> <!-- card-end -->
             <!-- card-start -->
             <div class="card bg-indigo-300">
-                <div class="p-6">
+                <div class="px-4 py-2">
                     <div class="flex items-center justify-between">
-                        <h4 class="card-title">Total Files</h4>
-                        <div class="text-end">
-                            <h2 class="text-3xl font-normal">{{$currentYearFileDataCount}}</h2>
+                        <div class="text-start">
+                            <h4 class="card-title">Total Files</h4>
                             <p class="text-gray-400 font-normal">This Year</p>
                         </div>
+                        <h2 class="text-3xl font-normal">{{$currentYearFileDataCount}}</h2>
                     </div>
                 </div>
             </div> <!-- card-end -->
@@ -71,21 +71,21 @@
             <div class="p-6">
                 <div class="flex justify-between items-center mb-4">
 
-                    <h2 class="text-xl">Last 1000 Files</h2>
+                    <h2 class="text-lg">Last 1000 Files</h2>
                     <div class="p-2 shadow-md rounded-lg bg-slate-200">
                         <form action="{{route('dashboard')}}" method="get">
                             @csrf
                             @method('GET')
-                            <div class="flex justify-center items-center gap-4">
+                            <div class="flex justify-center items-center gap-2">
 
-                                <select name="stype" id="">
+                                <select name="stype" id="" class="form-input">
                                     <option value="be_number" selected>B/E Number</option>
                                     <option value="manifest_no">Manifast Number</option>
                                     <option value="lodgement_no">Lodgement Number</option>
                                 </select>
-                                <input type="text" name="search" id="search" class="form-input" placeholder="Search">
-                                <button type="submit" class="font-mont cursor-pointer px-4 py-3 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Search</button>
-                                <a href="{{route('dashboard')}}" class="font-mont cursor-pointer px-4 py-3 bg-indigo-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110">
+                                <input type="text" name="search" id="search" class="form-input w-28" placeholder="Search">
+                                <button type="submit" class="font-space cursor-pointer px-4 py-2 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Search</button>
+                                <a href="{{route('dashboard')}}" class="font-space cursor-pointer px-4 py-2 bg-indigo-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110">
                                     Reset
                                 </a>
                             </div>
@@ -94,13 +94,13 @@
                     <div class="">
 
                         <a href="{{route('file_datas.create')}}">
-                            <button type="submit" class="font-mont px-4 py-2 bg-red-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Receive File</button>
+                            <button type="submit" class="font-space px-2 py-2 bg-red-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Receive File</button>
                         </a>
                         <a href="{{route('ie_datas.index')}}">
-                            <button type="submit" class="font-mont px-4 py-2 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Imp/Exp</button>
+                            <button type="submit" class="font-space px-2 py-2 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Imp/Exp</button>
                         </a>
                         <a href="{{route('agents.index')}}">
-                            <button type="submit" class="font-mont px-4 py-2 bg-indigo-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Agents</button>
+                            <button type="submit" class="font-space px-2 py-2 bg-indigo-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Agents</button>
                         </a>
                     </div>
                 </div>

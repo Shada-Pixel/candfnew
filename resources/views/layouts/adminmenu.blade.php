@@ -139,56 +139,10 @@
                             <span class="menu-text">Transactions</span>
                         </a>
                     </li>
-                    <li class="menu-item">
-                        <a href="{{route('reports.financial.monthly')}}" class="menu-link">
-                            <span class="menu-text">Monthly Report</span>
-                        </a>
-                    </li>
+
                 </ul>
             </li>
-            {{-- <li class="menu-item">
-                <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
-                    <span class="menu-icon"><i class="mdi mdi-briefcase-variant-outline"></i></span>
-                    <span class="menu-text"> Projects </span>
-                    <span class="menu-arrow"></span>
-                </a>
 
-                <ul class="sub-menu hidden">
-                    <li class="menu-item">
-                        <a href="{{route('projects.index')}}" class="menu-link">
-                            <span class="menu-text">All</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="{{route('projects.create')}}" class="menu-link">
-                            <span class="menu-text">Add New</span>
-                        </a>
-                    </li>
-
-                </ul>
-            </li> --}}
-
-
-            {{-- <li class="menu-item">
-                <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
-                    <span class="menu-icon"><i class="mdi mdi-email-outline"></i></span>
-                    <span class="menu-text"> Contact Query </span>
-                    <span class="menu-arrow"></span>
-                </a>
-
-                <ul class="sub-menu hidden">
-                    <li class="menu-item">
-                        <a href="{{route('queries.index')}}" class="menu-link">
-                            <span class="menu-text">Inbox</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="email-templates.html" class="menu-link">
-                            <span class="menu-text">Email Templates</span>
-                        </a>
-                    </li>
-                </ul>
-            </li> --}}
             @role('admin')
 
 
@@ -234,45 +188,16 @@
 
                 <ul class="sub-menu hidden">
                     <li class="menu-item">
-                        <a href="" class="menu-link">
+                        <a href="{{route('reports.receiver_report')}}" class="menu-link">
                             <span class="menu-text">Receiver Report</span>
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="" class="menu-link">
-                            <span class="menu-text">Delivery Report (IM)</span>
+                        <a href="{{route('reports.deliver_report')}}" class="menu-link">
+                            <span class="menu-text">Delivery Report</span>
                         </a>
                     </li>
-                    {{-- <li class="menu-item">
-                        <a href="" class="menu-link">
-                            <span class="menu-text">Delivery Report (EX)</span>
-                        </a>
-                    </li> --}}
-                    {{-- <li class="menu-item">
-                        <a href="" class="menu-link">
-                            <span class="menu-text">Daily Summary Report</span>
-                        </a>
-                    </li> --}}
-                    <li class="menu-item">
-                        <a href="" class="menu-link">
-                            <span class="menu-text">Daily Report</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="" class="menu-link">
-                            <span class="menu-text">Operator Report</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="" class="menu-link">
-                            <span class="menu-text">Data Entry Report</span>
-                        </a>
-                    </li>
-                    {{-- <li class="menu-item">
-                        <a href="" class="menu-link">
-                            <span class="menu-text">Assessment Report Per Day</span>
-                        </a>
-                    </li> --}}
+
                     <li class="menu-item">
                         <a href="" class="menu-link">
                             <span class="menu-text">Work Report Per Day</span>
@@ -281,6 +206,11 @@
                     <li class="menu-item">
                         <a href="" class="menu-link">
                             <span class="menu-text">Monthly Ope Report</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('reports.financial.monthly')}}" class="menu-link">
+                            <span class="menu-text">Financial Report</span>
                         </a>
                     </li>
                 </ul>

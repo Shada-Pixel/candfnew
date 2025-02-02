@@ -89,8 +89,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::patch('/btransactions/{transaction}/restore', [BankTransactionController::class, 'restore'])->name('btransactions.restore');
     Route::delete('/btransactions/{transaction}/forcedelete', [BankTransactionController::class, 'forceDelete'])->name('btransactions.forcedelete');
 
+
+    // Reports
     // Financial reporting
     Route::get('/monthly-financial-report', [ReportController::class, 'financialMonth'])->name('reports.financial.monthly');
+
+    Route::any('/receiver_report', [ReportController::class, 'receiver_report'])->name('reports.receiver_report');
+    Route::any('/deliver_report', [ReportController::class, 'deliver_report'])->name('reports.deliver_report');
+
 
 
     // User management

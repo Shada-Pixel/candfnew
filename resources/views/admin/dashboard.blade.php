@@ -92,15 +92,16 @@
                         </form>
                     </div>
                     <div class="">
-
+                        @role('extra')
                         <a href="{{route('file_datas.create')}}">
                             <button type="submit" class="font-space px-2 py-2 bg-red-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Receive File</button>
                         </a>
+                        @endrole
                         <a href="{{route('ie_datas.index')}}">
-                            <button type="submit" class="font-space px-2 py-2 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Imp/Exp</button>
+                            <button type="submit" class="font-space px-2 py-2 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">+ Imp/Exp</button>
                         </a>
                         <a href="{{route('agents.index')}}">
-                            <button type="submit" class="font-space px-2 py-2 bg-indigo-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Agents</button>
+                            <button type="submit" class="font-space px-2 py-2 bg-indigo-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">+ Agents</button>
                         </a>
                     </div>
                 </div>

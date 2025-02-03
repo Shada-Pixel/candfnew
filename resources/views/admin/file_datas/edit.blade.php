@@ -83,7 +83,7 @@
 
                             <div class="">
                                 <label for="manifest_date" class="block mb-2">Manifest Date</label>
-                                <input type="text" class="form-input skipme" id="manifest_date" name="manifest_date" placeholder="Manifest Date" required value="{{$file_data->manifest_date ?? date('Y-m-d') }}">
+                                <input type="date" class="form-input skipme" id="manifest_date" name="manifest_date" placeholder="Manifest Date" required value="{{$file_data->manifest_date ?? date('Y-m-d') }}">
 
                             </div> <!-- end -->
 
@@ -119,7 +119,7 @@
                                     id="baccountSaveBtn">Submit</button>
                             </div><!-- end -->
 
-                            <div class="self-end">
+                            <div class="self-end @role('operator') hidden @endrole">
                                 <button class="font-mont px-10 py-4 bg-red-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 relative after:absolute after:content-['SURE!'] after:flex after:justify-center after:items-center after:text-white after:w-full after:h-full after:z-10 after:top-full after:left-0 after:bg-seagreen overflow-hidden hover:after:top-0 after:transition-all after:duration-300 hover:scale-110"
                                     id="baccountSaveBtn">Print</button>
                             </div><!-- end -->

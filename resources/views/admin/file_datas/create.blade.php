@@ -35,11 +35,9 @@
                         <a href="{{route('dashboard')}}">
                             <button class="font-mont px-2 py-2 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Dashboard</button>
                         </a>
-                        <a href="{{route('agents.create')}}">
-                            <button class="font-mont px-2 py-2 bg-sky-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">New Agent</button>
-                        </a>
+
                         <a href="{{route('ie_datas.index')}}">
-                            <button class="font-mont px-2 py-2 bg-indigo-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">New Imp/Exp</button>
+                            <button class="font-mont px-2 py-2 bg-indigo-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">+ New Imp/Exp</button>
                         </a>
                     </div>
                 </div>
@@ -87,14 +85,14 @@
 
                             <div class="col-span-2">
                                 <label for="impexp" class="block mb-2">Importer/Exporter</label>
-                                <input type="text" class="form-input" id="impexp" name="impexp" placeholder="Importer/Exporter" @role('operator') autofocus @endrole @role('extra') required @endrole>
+                                <input type="text" class="form-input" id="impexp" name="impexp" placeholder="Importer/Exporter" @role('operator') autofocus @endrole>
 
                             </div> <!-- end -->
 
 
                             <div class="">
                                 <label for="be_number" class="block mb-2">B/E Number</label>
-                                <input type="text" class="form-input" id="be_number" name="be_number" placeholder="B/E Number" @role('extra') required @endrole>
+                                <input type="text" class="form-input" id="be_number" name="be_number" placeholder="B/E Number" >
                             </div> <!-- end -->
 
                             <div class="">

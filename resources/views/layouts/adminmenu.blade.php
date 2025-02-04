@@ -86,11 +86,13 @@
                 </a>
 
                 <ul class="sub-menu hidden">
+                    @role('extra')
                     <li class="menu-item">
                         <a href="{{route('file_datas.create')}}" class="menu-link">
                             <span class="menu-text">Receive File</span>
                         </a>
                     </li>
+                    @endrole
                     <li class="menu-item">
                         <a href="{{route('baccounts.index')}}" class="menu-link">
                             <span class="menu-text">Operated File</span>

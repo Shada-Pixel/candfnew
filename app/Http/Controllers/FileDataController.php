@@ -63,6 +63,8 @@ class FileDataController extends Controller
         $isDuplicateManifest = File_data::where('manifest_no', $request->manifest_no)
             ->whereYear('manifest_date', $currentYear)
             ->exists();
+        $agent_id = null;
+        $ie_data_id = null;
 
         if ($isDuplicateManifest) {
             return redirect()->back()->withErrors([

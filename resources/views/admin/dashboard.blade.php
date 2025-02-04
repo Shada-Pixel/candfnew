@@ -187,17 +187,14 @@
                                 @endrole
 
                                 @role('operator')
-                                    @if($file_data->status == 'Operated' || $file_data->status == 'Received')
 
-                                        <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-xl" href="{{route('file_datas.edit', $file_data->id)}}">
-                                                @if($file_data->status == 'Operated')
-                                                <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
-                                                @else
-                                                <span class="menu-icon"><i class="mdi mdi-key"></i></span>
-                                                @endif
-                                        </a>
-
-                                    @endif
+                                    <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-xl" href="{{route('file_datas.edit', $file_data->id)}}">
+                                            @if($file_data->status == 'Operated')
+                                            <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
+                                            @else
+                                            <span class="menu-icon"><i class="mdi mdi-key"></i></span>
+                                            @endif
+                                    </a>
                                 @endrole
 
                                 @role('deliver')

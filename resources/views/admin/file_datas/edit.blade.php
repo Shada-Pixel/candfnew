@@ -108,7 +108,7 @@
 
                             <div class="w-20">
                                 <label for="page" class="block mb-2">Item</label>
-                                <input type="number" class="form-input " id="page" name="page" placeholder="Page" max="999" value="{{ $file_data->page ?? 00 }}">
+                                <input type="text" class="form-input " id="page" name="page" placeholder="00" max="999" value="{{ $file_data->page ?? $file_data->page}}">
                             </div> <!-- end -->
 
 

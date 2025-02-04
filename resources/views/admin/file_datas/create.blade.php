@@ -103,7 +103,7 @@
 
                             <div class=" @role('extra') hidden @endrole">
                                 <label for="page" class="block mb-2">Item</label>
-                                <input type="number" class="form-input w-20" id="page" name="page" placeholder="Page" max="999" value="00">
+                                <input type="text" class="form-input w-20" id="page" name="page" placeholder="00" max="999" >
                             </div> <!-- end -->
                             <div class=""></div>
 

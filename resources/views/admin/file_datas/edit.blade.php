@@ -156,8 +156,6 @@
                     autoFocus: true, // Highlight the first suggestion
                 });
 
-
-
                 // Autocomplete for Importer/Exporter
                 $('#impexp').autocomplete({
                     source: function (request, response) {

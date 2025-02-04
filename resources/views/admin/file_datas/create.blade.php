@@ -151,8 +151,6 @@
                     autoFocus: true, // Highlight the first suggestion
                 });
 
-
-
                 // Autocomplete for Importer/Exporter
                 $('#impexp').autocomplete({
                     source: function (request, response) {
@@ -168,15 +166,29 @@
                     autoFocus: true, // Highlight the first suggestion
                 });
 
-                // Add event listener to all inputs with the class 'skipme'
-                $('input.skipme').on('keydown', function (e) {
-                    if (e.key === 'Tab') {
-                        e.preventDefault(); // Prevent default tab action
-                        // Find the next non-skip input
-                        let nextInput = $(this).nextAll('input:not(.skipme)').first();
-                        if (nextInput.length) {
-                            nextInput.focus(); // Focus on the next non-skip input
+
+
+                // Attach a keydown event listener to all input fields
+                $('input').on('keydown', function(e) {
+                    // Check if the Tab key is pressed (keyCode 9)
+                    if (e.keyCode === 9) {
+                    // Prevent the default tab behavior
+                    e.preventDefault();
+
+                    // Get all input fields in the form
+                    let inputs = $('form').find('input');
+                    let currentIndex = inputs.index(this); // Get the index of the current input
+                    let nextIndex = currentIndex + 1;
+
+                    // Loop through the remaining fields to find the next non-date input
+                    while (nextIndex < inputs.length) {
+                        let nextInput = inputs[nextIndex];
+                        if (nextInput.type !== 'date') {
+                        nextInput.focus(); // Focus on the next non-date input
+                        break;
                         }
+                        nextIndex++;
+                    }
                     }
                 });
 

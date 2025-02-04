@@ -79,9 +79,9 @@
                             <div class="flex justify-center items-center gap-2">
 
                                 <select name="stype" id="" class="form-input">
-                                    <option value="be_number" selected>B/E Number</option>
+                                    <option value="be_number"  @role('extra') selected @endrole>B/E Number</option>
                                     <option value="manifest_no">Manifast Number</option>
-                                    <option value="lodgement_no">Lodgement Number</option>
+                                    <option value="lodgement_no" @role('operator') selected @endrole>Lodgement Number</option>
                                 </select>
                                 <input type="text" name="search" id="search" class="form-input w-28" placeholder="Search">
                                 <button type="submit" class="font-space cursor-pointer px-4 py-2 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Search</button>

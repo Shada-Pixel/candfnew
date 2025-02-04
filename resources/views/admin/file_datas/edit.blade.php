@@ -1,6 +1,6 @@
 <x-app-layout>
     {{-- Title --}}
-    <x-slot name="title">Receive File</x-slot>
+    <x-slot name="title">Operate File</x-slot>
 
 
     {{-- Header Style --}}
@@ -30,7 +30,7 @@
 
                 <div class="flex justify-between items-center mb-4">
 
-                    <h2 class="text-xl">Receive New File</h2>
+                    <h2 class="text-xl">Operate This File</h2>
                     <div class="">
                         <a href="{{route('dashboard')}}">
                             <button class="font-mont px-2 py-2 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Dashboard</button>
@@ -171,15 +171,28 @@
                     autoFocus: true, // Highlight the first suggestion
                 });
 
-                // Add event listener to all inputs with the class 'skipme'
-                $('input.skipme').on('keydown', function (e) {
-                    if (e.key === 'Tab') {
-                        e.preventDefault(); // Prevent default tab action
-                        // Find the next non-skip input
-                        let nextInput = $(this).nextAll('input:not(.skipme)').first();
-                        if (nextInput.length) {
-                            nextInput.focus(); // Focus on the next non-skip input
+
+                // Attach a keydown event listener to all input fields
+                $('input').on('keydown', function(e) {
+                    // Check if the Tab key is pressed (keyCode 9)
+                    if (e.keyCode === 9) {
+                    // Prevent the default tab behavior
+                    e.preventDefault();
+
+                    // Get all input fields in the form
+                    let inputs = $('form').find('input');
+                    let currentIndex = inputs.index(this); // Get the index of the current input
+                    let nextIndex = currentIndex + 1;
+
+                    // Loop through the remaining fields to find the next non-date input
+                    while (nextIndex < inputs.length) {
+                        let nextInput = inputs[nextIndex];
+                        if (nextInput.type !== 'date') {
+                        nextInput.focus(); // Focus on the next non-date input
+                        break;
                         }
+                        nextIndex++;
+                    }
                     }
                 });
             });

@@ -249,6 +249,10 @@ class FileDataController extends Controller
             }
         }
 
+        if (Auth::user()->hasRole('operator')) {
+            return redirect()->route('dashboard')->with(['status' => 200, 'message' => 'File Operated and Delivered!']);
+        }
+
         return redirect()->route('file_datas.show', $file_data->id);
 
     }

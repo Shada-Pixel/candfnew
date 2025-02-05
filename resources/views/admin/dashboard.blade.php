@@ -110,24 +110,14 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Manifest No</th>
-                            <th>Manifest Date</th>
-                            <th>Lodgement No</th>
-
-                            @role('admin|operator')
-
-                            <th>Lodgement Date</th>
-                            @endrole
-
-                            @role('deliver')
+                            <th>M/F No</th>
+                            <th>M/F Date</th>
+                            <th>Lodg.No</th>
+                            <th>Lodg.Date</th>
                             <th>B/E No</th>
                             <th>B/E Date</th>
-                            @endrole
                             <th>Agent Name</th>
-
-                            @role('admin|operator|deliver')
-                            <th>Importer / Exporter</th>
-                            @endrole
+                            <th>Imp/Exp</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -140,16 +130,9 @@
                             <td>{{$file_data->manifest_no}}</td>
                             <td>{{$file_data->manifest_date}}</td>
                             <td>{{$file_data->lodgement_no}}</td>
-
-
-                            @role('admin|operator')
                             <td>{{$file_data->lodgement_date}}</td>
-                            @endrole
-
-                            @role('deliver')
                             <td>{{$file_data->be_number}}</td>
                             <td>{{$file_data->be_date}}</td>
-                            @endrole
                             <td>
                                 @if ($file_data->agent)
                                 <a href="{{route('agents.show', $file_data->agent->id) }}" class="hover:text-green-600 cursor-pointer">
@@ -157,20 +140,25 @@
                                 </a>
                                 @endif
                             </td>
-
-                            @role('admin|operator|deliver')
                             <td>
                                 @if ($file_data->ie_data)
-                                <a href="{{route('ie_datas.show', $file_data->ie_data->id) }}" class="hover:text-green-600 cursor-pointer">
-                                    {{$file_data->ie_data->name ?? ''}}
-                                </a>
+                                {{-- <a href="{{route('ie_datas.show', $file_data->ie_data->id) }}" class="hover:text-green-600 cursor-pointer"></a> --}}
+                                {{$file_data->ie_data->name ?? ''}}
                                 @endif
                             </td>
-                            @endrole
 
-                            <td>{{$file_data->status}}</td>
+                            <td>
+                                @if ($file_data->status == 'Delivered')
+                                    <span class="text-orange-400">Delivered</span>
+                                @elseif ($file_data->status == 'Printed')
+                                    <span class="text-red-500">Printed</span>
+                                @else
+                                    <span class="text-green-600">Received</span>
+                                    
+                                @endif
+                            </td>
 
-                            <td class="has-text-right">
+                            <td class="has-text-right text-right">
                                 @role('admin')
                                     <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-xl" href="{{route('file_datas.edit', $file_data->id)}}">
                                         <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
@@ -187,26 +175,14 @@
                                 @endrole
 
                                 @role('operator')
-
-                                    <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-xl" href="{{route('file_datas.edit', $file_data->id)}}">
-                                            @if($file_data->status == 'Operated')
-                                            <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
-                                            @else
-                                            <span class="menu-icon"><i class="mdi mdi-key"></i></span>
-                                            @endif
-                                    </a>
+                                    <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-xl" href="{{route('file_datas.edit', $file_data->id)}}"><span class="menu-icon"><i class="mdi mdi-key"></i></span></a>
                                 @endrole
 
-                                @role('deliver')
-                                    @if ($file_data->status != 'Received')
-                                        @if($file_data->status == 'Operated')
-                                            <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-xl" href="{{route('file_datas.edit', $file_data->id)}}">
-                                                <span class="menu-icon"><i class="mdi mdi-truck-delivery"></i></span>
-                                            </a>
-                                        @elseif($file_data->status == 'Printed')
-                                            <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-xl" href="{{route('file_datas.show', $file_data->id)}}"><span class="menu-icon"><i class="mdi mdi-printer"></i></span></a>
-                                        @endif
-                                    @endif
+                                @role('extra')
+                                    <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-xl" href="{{route('file_datas.edit', $file_data->id)}}">
+                                        <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
+                                    </a>
+                                    <a class="text-red-400 hover:text-red-600  hover:scale-105 transition duration-150 ease-in-out text-xl" href="{{route('file_datas.show', $file_data->id)}}"><span class="menu-icon"><i class="mdi mdi-printer"></i></span></a>
                                 @endrole
                             </td>
                         </tr>

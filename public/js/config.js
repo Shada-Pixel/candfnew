@@ -1,6 +1,6 @@
 !(function () {
-    var t = sessionStorage.getItem("__ADMINTO_CONFIG__"),
-        i = { direction: "ltr", theme: "light", layout: { width: "default", position: "fixed" }, topbar: { color: "light" }, menu: { color: "light" }, sidenav: { view: "default" } };
+    var t = sessionStorage.getItem("_PIXADMIN_CONFIG_"),
+        i = { direction: "ltr", theme: "light", layout: { width: "default", position: "fixed" }, topbar: { color: "light" }, menu: { color: "light" }, sidenav: { view: "condensed" } };
     const o = document.getElementsByTagName("html")[0];
     ((config = Object.assign(JSON.parse(JSON.stringify(i)), {})).direction = o.getAttribute("dir") || i.direction),
         (config.theme = o.getAttribute("data-mode") || i.theme),

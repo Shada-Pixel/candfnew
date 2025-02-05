@@ -16,6 +16,12 @@ class File_data extends Model
         'delivered_at' => 'datetime:H:i'
     ];
 
+    // public function setDateAttribute( $value ) {
+    //     $this->attributes['lodgement_date'] = (new Carbon($value))->format('d/m/y');
+    //     $this->attributes['manifest_date'] = (new Carbon($value))->format('d/m/y');
+    //     $this->attributes['be_date'] = (new Carbon($value))->format('d/m/y');
+    // }
+
     
     public function agent()
     {

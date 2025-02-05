@@ -58,6 +58,19 @@ class FileDataController extends Controller
     public function store(Request $request)
     {
 
+        // Retrieve the latest File_data record
+        $latest_file_data = File_data::latest()->first();
+        // Determine the next lodgement number
+        if ($latest_file_data) {
+            if ($latest_file_data->lodgement_no == '94020') {
+                $next_lodgement_no = 1;
+            } else {
+                $next_lodgement_no = $latest_file_data->lodgement_no + 1;
+            }
+        } else {
+            $next_lodgement_no = 1;
+        }
+
         // Check if the manifest_no already exists for the current year
         $currentYear = Carbon::now()->year;
         $isDuplicateManifest = File_data::where('manifest_no', $request->manifest_no)
@@ -81,14 +94,13 @@ class FileDataController extends Controller
         }
 
         $time = strtotime($request->lodgement_date);
-        $lmd = date('Y-m-d', $time);
+        $lmd = date('d/m/Y', $time);
         $mtime = strtotime($request->manifest_date);
-        $mnfd = date('Y-m-d', $mtime);
+        $mnfd = date('d/m/Y', $mtime);
 
         $file_data = new File_data();
-        if ($request->lodgement_no) {
-            $file_data->lodgement_no = $request->lodgement_no;
-        }
+        $file_data->lodgement_no = $next_lodgement_no;
+
 
         if ($request->manifest_no) {
             $file_data->manifest_no = $request->manifest_no;
@@ -152,9 +164,9 @@ class FileDataController extends Controller
 
         // return $request->all();
          $time = strtotime($request->lodgement_date);
-         $lmd = date('Y-m-d', $time);
+         $lmd = date('d/m/Y', $time);
          $mtime = strtotime($request->manifest_date);
-         $mnfd = date('Y-m-d', $mtime);
+         $mnfd = date('d/m/Y', $mtime);
 
          if ($request->agentain != null) {
             $agent_id = Agent::where('name', $request->agentain)->value('id');

@@ -63,7 +63,7 @@
 
                             <div class="">
                                 <label for="lodgement_date" class="block mb-2">Lodgement Date</label>
-                                <input type="date" class="form-input skipme" id="lodgement_date" name="lodgement_date" placeholder="Lodgement Date" required value="{{ date('Y-m-d') }}">
+                                <input type="text" class="form-input skipme" id="lodgement_date" name="lodgement_date" placeholder="Lodgement Date" required value="{{ date('d/m/Y') }}">
                             </div> <!-- end -->
 
                             <div class="col-span-2">
@@ -79,7 +79,7 @@
 
                             <div class="">
                                 <label for="manifest_date" class="block mb-2">Manifest Date</label>
-                                <input type="date" class="form-input skipme" id="manifest_date" name="manifest_date" placeholder="Manifest Date" required value="{{ date('Y-m-d') }}">
+                                <input type="text" class="form-input skipme" id="manifest_date" name="manifest_date" placeholder="Manifest Date" required value="{{ date('d/m/Y') }}">
 
                             </div> <!-- end -->
 
@@ -97,7 +97,7 @@
 
                             <div class="">
                                 <label for="be_date" class="block mb-2">B/E Date</label>
-                                <input type="date" class="form-input skipme" id="be_date" name="be_date" placeholder="B/E Date" value="{{ date('Y-m-d') }}" @role('extra') required @endrole>
+                                <input type="text" class="form-input skipme" id="be_date" name="be_date" placeholder="B/E Date" value="{{ date('d/m/Y') }}" @role('extra') required @endrole>
                             </div> <!-- end -->
 
 
@@ -180,11 +180,11 @@
                     let currentIndex = inputs.index(this); // Get the index of the current input
                     let nextIndex = currentIndex + 1;
 
-                    // Loop through the remaining fields to find the next non-date input
+                    // Loop through the remaining fields to find the next input without the class 'skipme'
                     while (nextIndex < inputs.length) {
                         let nextInput = inputs[nextIndex];
-                        if (nextInput.type !== 'date') {
-                        nextInput.focus(); // Focus on the next non-date input
+                        if (!$(nextInput).hasClass('skipme')) {
+                        nextInput.focus(); // Focus on the next input without the class 'skipme'
                         break;
                         }
                         nextIndex++;

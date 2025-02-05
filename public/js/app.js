@@ -239,7 +239,7 @@ class ThemeCustomizer {
     }
     setSwitchFromConfig() {
         sessionStorage.setItem(
-            "__ADMINTO_CONFIG__",
+            "_PIXADMIN_CONFIG_",
             JSON.stringify(this.config),
         ),
             document

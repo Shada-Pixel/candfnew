@@ -89,14 +89,14 @@
 
                             <div class="col-span-2">
                                 <label for="impexp" class="block mb-2">Importer/Exporter</label>
-                                <input type="text" class="form-input" id="impexp" name="impexp" placeholder="Importer/Exporter" required @role('operator') autofocus @endrole value="{{ $file_data->ie_data->name ?? '' }}">
+                                <input type="text" class="form-input" id="impexp" name="impexp" placeholder="Importer/Exporter"  @role('operator') required autofocus @endrole value="{{ $file_data->ie_data->name ?? '' }}">
 
                             </div> <!-- end -->
 
 
                             <div class="">
                                 <label for="be_number" class="block mb-2">B/E Number</label>
-                                <input type="text" class="form-input" id="be_number" name="be_number" placeholder="B/E Number"  value="{{ $file_data->be_number ?? '' }}">
+                                <input type="text" class="form-input" id="be_number" name="be_number" placeholder="B/E Number"  value="{{ $file_data->be_number ?? '' }}" @role('operator') required @endrole>
                             </div> <!-- end -->
 
                             <div class="">

@@ -168,7 +168,7 @@ class FileDataController extends Controller
          $mtime = strtotime($request->manifest_date);
          $mnfd = date('d/m/Y', $mtime);
 
-         if ($request->agentain != null) {
+        if ($request->agentain != null) {
             $agent_id = Agent::where('name', $request->agentain)->value('id');
             $file_data->agent_id = $agent_id;
         }
@@ -176,6 +176,10 @@ class FileDataController extends Controller
         if ($request->impexp != null) {
             $ie_data_id = Ie_data::where('name', $request->impexp)->value('id');
             $file_data->ie_data_id = $ie_data_id;
+            if (!$ie_data_id) {
+                // return redirect()->back()->withInput()->with(['status' => 200, 'message' => 'Please create Importer/Exporter first!']);
+                return redirect()->back()->withInput()->withErrors(['Please create valid Importer/Exporter first!']);
+            }
         }
 
         // Calculate the number of pages

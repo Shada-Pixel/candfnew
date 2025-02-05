@@ -72,7 +72,7 @@
                 <div class="flex justify-between items-center mb-4">
 
                     <h2 class="text-lg">Last 1000 Files</h2>
-                    <div class="p-2 shadow-md rounded-lg bg-slate-200">
+                    <div class="p-2 shadow-md rounded-lg  cardone">
                         <form action="{{route('dashboard')}}" method="get">
                             @csrf
                             @method('GET')
@@ -154,16 +154,16 @@
                                     <span class="text-red-500">Printed</span>
                                 @else
                                     <span class="text-green-600">Received</span>
-                                    
+
                                 @endif
                             </td>
 
-                            <td class="has-text-right text-right">
+                            <td class="flex justify-end items-center gap-2">
                                 @role('admin')
-                                    <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-xl" href="{{route('file_datas.edit', $file_data->id)}}">
+                                    <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('file_datas.edit', $file_data->id)}}">
                                         <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
                                     </a>
-                                    <a class="text-red-500/70 hover:text-red  hover:scale-105 transition duration-150 ease-in-out text-xl" href="{{ route('file_datas.destroy', $file_data->id) }}"
+                                    <a class="text-red-500/70 hover:text-red  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{ route('file_datas.destroy', $file_data->id) }}"
                                     onclick="event.preventDefault(); document.getElementById('delete-form-{{ $file_data->id }}').submit();">
                                     <span class="menu-icon"><i class="mdi mdi-delete"></i></span>
                                     </a>
@@ -175,14 +175,14 @@
                                 @endrole
 
                                 @role('operator')
-                                    <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-xl" href="{{route('file_datas.edit', $file_data->id)}}"><span class="menu-icon"><i class="mdi mdi-key"></i></span></a>
+                                    <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('file_datas.edit', $file_data->id)}}"><span class="menu-icon"><i class="mdi mdi-key"></i></span></a>
                                 @endrole
 
                                 @role('extra')
-                                    <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-xl" href="{{route('file_datas.edit', $file_data->id)}}">
+                                    <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('file_datas.edit', $file_data->id)}}">
                                         <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
                                     </a>
-                                    <a class="text-red-400 hover:text-red-600  hover:scale-105 transition duration-150 ease-in-out text-xl" href="{{route('file_datas.show', $file_data->id)}}"><span class="menu-icon"><i class="mdi mdi-printer"></i></span></a>
+                                    <a class="text-red-400 hover:text-red-600  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('file_datas.show', $file_data->id)}}"><span class="menu-icon"><i class="mdi mdi-printer"></i></span></a>
                                 @endrole
                             </td>
                         </tr>

@@ -13,7 +13,7 @@
     <div class="flex flex-col gap-4">
 
 
-        <div class="grid xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
+        <div class="grid grid-cols-4 gap-4">
             <!-- card-start -->
             <div class="card bg-cyan-300">
                 <div class="px-4 py-2">

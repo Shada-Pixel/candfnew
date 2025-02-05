@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                <form class="" id="agentCreateForm" enctype="multipart/form-data" action="{{route('file_datas.store')}}" method="POST">
+                <form class="" id="fileReciveForm" enctype="multipart/form-data" action="{{route('file_datas.store')}}" method="POST">
                     @csrf
                     @method('POST')
                     <div class="">
@@ -105,19 +105,19 @@
                                 <label for="page" class="block mb-2">Item</label>
                                 <input type="text" class="form-input w-20" id="page" name="page" placeholder="00" max="999" >
                             </div> <!-- end -->
-                            <div class=""></div>
-
-
+                            <div class=""><input type="hidden" name="printable" id="printable"></div><!-- end -->
 
                             <div class="self-end">
                                 <button type="submit" class="font-mont px-10 py-4 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 relative after:absolute after:content-['SURE!'] after:flex after:justify-center after:items-center after:text-white after:w-full after:h-full after:z-10 after:top-full after:left-0 after:bg-seagreen overflow-hidden hover:after:top-0 after:transition-all after:duration-300 hover:scale-110"
                                     id="baccountSaveBtn">Submit</button>
                             </div><!-- end -->
 
-                            <div class="self-end">
+                            @role('extra')
+                            <div class="self-end ">
                                 <button class="font-mont px-10 py-4 bg-red-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 relative after:absolute after:content-['SURE!'] after:flex after:justify-center after:items-center after:text-white after:w-full after:h-full after:z-10 after:top-full after:left-0 after:bg-seagreen overflow-hidden hover:after:top-0 after:transition-all after:duration-300 hover:scale-110"
-                                    id="baccountSaveBtn">Print</button>
+                                    id="baccountSaveBtn" onclick="submitAndPrint()">Print</button>
                             </div><!-- end -->
+                            @endrole
                         </div>
 
 
@@ -196,7 +196,10 @@
                 $('#agentain').focus().select();
             });
 
-
+            function submitAndPrint() {
+                $('#printable').val('1');
+                $('#fileReciveForm').submit();
+            }
 
         </script>
     </x-slot>

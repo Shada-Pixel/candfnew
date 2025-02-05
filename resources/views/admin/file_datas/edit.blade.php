@@ -111,17 +111,13 @@
                             </div> <!-- end -->
 
 
-                            <div class=""></div><!-- end -->
+                            <div class=""><input type="hidden" name="printable" id="printable"></div><!-- end -->
 
                             <div class="self-end">
-                                <button type="submit" class="font-mont px-10 py-4 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 relative after:absolute after:content-['SURE!'] after:flex after:justify-center after:items-center after:text-white after:w-full after:h-full after:z-10 after:top-full after:left-0 after:bg-seagreen overflow-hidden hover:after:top-0 after:transition-all after:duration-300 hover:scale-110"
+                                <button type="submit" class="font-mont px-10 py-4 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150  hover:scale-110"
                                     id="baccountSaveBtn">Submit</button>
                             </div><!-- end -->
 
-                            <div class="self-end @role('operator') hidden @endrole">
-                                <button class="font-mont px-10 py-4 bg-red-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 relative after:absolute after:content-['SURE!'] after:flex after:justify-center after:items-center after:text-white after:w-full after:h-full after:z-10 after:top-full after:left-0 after:bg-seagreen overflow-hidden hover:after:top-0 after:transition-all after:duration-300 hover:scale-110"
-                                    id="baccountSaveBtn">Print</button>
-                            </div><!-- end -->
                         </div>
 
 

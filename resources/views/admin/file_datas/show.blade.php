@@ -1,6 +1,6 @@
 {{-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> --}}
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
 
@@ -76,13 +76,13 @@
 }
 </style>
     <div id="invoice">
-        <div class="toolbar hidden-print">
+        {{-- <div class="toolbar hidden-print">
             <div class="text-right">
                 <button onclick="printDiv()" id="printInvoice" class="btn"><i class="fa fa-print"></i> Print</button>
                 <a href="/file_datas" class="btn btn-dark">Back</a>
             </div>
             <hr>
-        </div>
+        </div> --}}
         <div id="printDiv">
             <main>
                 <div class="w100">
@@ -116,11 +116,31 @@
     <script !src="">
         function printDiv() {
             Popup($('#printDiv').outerHTML);
+
+
             function Popup(data)
             {
                 window.print();
                 return true;
             }
         }
+
+        $(document).ready(function () {
+            Popup($('#printDiv').outerHTML);
+
+            function Popup(data)
+            {
+                window.print();
+                return true;
+            }
+
+            // // After printing, redirect to another route
+            // window.onafterprint = function () {
+            //     window.location.href = "{{ route('file_datas.create') }}"; // Change this to your desired route
+            // };
+            setTimeout(function() {
+                window.location.href = "{{ route('file_datas.create') }}";
+            }, 1000); // Redirects after 2 seconds
+        });
     </script>
 

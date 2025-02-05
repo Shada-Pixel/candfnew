@@ -74,7 +74,7 @@ class FileDataController extends Controller
         // Check if the manifest_no already exists for the current year
         $currentYear = Carbon::now()->year;
         $isDuplicateManifest = File_data::where('manifest_no', $request->manifest_no)
-            ->whereYear('manifest_date', $currentYear)
+            ->whereYear('created_at', $currentYear)
             ->exists();
         $agent_id = null;
         $ie_data_id = null;
@@ -128,7 +128,14 @@ class FileDataController extends Controller
         $file_data->reciver_id = Auth::user()->id;
         $file_data->save();
 
-        return redirect()->route('file_datas.create')->with(['status' => 200, 'message' => 'File Submited!']);
+        if (Auth::user()->hasRole('extra') || $request->printable) {
+            $file_data->status = 'Printed';
+            $file_data->save();
+            return redirect()->route('file_datas.show', $file_data->id)->with(['status' => 200, 'message' => 'File Received and Printed!']);
+        }
+
+
+        return redirect()->route('file_datas.create')->with(['status' => 200, 'message' => 'File Received!']);
     }
 
     /**

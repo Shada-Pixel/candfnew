@@ -79,11 +79,11 @@ class FileDataController extends Controller
         $agent_id = null;
         $ie_data_id = null;
 
-        if ($isDuplicateManifest) {
-            return redirect()->back()->withErrors([
-                'manifest_no' => 'The manifest number already exists for this year.'
-            ])->withInput();
-        }
+        // if ($isDuplicateManifest) {
+        //     return redirect()->back()->withErrors([
+        //         'manifest_no' => 'The manifest number already exists for this year.'
+        //     ])->withInput();
+        // }
 
         if ($request->agentain != null) {
             $agent_id = Agent::where('name', $request->agentain)->value('id');

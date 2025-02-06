@@ -25,7 +25,7 @@
                             <input type="text" class="form-input" id="bin_no" name="bin_no">
                         </div> <!-- end -->
 
-                        <div class="">
+                        <div class="col-span-2">
                             <label for="name" class="block mb-2">Importer / Exporter Name</label>
                             <input type="text" class="form-input" id="name" name="name" required autofocus>
                         </div> <!-- end -->

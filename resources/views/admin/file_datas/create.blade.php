@@ -222,7 +222,7 @@
                                 }
                             }
                             enterCount = 0; // Reset counter
-                        }, 300);
+                        }, 500);
                     }
                 });
 

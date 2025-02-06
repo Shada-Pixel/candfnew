@@ -137,6 +137,7 @@
 
                 let enterCount = 0; // Track Enter key presses
                 let enterTimer;
+
                 $('#printable').val('');
 
                 // Autocomplete for Agent
@@ -212,9 +213,13 @@
                                 // Single Enter press: Click the Submit button
                                 $("#baccountSaveBtn").click();
                             } else if (enterCount === 2) {
-                                // Double Enter press: Click the Print button
-                                $('#printable').val('1');
-                                $('#fileReciveForm').submit();
+                                let beval = $('#be_number').val();
+                                if(beval != ''){
+                                    $('#printable').val('1');
+                                    $('#fileReciveForm').submit();
+                                }else{
+                                    $('#fileReciveForm').submit();
+                                }
                             }
                             enterCount = 0; // Reset counter
                         }, 300);

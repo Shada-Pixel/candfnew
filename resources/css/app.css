@@ -28,17 +28,6 @@ table.dataTable tbody th, table.dataTable tbody td {
 
 
 
-
-html[data-topbar-color="light"] {
-	--tw-topbar-bg: #d3dce6;
-	--tw-topbar-item-color: #0f172b;
-	--tw-topbar-item-active-color: #0db8a6;
-	--tw-topbar-item-hover-color: #0db8a6;
-}
-
-
-
-
 /* For dark mode */
 :is([data-mode="dark"] .cardone) {
 	--tw-bg-opacity: 1;

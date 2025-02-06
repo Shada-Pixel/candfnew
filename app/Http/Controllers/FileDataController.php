@@ -105,6 +105,9 @@ class FileDataController extends Controller
         if ($request->manifest_no) {
             $file_data->manifest_no = $request->manifest_no;
         }
+        if ($request->be_number) {
+            $file_data->be_number = $request->be_number;
+        }
         if ($request->page) {
             $pages =  $request->page;
             $numberofPages = ($pages  >  1) ? ceil((($pages - 1) / 3  + 1)) : 1;
@@ -128,7 +131,8 @@ class FileDataController extends Controller
         $file_data->reciver_id = Auth::user()->id;
         $file_data->save();
 
-        if (Auth::user()->hasRole('extra') || $request->printable) {
+
+        if (Auth::user()->hasRole('extra') && $request->printable == 1) {
             $file_data->status = 'Printed';
             $file_data->save();
             return redirect()->route('file_datas.show', $file_data->id)->with(['status' => 200, 'message' => 'File Received and Printed!']);
@@ -143,7 +147,7 @@ class FileDataController extends Controller
      */
     public function show(File_data $file_data)
     {
-        if (Auth::user()->hasRole('admin|deliver')) {
+        if (Auth::user()->hasRole('extra')) {
             $file_data->status = 'Printed';
             $file_data->save();
         }

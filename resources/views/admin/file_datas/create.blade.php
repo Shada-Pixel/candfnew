@@ -108,14 +108,13 @@
                             <div class=""><input type="hidden" name="printable" id="printable"></div><!-- end -->
 
                             <div class="self-end">
-                                <button type="submit" class="font-mont px-10 py-4 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 relative after:absolute after:content-['SURE!'] after:flex after:justify-center after:items-center after:text-white after:w-full after:h-full after:z-10 after:top-full after:left-0 after:bg-seagreen overflow-hidden hover:after:top-0 after:transition-all after:duration-300 hover:scale-110"
-                                    id="baccountSaveBtn">Submit</button>
+                                <input type="submit" value="Submit" class="font-mont px-10 py-4 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110"
+                                id="baccountSaveBtn">
                             </div><!-- end -->
 
                             @role('extra')
                             <div class="self-end ">
-                                <button class="font-mont px-10 py-4 bg-red-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 relative after:absolute after:content-['SURE!'] after:flex after:justify-center after:items-center after:text-white after:w-full after:h-full after:z-10 after:top-full after:left-0 after:bg-seagreen overflow-hidden hover:after:top-0 after:transition-all after:duration-300 hover:scale-110"
-                                    id="baccountSaveBtn" onclick="submitAndPrint()">Print</button>
+                                <input type="submit" value="Print" class="font-mont px-10 py-4 bg-red-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" onclick="submitAndPrint()">
                             </div><!-- end -->
                             @endrole
                         </div>
@@ -135,6 +134,10 @@
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
         <script>
             $(document).ready(function() {
+
+                let enterCount = 0; // Track Enter key presses
+                let enterTimer;
+                $('#printable').val('');
 
                 // Autocomplete for Agent
                 $('#agentain').autocomplete({
@@ -194,6 +197,30 @@
 
                 // Focus and select the input field
                 $('#agentain').focus().select();
+
+
+
+                $("#fileReciveForm").on("keydown", function (e) {
+                    if (e.key === "Enter") {
+                        e.preventDefault(); // Prevent default form submission
+                        enterCount++;
+
+                        // Check if Enter was pressed twice within 300ms
+                        clearTimeout(enterTimer);
+                        enterTimer = setTimeout(function () {
+                            if (enterCount === 1) {
+                                // Single Enter press: Click the Submit button
+                                $("#baccountSaveBtn").click();
+                            } else if (enterCount === 2) {
+                                // Double Enter press: Click the Print button
+                                $('#printable').val('1');
+                                $('#fileReciveForm').submit();
+                            }
+                            enterCount = 0; // Reset counter
+                        }, 300);
+                    }
+                });
+
             });
 
             function submitAndPrint() {

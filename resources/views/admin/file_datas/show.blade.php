@@ -139,8 +139,9 @@
             //     window.location.href = "{{ route('file_datas.create') }}"; // Change this to your desired route
             // };
             setTimeout(function() {
-                window.location.href = "{{ route('file_datas.create') }}";
-            }, 1000); // Redirects after 2 seconds
+                // window.location.href = "{{ route('file_datas.create') }}";
+                window.location.href = "{{ URL::previous() }}";
+            }, 100); // Redirects after 2 seconds
         });
     </script>
 

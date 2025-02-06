@@ -136,7 +136,7 @@ Route::group(['middleware' => ['auth']], function() {
     // Importer / Exporter autocomplete
     Route::get('/ieautocomplete', function (Request $request) {
         $query = $request->get('query');
-        $results = Ie_data::where('name', 'LIKE', "%{$query}%")
+        $results = Ie_data::where('name', 'LIKE', "{$query}%")
                           ->pluck('name');
         return response()->json($results);
     });

@@ -98,6 +98,7 @@ class FileDataController extends Controller
         $mtime = strtotime($request->manifest_date);
         $mnfd = date('d/m/Y', $mtime);
 
+
         $file_data = new File_data();
         $file_data->lodgement_no = $next_lodgement_no;
 
@@ -107,6 +108,11 @@ class FileDataController extends Controller
         }
         if ($request->be_number) {
             $file_data->be_number = $request->be_number;
+        }
+        if ($request->be_date) {
+            $bedate = strtotime($request->be_date);
+            $betatestore = date('d/m/Y', $bedate);
+            $file_data->be_date = $betatestore;
         }
         if ($request->page) {
             $pages =  $request->page;

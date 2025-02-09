@@ -66,5 +66,22 @@ class UserSeeder extends Seeder
         $extrarole = Role::where('name','extra')->first();
         $extra->assignRole([$extrarole->id]);
 
+
+
+        $oldusers = [
+            ['MD.RASHADUR  RAHMAN RIAD', 'reyad.bpl@gmail.com'],
+            ['SHU-MOHON BISWAS', 's.mohon108@gmail.com'],
+            ['IMON HOSSAIN', 'imondti2014@gmail.com'],
+            ['MD. HABIBUR RAHMAN', 'habibdti@gmail.com'],
+            ['FARHANA YESMEEN  HIRA', 'farhanahira.bpl@gmail.com'],
+            ['ABDULLAH AL MAMUN SHUVO', 'shuvodti@gmail.com'],
+            ['SHEAK FAYSAL UDDIN', 'faysaldti@gmail.com'],
+            ['Raju Ahmed', 'associationbpl@gmail.com'],
+            ['Muntasir al mamun', 'muntasiralmamun@gmail.com'],
+            ['Muntasir al mamun D', 'ashaud14octa@gmail.com'],
+            ['Extra Account', 'dtibranch@gmail.com']
+        ];
+
+
     }
 }

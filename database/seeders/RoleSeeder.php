@@ -21,7 +21,9 @@ class RoleSeeder extends Seeder
             'extra',
             'operator',
             'deliver',
-            'developer'
+            'developer',
+            'accountant',
+            'manager',
         ];
 
         // Creating roles and assigning permission
@@ -32,9 +34,6 @@ class RoleSeeder extends Seeder
         $permissions = Permission::pluck('id','id')->all();
         $adminRole = Role::where('name','admin')->first();
         $adminRole->syncPermissions($permissions);
-
-
-
 
     }
 }

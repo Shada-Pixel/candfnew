@@ -20,33 +20,60 @@ class UserSeeder extends Seeder
 
         // admin user
         $adminuser = User::create([
-            'name' => 'Admin',
-            'email' => 'admin@app.com',
-            'password' => Hash::make('admin123'),
+            'name' => 'Raju Ahmed',
+            'email' => 'associationbpl@gmail.com',
+            'password' => Hash::make('admin123cnf'),
         ]);
         $adminrole = Role::where('name','admin')->first();
         $adminuser->assignRole([$adminrole->id]);
 
 
-        // user  reciver user
-        $reciver = User::create([
-            'name'=>'Receiver',
-            'email'=>'receiver@app.com',
-            'password'=> Hash::make('user123')
+        // developer user
+        $developreuser = User::create([
+            'name' => 'Sabbir',
+            'email' => 'hussainasabbir3@gmail.com',
+            'password' => Hash::make('admin123cnf'),
         ]);
-        $reciverrole = Role::where('name','receiver')->first();
-        $reciver->assignRole([$reciverrole->id]);
+        $developerrole = Role::where('name','developer')->first();
+        $developreuser->assignRole([$developerrole->id]);
 
-        // user  operator user
-        $operator = User::create([
-            'name'=>'Operator',
-            'email'=>'operator@app.com',
-            'password'=> Hash::make('user123')
+
+        // Accountant user
+        $accountant = User::create([
+            'name'=>'Muntasir',
+            'email'=>'muntasiralmamun@gmail.com',
+            'password'=> Hash::make('muntasir123cnf')
         ]);
-        $operatorrole = Role::where('name','operator')->first();
-        $operator->assignRole([$operatorrole->id]);
+        $accountantrole = Role::where('name','accountant')->first();
+        $accountant->assignRole([$accountantrole->id]);
 
 
+        // Creating operators
+        $operators = [
+            ['name' => 'MD.RASHADUR  RAHMAN RIAD', 'email' => 'reyad.bpl@gmail.com', 'password' => 'rashedur123cnf'],
+            ['name' => 'SHU-MOHON BISWAS', 'email' => 's.mohon108@gmail.com', 'password' => 'mohon123cnf'],
+            ['name' => 'IMON HOSSAIN', 'email' => 'imondti2014@gmail.com', 'password' => 'imon123cnf'],
+            ['name' => 'MD. HABIBUR RAHMAN', 'email' => 'habibdti@gmail.com', 'password' => 'habibur123cnf'],
+            ['name' => 'FARHANA YESMEEN  HIRA', 'email' => 'farhanahira.bpl@gmail.com', 'password' => 'hira123cnf'],
+            ['name' => 'ABDULLAH AL MAMUN SHUVO', 'email' => 'shuvodti@gmail.com', 'password' => 'shuvo123cnf'],
+            ['name' => 'SHEAK FAYSAL UDDIN', 'email' => 'faysaldti@gmail.com', 'password' => 'faysal123cnf']
+        ];
+
+        $operatorRole = Role::where('name', 'operator')->first();
+
+        if ($operatorRole) {
+            foreach ($operators as $operator) {
+                $newOperator = User::updateOrCreate(
+                    ['email' => $operator['email']], // Check if user already exists by email
+                    [
+                        'name' => $operator['name'],
+                        'password' => Hash::make($operator['password']), // Hash password securely
+                    ]
+                );
+
+                $newOperator->assignRole($operatorRole);
+            }
+        }
 
         // user  deliver user
         $deliver = User::create([
@@ -60,28 +87,11 @@ class UserSeeder extends Seeder
         // user  extra user
         $extra = User::create([
             'name'=>'Extra',
-            'email'=>'extra@app.com',
-            'password'=> Hash::make('user123')
+            'email'=>'dtibranch@gmail.com',
+            'password'=> Hash::make('extra123cnf')
         ]);
         $extrarole = Role::where('name','extra')->first();
         $extra->assignRole([$extrarole->id]);
-
-
-
-        $oldusers = [
-            ['MD.RASHADUR  RAHMAN RIAD', 'reyad.bpl@gmail.com'],
-            ['SHU-MOHON BISWAS', 's.mohon108@gmail.com'],
-            ['IMON HOSSAIN', 'imondti2014@gmail.com'],
-            ['MD. HABIBUR RAHMAN', 'habibdti@gmail.com'],
-            ['FARHANA YESMEEN  HIRA', 'farhanahira.bpl@gmail.com'],
-            ['ABDULLAH AL MAMUN SHUVO', 'shuvodti@gmail.com'],
-            ['SHEAK FAYSAL UDDIN', 'faysaldti@gmail.com'],
-            ['Raju Ahmed', 'associationbpl@gmail.com'],
-            ['Muntasir al mamun', 'muntasiralmamun@gmail.com'],
-            ['Muntasir al mamun D', 'ashaud14octa@gmail.com'],
-            ['Extra Account', 'dtibranch@gmail.com']
-        ];
-
 
     }
 }

@@ -1,6 +1,6 @@
 <x-app-layout>
     {{-- Title --}}
-    <x-slot name="title">File Receive Report</x-slot>
+    <x-slot name="title">Delivery Report</x-slot>
 
 
     {{-- Header Style --}}
@@ -17,7 +17,7 @@
             <div class="p-6">
                 <div class="flex justify-between items-center mb-4">
 
-                    <h2 class="text-xl">File Receive Report</h2>
+                    <h2 class="text-xl">Delivery Report</h2>
                     <div class="p-2 shadow-md rounded-lg bg-slate-200">
                         <form action="" method="get">
                             @csrf
@@ -132,8 +132,11 @@
                             }
                         ],
                         ajax: {
-                            url:'{!! route("reports.receiver_report") !!}',
-                            data:{from_date:from_date, to_date:to_date}
+                            url:'{!! route("reports.deliver_report") !!}',
+                            data:{
+                                from_date:from_date,
+                                to_date:to_date
+                            }
                         },
                         columns: [
                             {
@@ -144,7 +147,6 @@
                             },
                             { data: 'lodgement_no', name: 'lodgement_no' },
                             { data: 'agent.name', name: 'agent.name' },
-                            { data: 'group', name: 'group' },
                             { data: 'manifest_no', name: 'manifest_no' },
                             { data: 'manifest_date', name: 'manifest_date' },
                             { data: 'status', name: 'status' }

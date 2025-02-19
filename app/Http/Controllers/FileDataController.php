@@ -234,6 +234,8 @@ class FileDataController extends Controller
         $ie_name = $ie_name->name;
         $sms_data = 'B/E Number:' . $file_data->be_number . '. B/E Date: ' . $file_data->be_date . '. ' . $file_data->ie_type . '. Name: ' . $ie_name . '. Manifest No: ' . $file_data->manifest_no . '. Manifest Date: ' . $file_data->manifest_date;
 
+        $newSmsData ="Benapole C & F Agents Association,  You have registed a B/E which No. is 6532 Date:15.02.2025 Importer: SALAM STEEL PVT LTD Manifest No: 4609 Date:10.02.2025. Thank you.";
+
 
         function send_sms($in_phone, $in_textmessage){
             $url = "https://login.esms.com.bd/api/v3/sms/send";

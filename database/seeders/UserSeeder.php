@@ -51,12 +51,12 @@ class UserSeeder extends Seeder
         // Creating operators
         $operators = [
             ['name' => 'MD.RASHADUR  RAHMAN RIAD', 'email' => 'reyad.bpl@gmail.com', 'password' => 'rashedur123cnf'],
-            ['name' => 'SHU-MOHON BISWAS', 'email' => 's.mohon108@gmail.com', 'password' => 'mohon123cnf'],
+            ['name' => 'MOHON BISWAS', 'email' => 's.mohon108@gmail.com', 'password' => 'mohon123cnf'],
             ['name' => 'IMON HOSSAIN', 'email' => 'imondti2014@gmail.com', 'password' => 'imon123cnf'],
             ['name' => 'MD. HABIBUR RAHMAN', 'email' => 'habibdti@gmail.com', 'password' => 'habibur123cnf'],
             ['name' => 'FARHANA YESMEEN  HIRA', 'email' => 'farhanahira.bpl@gmail.com', 'password' => 'hira123cnf'],
             ['name' => 'ABDULLAH AL MAMUN SHUVO', 'email' => 'shuvodti@gmail.com', 'password' => 'shuvo123cnf'],
-            ['name' => 'SHEAK FAYSAL UDDIN', 'email' => 'faysaldti@gmail.com', 'password' => 'faysal123cnf']
+            ['name' => 'SHEAK FAYSAL', 'email' => 'faysaldti@gmail.com', 'password' => 'faysal123cnf']
         ];
 
         $operatorRole = Role::where('name', 'operator')->first();

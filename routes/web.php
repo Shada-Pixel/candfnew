@@ -149,6 +149,15 @@ Route::group(['middleware' => ['auth']], function() {
         return response()->json($results);
     });
 
+
+    // sms routes
+    Route::post('/test_sms', function(){
+        $message = 'Hello, This is a test message from the system. Please ignore this message.';
+        $phone = '01711000000';
+        $response = sendSMS($phone, $message);
+        return $response;
+    })->name('sms.test');
+
 });
 
 require __DIR__.'/auth.php';

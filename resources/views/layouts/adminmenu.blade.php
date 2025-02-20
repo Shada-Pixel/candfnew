@@ -117,6 +117,10 @@
                     <span class="menu-text"> Green Files </span>
                 </a>
             </li> --}}
+
+            @role('admin|accountant')
+
+            {{-- Account --}}
             {{-- Finance --}}
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
@@ -144,6 +148,8 @@
 
                 </ul>
             </li>
+
+            @endrole
 
             @role('admin')
 
@@ -245,6 +251,44 @@
                 </ul>
             </li>
 
+            {{-- SMS --}}
+            <li class="menu-item">
+                <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
+                    <span class="menu-icon"><i class="mdi mdi-message-outline"></i></span>
+                    <span class="menu-text">SMS</span>
+                    <span class="menu-arrow"></span>
+                </a>
+
+                <ul class="sub-menu hidden">
+                    <li class="menu-item">
+                        <a href="{{route('sms.test')}}" class="menu-link">
+                            <span class="menu-text">Test SMS </span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('reports.deliver_report')}}" class="menu-link">
+                            <span class="menu-text">Delivery Report</span>
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="" class="menu-link">
+                            <span class="menu-text">Work Report Per Day</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="" class="menu-link">
+                            <span class="menu-text">Monthly Ope Report</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('reports.financial.monthly')}}" class="menu-link">
+                            <span class="menu-text">Financial Report</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
             @endrole
 
 
@@ -286,7 +330,10 @@
                     </li>
                 </ul>
             </li>
+
             @endrole
+
+
         </ul>
     </div>
 </div>

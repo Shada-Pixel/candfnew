@@ -19,6 +19,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\IeDataController;
 use App\Http\Controllers\FileDataController;
+use App\Http\Controllers\SmsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -157,6 +158,10 @@ Route::group(['middleware' => ['auth']], function() {
         $response = sendSMS($phone, $message);
         return $response;
     })->name('sms.test');
+
+    Route::post('/sms/send-single', [SmsController::class, 'sendSingleSms']);
+    Route::post('/sms/send-bulk', [SmsController::class, 'sendBulkSms']);
+    Route::post('/sms/send-dynamic', [SmsController::class, 'sendDynamicSms']);
 
 });
 

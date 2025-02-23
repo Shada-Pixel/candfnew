@@ -13,6 +13,12 @@ class SmsController extends Controller
         $this->smsService = $smsService;
     }
 
+    //
+    public function sendSms()
+    {
+        return view('admin.sm.sendSms');
+    }
+
     /**
      * Send a Single SMS
      */

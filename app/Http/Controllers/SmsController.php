@@ -16,7 +16,7 @@ class SmsController extends Controller
     //
     public function sendSms()
     {
-        return view('admin.sm.sendSms');
+        return view('admin.sms.sendSms');
     }
 
     /**

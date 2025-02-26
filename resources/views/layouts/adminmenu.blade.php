@@ -261,7 +261,7 @@
 
                 <ul class="sub-menu hidden">
                     <li class="menu-item">
-                        <a href="{{route('sms.test')}}" class="menu-link">
+                        <a href="{{route('sendSms')}}" class="menu-link">
                             <span class="menu-text">Send SMS </span>
                         </a>
                     </li>

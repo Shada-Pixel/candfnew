@@ -159,7 +159,7 @@ Route::group(['middleware' => ['auth']], function() {
         return $response;
     })->name('sms.test');
 
-    Route::post('/sms/send-sms', [SmsController::class, 'sendSms']);
+    Route::get('/sms/send-sms', [SmsController::class, 'sendSms'])->name('sendSms');
     Route::post('/sms/send-single', [SmsController::class, 'sendSingleSms']);
     Route::post('/sms/send-bulk', [SmsController::class, 'sendBulkSms']);
     Route::post('/sms/send-dynamic', [SmsController::class, 'sendDynamicSms']);

@@ -20,6 +20,7 @@ use App\Http\Controllers\AgentController;
 use App\Http\Controllers\IeDataController;
 use App\Http\Controllers\FileDataController;
 use App\Http\Controllers\SmsController;
+use App\Http\Controllers\NoticeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -163,7 +164,17 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/sms/send-single', [SmsController::class, 'sendSingleSms']);
     Route::post('/sms/send-bulk', [SmsController::class, 'sendBulkSms']);
     Route::post('/sms/send-dynamic', [SmsController::class, 'sendDynamicSms']);
+    
+    // Add middleware to the delete route
+    Route::delete('/notices/{filename}', [NoticeController::class, 'destroy'])
+    ->middleware('auth') // Only authenticated users can delete
+    ->name('notices.destroy');
 
 });
+
+
+// Route to view or download a notice
+Route::get('/notices/{filename}', [NoticeController::class, 'show'])->name('notices.show');
+Route::get('/notices', [NoticeController::class, 'index'])->name('notices.index');
 
 require __DIR__.'/auth.php';

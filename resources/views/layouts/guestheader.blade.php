@@ -22,6 +22,9 @@
               md:justify-between
               md:pt-0">
             <li>
+                <a class="md:p-4 py-2 block hover:text-bb" href="{{route('notices.index')}}">ITC Reports</a>
+            </li>
+            <li>
                 <a class="md:p-4 py-2 block hover:text-bb" href="{{route('notices.index')}}">Notices</a>
             </li>
             <li>

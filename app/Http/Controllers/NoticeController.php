@@ -3,24 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class NoticeController extends Controller
 {
-    public function indexo()
-    {
-        // Debug the files in the directory
-        $files = Storage::files('public/notices');
-        dd($files); // Check the output
-
-        // Map the files to get only the filenames
-        $notices = collect($files)
-            ->map(function ($file) {
-                return basename($file);
-            });
-
-        return view('notices.index', compact('notices'));
-    }
 
     public function index()
     {
@@ -55,17 +42,49 @@ class NoticeController extends Controller
     }
 
 
-
     public function store(Request $request)
     {
+        dd($request->all());
+        // Validate the request
         $request->validate([
             'notice' => 'required|mimes:pdf|max:2048',
         ]);
 
+        // Get the uploaded file
         $file = $request->file('notice');
-        $filename = $file->getClientOriginalName();
+
+        // Store the file
+        $filename = $file->getClientOriginalName(); // Use the original file name
         $file->storeAs('public/notices', $filename);
 
-        return redirect()->route('notices.index')->with('success', 'Notice uploaded successfully.');
+        // Redirect with success message
+        return redirect()->route('adminnotices')->with('success', 'Notice uploaded successfully.');
+    }
+
+    public function destroy($filename)
+    {
+        $path = storage_path('app/public/notices/' . $filename);
+
+        if (!file_exists($path)) {
+            abort(404, 'File not found.');
+        }
+
+        unlink($path);
+
+        return redirect()->route('adminnotices')->with('success', 'Notice deleted successfully.');
+    }
+
+    public function adminnotice()
+    {
+        // Get all PDF files from the directory
+        $files = glob(storage_path('app/public/notices/*.pdf'));
+
+        // Extract only the filenames
+        $notices = collect($files)
+            ->map(function ($file) {
+                return basename($file);
+            });
+
+        return view('admin.notices.index', compact('notices'));
     }
 }

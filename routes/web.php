@@ -164,12 +164,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/sms/send-single', [SmsController::class, 'sendSingleSms']);
     Route::post('/sms/send-bulk', [SmsController::class, 'sendBulkSms']);
     Route::post('/sms/send-dynamic', [SmsController::class, 'sendDynamicSms']);
-    
+
     // Add middleware to the delete route
     Route::delete('/notices/{filename}', [NoticeController::class, 'destroy'])
     ->middleware('auth') // Only authenticated users can delete
     ->name('notices.destroy');
 
+    Route::get('/admin/notices', [NoticeController::class, 'adminnotice'])->name('adminnotices');
+    Route::post('/admin/notices', [NoticeController::class, 'store'])->name('notices.store');
 });
 
 

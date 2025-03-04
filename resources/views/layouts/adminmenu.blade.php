@@ -294,6 +294,14 @@
                 </ul>
             </li>
 
+
+            <li class="menu-item">
+                <a href="{{route('adminnotices')}}" class="menu-link">
+                    <span class="menu-icon"><i class="mdi mdi-relative-scale"></i></span>
+                    <span class="menu-text"> Notices </span>
+                </a>
+            </li>
+
             @endrole
 
 

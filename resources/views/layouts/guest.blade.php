@@ -30,6 +30,38 @@
         <!-- Plugin Js -->
         <script src="{{asset('libs/jquery/jquery.min.js')}}"></script>
         <script src="{{asset('js/custom.js')}}"></script>
+
+        <!-- jQuery Script for Dropdown and Mobile Menu Toggle -->
+        <script>
+            $(document).ready(function () {
+                // Toggle mobile menu
+                $('#mobile-menu-button').click(function () {
+                    $('#mobile-menu').toggleClass('hidden');
+                });
+
+                // Toggle mobile dropdown
+                $('#mobile-dropdown-button').click(function () {
+                    $('#mobile-dropdown-menu').toggleClass('hidden');
+                });
+
+                // Toggle desktop dropdown
+                $('#desktop-dropdown-button').click(function (e) {
+                    e.stopPropagation(); // Prevent the click from closing the dropdown immediately
+                    $('#desktop-dropdown-menu').toggleClass('hidden');
+                });
+
+                // Close dropdown when clicking outside
+                $(document).click(function () {
+                    $('#desktop-dropdown-menu').addClass('hidden');
+                    $('#mobile-dropdown-menu').addClass('hidden');
+                });
+
+                // Prevent dropdown from closing when clicking inside
+                $('#desktop-dropdown-menu, #mobile-dropdown-menu').click(function (e) {
+                    e.stopPropagation();
+                });
+            });
+        </script>
     </body>
 </html>
 

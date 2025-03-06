@@ -346,6 +346,13 @@
 
             @endrole
 
+            {{-- ITC Reports --}}
+            <li class="menu-item">
+                <a href="{{route('itc-reports.create')}}" class="menu-link">
+                    <span class="menu-icon"><i class="mdi mdi-clock-out"></i></span>
+                    <span class="menu-text"> ITC Reports </span>
+                </a>
+            </li>
 
         </ul>
     </div>

@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class ITCReport extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'type',
+        'file_link',
+    ];
 }

@@ -2,10 +2,13 @@
 
     <main>
         <section>
+            <div class="bg-gradient-to-r from-violet-400 to-purple-300 py-8">
+                <div class="container mx-auto px-4">
+                    <h1 class="text-3xl font-bold text-center text-gray-800">Notice Board</h1>
+                </div>
+            </div>
             <div class="max-w-7xl mx-auto py-10">
             <div class="container mx-auto px-4 py-8">
-                    <!-- Page Heading -->
-                    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Notices</h1>
 
                     <!-- Notices List -->
                     <div class="bg-white shadow-md rounded-lg overflow-hidden">

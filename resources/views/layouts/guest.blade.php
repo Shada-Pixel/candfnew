@@ -12,6 +12,10 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <link rel="stylesheet" href="{{asset('css/custom.css')}}">
+        {{-- Header style --}}
+        @if (isset($headerstyle))
+            {{ $headerstyle }}
+        @endif
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
@@ -31,6 +35,9 @@
         <!-- Plugin Js -->
         <script src="{{asset('libs/jquery/jquery.min.js')}}"></script>
         <script src="{{asset('js/custom.js')}}"></script>
+        @if (isset($script))
+        {{ $script }}
+        @endif
 
     </body>
 </html>

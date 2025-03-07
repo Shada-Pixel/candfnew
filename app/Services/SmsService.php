@@ -36,7 +36,7 @@ class SmsService
         if ($data['status_code'] !== 200) {
             return [
                 'success' => false,
-                'message' => $data['error_message'] ?? 'An error occurred'
+                'message' => $data['message'] ?? 'An error occurred'
             ];
         }
 

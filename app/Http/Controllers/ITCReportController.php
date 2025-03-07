@@ -32,9 +32,9 @@ class ITCReportController extends Controller
             'file' => 'required|file|mimes:pdf|max:2048', // PDF file, max 2MB
         ]);
 
-        // Upload the file
-        $filePath = $request->file('file')->store('public/reports');
-        $fileLink = Storage::url($filePath);
+        // Upload the file to the public disk
+        $filePath = $request->file('file')->store('reports', 'public');
+        $fileLink = Storage::url($filePath); // Generates a URL like /storage/reports/filename.pdf
 
         // Create the report
         ITCReport::create([
@@ -43,7 +43,7 @@ class ITCReportController extends Controller
             'file_link' => $fileLink,
         ]);
 
-        return redirect()->route('itc-reports.index')->with('success', 'Report created successfully.');
+        return redirect()->route('itc-reports.create')->with('success', 'Report created successfully.');
     }
 
     // Display the specified report
@@ -70,10 +70,12 @@ class ITCReportController extends Controller
         // Update the file if a new one is uploaded
         if ($request->hasFile('file')) {
             // Delete the old file
-            Storage::delete($itcReport->file_link);
+            if ($itcReport->file_link) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $itcReport->file_link));
+            }
 
             // Upload the new file
-            $filePath = $request->file('file')->store('public/reports');
+            $filePath = $request->file('file')->store('reports', 'public');
             $fileLink = Storage::url($filePath);
             $itcReport->file_link = $fileLink;
         }
@@ -82,6 +84,7 @@ class ITCReportController extends Controller
         $itcReport->update([
             'name' => $request->name,
             'type' => $request->type,
+            'file_link' => $itcReport->file_link,
         ]);
 
         return redirect()->route('itc-reports.index')->with('success', 'Report updated successfully.');
@@ -91,11 +94,23 @@ class ITCReportController extends Controller
     public function destroy(ITCReport $itcReport)
     {
         // Delete the file
-        Storage::delete($itcReport->file_link);
+        if ($itcReport->file_link) {
+            Storage::disk('public')->delete(str_replace('/storage/', '', $itcReport->file_link));
+        }
 
         // Delete the report
         $itcReport->delete();
 
         return redirect()->route('itc-reports.create')->with('success', 'Report deleted successfully.');
+    }
+
+    public function monthly(){
+        $reports = ITCReport::where('type','monthly')->get();
+        return view('itc_reports.monthly', compact('reports'));
+    }
+
+    public function yearly(){
+        $reports = ITCReport::where('type','yearly')->get();
+        return view('itc_reports.yearly', compact('reports'));
     }
 }

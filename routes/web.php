@@ -23,6 +23,7 @@ use App\Http\Controllers\SmsController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\ITCReportController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Http;
 
 /*
 |--------------------------------------------------------------------------
@@ -190,6 +191,36 @@ Route::get('/notices', [NoticeController::class, 'index'])->name('notices.index'
 
 // Allow 'index' to be accessible to guests
 Route::get('itc-reports', [ITCReportController::class, 'index'])->name('itc-reports.index');
+
+Route::get('monthly-itc-reports', [ITCReportController::class, 'monthly'])->name('itc-reports.monthly');
+Route::get('yearly-itc-reports', [ITCReportController::class, 'yearly'])->name('itc-reports.yearly');
+Route::get('general-member', [HomeController::class, 'generalMember'])->name('general-member');
+
+
+Route::get('trysending', function(){
+    $response = Http::post(env('SSL_SMS_BASE_URL'), [
+        'api_token' => env('SSL_SMS_API_TOKEN'),
+        'sid' => env('SSL_SMS_SID'),
+        'msisdn' => '01956113999',
+        'sms' => "test message",
+        'csms_id' => "4473433434pZ684333392",
+    ]);
+
+    $data = $response->json();
+
+    if ($data['status_code'] !== 200) {
+        return [
+            'success' => false,
+            'message' => $data['error_message'] ?? 'An error occurred'
+        ];
+    }
+
+    return [
+        'success' => true,
+        'message' => 'SMS sent successfully',
+        'response' => $data
+    ];
+});
 
 
 require __DIR__.'/auth.php';

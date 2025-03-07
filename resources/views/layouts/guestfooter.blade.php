@@ -35,7 +35,7 @@
     <div class="bg-gray-100 pt-2">
         <div class="flex pb-5 px-3 m-auto pt-5 border-t text-gray-800 text-sm flex-col
           max-w-7xl items-center">
-            <div class="my-5 flex justify-center items-center"><span>© Copyright 2024. All Rights Reserved. Developed by</span> <a href="https://shadapixel.com" class="inline-block" target="_blank"><img src="{{asset('shadapixel.png')}}" alt="" srcset="" class="h-5 ml-2"></a></div>
+            <div class="my-5 flex justify-center items-center"><span>© Copyright {{ date('Y') }}. All Rights Reserved. Developed by</span> <a href="https://shadapixel.com" class="inline-block hover:scale-110 transition-all" target="_blank"><img src="{{asset('shadapixel.png')}}" alt="" srcset="" class="h-5 ml-2"></a></div>
         </div>
     </div>
     

@@ -80,15 +80,15 @@
 
                         <!-- Dropdown Menu -->
                         <div id="desktop-dropdown-menu" class="absolute hidden bg-white shadow-md rounded-lg mt-2 py-2 w-48 z-10">
-                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Monthly</a>
-                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Yearly</a>
+                            <a href="{{ route('itc-reports.monthly') }}" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Monthly</a>
+                            <a href="{{ route('itc-reports.yearly') }}" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Yearly</a>
                             <a href="{{route('itc-reports.index')}}" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">All</a>
                         </div>
                     </div>
 
                     <a class="md:p-4 py-2 block hover:text-bb" href="{{route('notices.index')}}">Notices</a>
                     <a href="#" class="text-gray-800 hover:text-blue-500 px-3 py-2">Contact</a>
-                    <a class="md:p-4 py-2 block hover:text-bb" href="#">General Members</a>
+                    <a class="md:p-4 py-2 block hover:text-bb" href="{{ route('general-member') }}">General Members</a>
 
                     @guest
                     <a class="md:p-4 py-2 block hover:text-bb text-purple-500" href="{{route('login')}}">Login</a>

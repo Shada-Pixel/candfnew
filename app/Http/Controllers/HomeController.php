@@ -7,6 +7,7 @@ use Illuminate\View\View;
 use App\Models\Category;
 use App\Models\Project;
 use App\Models\Member;
+use App\Models\Agent;
 
 
 
@@ -33,6 +34,13 @@ class HomeController extends Controller
     public function index(Request $request): View
     {
         return view('welcome');
+    }
+
+
+    public function generalMember(Request $request): View
+    {
+        $agents = Agent::all();
+        return view('general-member',['agents' => $agents]);
     }
 
 

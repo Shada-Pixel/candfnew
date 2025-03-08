@@ -8,6 +8,7 @@ use App\Models\File_data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use App\Http\Requests\StoreFile_dataRequest;
 use App\Http\Requests\UpdateFile_dataRequest;
 
@@ -232,57 +233,34 @@ class FileDataController extends Controller
         //Sms Data
         $ie_name = Ie_data::where('id', $file_data->ie_data_id)->first();
         $ie_name = $ie_name->name;
-        $sms_data = 'B/E Number:' . $file_data->be_number . '. B/E Date: ' . $file_data->be_date . '. ' . $file_data->ie_type . '. Name: ' . $ie_name . '. Manifest No: ' . $file_data->manifest_no . '. Manifest Date: ' . $file_data->manifest_date;
+        $newSmsData ='Benapole C & F Agents Association,  You have registed a B/E which No. is ' . $file_data->be_number . ' Date:' . $file_data->be_date . ' Importer: ' . $ie_name . ' Manifest No: ' . $file_data->manifest_no . ' Date:' . $file_data->manifest_date.'. Thank you.';
 
-        $newSmsData ="Benapole C & F Agents Association,  You have registed a B/E which No. is 6532 Date:15.02.2025 Importer: SALAM STEEL PVT LTD Manifest No: 4609 Date:10.02.2025. Thank you.";
+        $response = Http::post( env('SSL_SMS_BASE_URL'), [
+            'api_token' => env('SSL_SMS_API_TOKEN'),
+            'sid' => env('SSL_SMS_SID'),
+            'msisdn' => $agent_phone,
+            'sms' => $newSmsData,
+            'csms_id' =>  bin2hex(random_bytes(10)),
+        ]);
 
 
-        function send_sms($in_phone, $in_textmessage){
-            $url = "https://login.esms.com.bd/api/v3/sms/send";
-            $curl = curl_init($url);
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        // $re = send_sms($agent_phone, $newSmsData);
 
-            $headers = array(
-            "Accept: application/json",
-            "Authorization: Bearer  196|qHtRIf6gAw56CAk96DAl6oMwKSaOb0PqwRBdQ6dm",
-            "Content-Type: application/json",
-            );
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-
-            $data = [
-            'recipient' => '88'.$in_phone,
-            'sender_id' => '8809601001203',
-            'message' => urldecode($in_textmessage),
-            ];
-
-            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
-
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-
-            $resp = curl_exec($curl);
-            curl_close($curl);
-
-            return $resp ;
-        }
-        $re = send_sms($agent_phone, $sms_data);
 
         //Email Sending Function
-        if (!empty($agent_email)) {
-            $email_data = ['be_number' => $file_data->be_number, 'be_date' => $file_data->be_date, 'ie_type' => $file_data->ie_type, 'ie_name' => $ie_name, 'manifest_no' => $file_data->manifest_no, 'manifest_date' => $file_data->manifest_date];
-            $file_data_check = Data_user::where('user_id', Auth::user()->id)->where('file_data_id', $file_data->id)->count();
-            // if (count($file_data_check) == '0') {
-            if ($file_data_check == '0') {
-                $data_user = new Data_user();
-                $data_user->file_data_id = $file_data->id;
-                $data_user->user_id = Auth::user()->id;
-                $data_user->note = Auth::user()->name;
-                $data_user->save();
-                $djm = 'bnplcnfasso@gmail.com';
-            }
-        }
+        // if (!empty($agent_email)) {
+        //     $email_data = ['be_number' => $file_data->be_number, 'be_date' => $file_data->be_date, 'ie_type' => $file_data->ie_type, 'ie_name' => $ie_name, 'manifest_no' => $file_data->manifest_no, 'manifest_date' => $file_data->manifest_date];
+        //     $file_data_check = Data_user::where('user_id', Auth::user()->id)->where('file_data_id', $file_data->id)->count();
+        //     // if (count($file_data_check) == '0') {
+        //     if ($file_data_check == '0') {
+        //         $data_user = new Data_user();
+        //         $data_user->file_data_id = $file_data->id;
+        //         $data_user->user_id = Auth::user()->id;
+        //         $data_user->note = Auth::user()->name;
+        //         $data_user->save();
+        //         $djm = 'bnplcnfasso@gmail.com';
+        //     }
+        // }
 
         if (Auth::user()->hasRole('operator')) {
             return redirect()->route('dashboard')->with(['status' => 200, 'message' => 'File Operated and Delivered!']);

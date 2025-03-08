@@ -203,7 +203,8 @@ Route::get('trysending', function(){
         'sid' => env('SSL_SMS_SID'),
         'msisdn' => '01956113999',
         'sms' => "test message",
-        'csms_id' => "4473433434pZ684333392",
+        'csms_id' =>  bin2hex(random_bytes(10)),
+        // 'csms_id' => "4473433434pZ684333392",
     ]);
 
     $data = $response->json();

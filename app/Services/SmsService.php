@@ -20,7 +20,7 @@ class SmsService
     /**
      * Send a Single SMS
      */
-    public function sendSingleSms($to, $message, $csmsId)
+    public function sendSingleSms($to, $message)
     {
         $url = $this->baseUrl . "/send-sms";
         $response = Http::post($url, [
@@ -28,7 +28,7 @@ class SmsService
             'sid' => $this->sid,
             'msisdn' => $to,
             'sms' => $message,
-            'csms_id' => $csmsId,
+            'csms_id' => bin2hex(random_bytes(10)),
         ]);
 
         $data = $response->json();
@@ -50,7 +50,7 @@ class SmsService
     /**
      * Send Bulk SMS
      */
-    public function sendBulkSms(array $recipients, $message, $batchCsmsId)
+    public function sendBulkSms(array $recipients, $message)
     {
         $url = $this->baseUrl . "/send-sms/bulk";
         $response = Http::post($url, [
@@ -58,7 +58,7 @@ class SmsService
             'sid' => $this->sid,
             'msisdn' => $recipients,
             'sms' => $message,
-            'batch_csms_id' => $batchCsmsId,
+            'batch_csms_id' => bin2hex(random_bytes(10)),
         ]);
 
         return $response->json();
@@ -78,4 +78,8 @@ class SmsService
 
         return $response->json();
     }
+
+
+
+    // {"success":true,"message":"SMS sent successfully","response":{"status":"SUCCESS","status_code":200,"error_message":"","smsinfo":[{"sms_status":"SUCCESS","status_message":"Success","msisdn":"8801956113999","sms_type":"EN","sms_body":"test message","csms_id":"4473433434pZ684333392","reference_id":"67cc09279e2a8156495"}]}}
 }

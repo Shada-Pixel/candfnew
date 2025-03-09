@@ -12,7 +12,7 @@ class ITCReportController extends Controller
     // Display a listing of the reports
     public function index()
     {
-        $reports = ITCReport::orderBy('created_at', 'desc')->get();
+        $reports = ITCReport::orderBy('created_at', 'DESC')->get();
         return view('itc_reports.index', compact('reports'));
     }
 
@@ -105,12 +105,12 @@ class ITCReportController extends Controller
     }
 
     public function monthly(){
-        $reports = ITCReport::where('type','monthly')->get();
+        $reports = ITCReport::where('type','monthly')->orderBy('created_at', 'DESC')->get();
         return view('itc_reports.monthly', compact('reports'));
     }
 
     public function yearly(){
-        $reports = ITCReport::where('type','yearly')->get();
+        $reports = ITCReport::where('type','yearly')->orderBy('created_at', 'DESC')->get();
         return view('itc_reports.yearly', compact('reports'));
     }
 }

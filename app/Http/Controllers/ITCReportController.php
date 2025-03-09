@@ -12,7 +12,7 @@ class ITCReportController extends Controller
     // Display a listing of the reports
     public function index()
     {
-        $reports = ITCReport::all();
+        $reports = ITCReport::orderBy('created_at', 'desc')->get();
         return view('itc_reports.index', compact('reports'));
     }
 

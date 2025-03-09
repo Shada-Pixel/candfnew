@@ -233,7 +233,7 @@ class FileDataController extends Controller
         //Sms Data
         $ie_name = Ie_data::where('id', $file_data->ie_data_id)->first();
         $ie_name = $ie_name->name;
-        $newSmsData ='Benapole C & F Agents Association,  You have registed a B/E which No. is ' . $file_data->be_number . ' Date:' . $file_data->be_date . ' Importer: ' . $ie_name . ' Manifest No: ' . $file_data->manifest_no . ' Date:' . $file_data->manifest_date.'. Thank you.';
+        $newSmsData ='Benapole C & F Agents Association, You have registed a B/E which No. is ' . $file_data->be_number . ' Date: ' . $file_data->be_date . ' Im/Ex: ' . $ie_name . ' Manifest No: ' . $file_data->manifest_no . ' Date: ' . $file_data->manifest_date.'. Thank you.';
 
         $response = Http::post( env('SSL_SMS_BASE_URL'), [
             'api_token' => env('SSL_SMS_API_TOKEN'),

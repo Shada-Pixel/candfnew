@@ -226,23 +226,6 @@ class FileDataController extends Controller
         $file_data->save();
 
 
-        $agent = Agent::where('id', $file_data->agent_id)->first();
-        $agent_email = $agent->email;
-        $agent_phone = $agent->phone;
-
-        //Sms Data
-        $ie_name = Ie_data::where('id', $file_data->ie_data_id)->first();
-        $ie_name = $ie_name->name;
-        $newSmsData ='Benapole C&F Agents Association, Your register B/E No: ' . $file_data->be_number . ' Date:' . $file_data->be_date . ' Im/Ex: ' . $ie_name . ', Manifest No: ' . $file_data->manifest_no . ' Date:' . $file_data->manifest_date.'. Thankyou.';
-
-        $sendSMS = Http::post( env('SSL_SMS_BASE_URL'), [
-            'api_token' => env('SSL_SMS_API_TOKEN'),
-            'sid' => env('SSL_SMS_SID'),
-            'msisdn' => $agent_phone,
-            'sms' => $newSmsData,
-            'csms_id' =>  bin2hex(random_bytes(10)),
-        ]);
-
          // Check if SMS has already been sent
         if (!$file_data->sms_sent) {
             $agent = Agent::where('id', $file_data->agent_id)->first();

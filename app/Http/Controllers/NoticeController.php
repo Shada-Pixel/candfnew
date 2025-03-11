@@ -44,7 +44,6 @@ class NoticeController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
         // Validate the request
         $request->validate([
             'notice' => 'required|mimes:pdf|max:2048',

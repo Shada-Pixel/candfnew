@@ -168,12 +168,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/sms/send-dynamic', [SmsController::class, 'sendDynamicSms']);
 
     // Add middleware to the delete route
-    Route::delete('/notices/{filename}', [NoticeController::class, 'destroy'])
-    ->middleware('auth') // Only authenticated users can delete
-    ->name('notices.destroy');
+    // Route::delete('/notices/{filename}', [NoticeController::class, 'destroy'])
+    // ->middleware('auth') // Only authenticated users can delete
+    // ->name('notices.destroy');
 
-    Route::get('/admin/notices', [NoticeController::class, 'adminnotice'])->name('adminnotices');
-    Route::post('/admin/notices', [NoticeController::class, 'store'])->name('notices.store');
+    // Route::get('/admin/notices', [NoticeController::class, 'adminnotice'])->name('adminnotices');
+    // Route::post('/admin/notices', [NoticeController::class, 'store'])->name('notices.store');
 
 
     Route::get('itc-reports/create', [ITCReportController::class, 'create'])->name('itc-reports.create');
@@ -185,9 +185,11 @@ Route::group(['middleware' => ['auth']], function() {
 });
 
 
-// Route to view or download a notice
-Route::get('/notices/{filename}', [NoticeController::class, 'show'])->name('notices.show');
-Route::get('/notices', [NoticeController::class, 'index'])->name('notices.index');
+// // Route to view or download a notice
+// Route::get('/notices/{filename}', [NoticeController::class, 'show'])->name('notices.show');
+// Route::get('/notices', [NoticeController::class, 'index'])->name('notices.index');
+
+
 
 // Allow 'index' to be accessible to guests
 Route::get('itc-reports', [ITCReportController::class, 'index'])->name('itc-reports.index');

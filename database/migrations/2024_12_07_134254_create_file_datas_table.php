@@ -33,6 +33,7 @@ return new class extends Migration
             $table->foreignId('reciver_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('operator_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('deliverer_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->boolean('sms_sent')->default(false);
             $table->timestamp('delivered_at')->nullable();
             $table->timestamps();
         });

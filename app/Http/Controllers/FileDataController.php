@@ -226,41 +226,29 @@ class FileDataController extends Controller
         $file_data->save();
 
 
-        $agent = Agent::where('id', $file_data->agent_id)->first();
-        $agent_email = $agent->email;
-        $agent_phone = $agent->phone;
+         // Check if SMS has already been sent
+        if (!$file_data->sms_sent) {
+            $agent = Agent::where('id', $file_data->agent_id)->first();
+            $agent_email = $agent->email;
+            $agent_phone = $agent->phone;
 
-        //Sms Data
-        $ie_name = Ie_data::where('id', $file_data->ie_data_id)->first();
-        $ie_name = $ie_name->name;
-        $newSmsData ='Benapole C & F Agents Association,  You have registed a B/E which No. is ' . $file_data->be_number . ' Date:' . $file_data->be_date . ' Importer: ' . $ie_name . ' Manifest No: ' . $file_data->manifest_no . ' Date:' . $file_data->manifest_date.'. Thank you.';
+            // Sms Data
+            $ie_name = Ie_data::where('id', $file_data->ie_data_id)->first();
+            $ie_name = $ie_name->name;
+            $newSmsData = 'Benapole C&F Agents Association, Your register B/E No: ' . $file_data->be_number . ' Date:' . $file_data->be_date . ' Im/Ex: ' . $ie_name . ', Manifest No: ' . $file_data->manifest_no . ' Date:' . $file_data->manifest_date . '. Thank you.';
 
-        $response = Http::post( env('SSL_SMS_BASE_URL'), [
-            'api_token' => env('SSL_SMS_API_TOKEN'),
-            'sid' => env('SSL_SMS_SID'),
-            'msisdn' => $agent_phone,
-            'sms' => $newSmsData,
-            'csms_id' =>  bin2hex(random_bytes(10)),
-        ]);
+            $sendSMS = Http::post(env('SSL_SMS_BASE_URL'), [
+                'api_token' => env('SSL_SMS_API_TOKEN'),
+                'sid' => env('SSL_SMS_SID'),
+                'msisdn' => $agent_phone,
+                'sms' => $newSmsData,
+                'csms_id' => bin2hex(random_bytes(10)),
+            ]);
 
-
-        // $re = send_sms($agent_phone, $newSmsData);
-
-
-        //Email Sending Function
-        // if (!empty($agent_email)) {
-        //     $email_data = ['be_number' => $file_data->be_number, 'be_date' => $file_data->be_date, 'ie_type' => $file_data->ie_type, 'ie_name' => $ie_name, 'manifest_no' => $file_data->manifest_no, 'manifest_date' => $file_data->manifest_date];
-        //     $file_data_check = Data_user::where('user_id', Auth::user()->id)->where('file_data_id', $file_data->id)->count();
-        //     // if (count($file_data_check) == '0') {
-        //     if ($file_data_check == '0') {
-        //         $data_user = new Data_user();
-        //         $data_user->file_data_id = $file_data->id;
-        //         $data_user->user_id = Auth::user()->id;
-        //         $data_user->note = Auth::user()->name;
-        //         $data_user->save();
-        //         $djm = 'bnplcnfasso@gmail.com';
-        //     }
-        // }
+            // Mark SMS as sent
+            $file_data->sms_sent = true;
+            $file_data->save();
+        }
 
         if (Auth::user()->hasRole('operator')) {
             return redirect()->route('dashboard')->with(['status' => 200, 'message' => 'File Operated and Delivered!']);

@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('notices', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('publish_date');
+            $table->string('file_link');
+            $table->date('publish_date');
+            $table->date('archive_date');
+            $table->string('status')->default('active'); // active, archived
             $table->timestamps();
         });
     }

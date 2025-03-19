@@ -182,8 +182,23 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('itc-reports/{itc_report}/edit', [ITCReportController::class, 'edit'])->name('itc-reports.edit');
     Route::put('itc-reports/{itc_report}', [ITCReportController::class, 'update'])->name('itc-reports.update');
     Route::delete('itc-reports/{itc_report}', [ITCReportController::class, 'destroy'])->name('itc-reports.destroy');
+
+    // Notice routes for authenticated users
+    Route::prefix('notices')->group(function () {
+        Route::get('create', [NoticeController::class, 'create'])->name('notices.create');
+        Route::post('/', [NoticeController::class, 'store'])->name('notices.store');
+        Route::get('{notice}/edit', [NoticeController::class, 'edit'])->name('notices.edit');
+        Route::put('{notice}', [NoticeController::class, 'update'])->name('notices.update');
+        Route::delete('{notice}', [NoticeController::class, 'destroy'])->name('notices.destroy');
+    });
 });
 
+
+// Notice routes for guests
+Route::prefix('notices')->group(function () {
+    Route::get('/', [NoticeController::class, 'index'])->name('notices.index');
+    Route::get('{notice}', [NoticeController::class, 'show'])->name('notices.show');
+});
 
 // // Route to view or download a notice
 // Route::get('/notices/{filename}', [NoticeController::class, 'show'])->name('notices.show');

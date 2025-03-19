@@ -23,7 +23,7 @@
               md:pt-0">
 
             <li class="relative">
-                {{-- <a class="md:p-4 py-2 block hover:text-bb" href="{{route('notices.index')}}">ITC Reports</a> --}}
+                <a class="md:p-4 py-2 block hover:text-bb" href="{{route('notices.index')}}">ITC Reports</a>
                 <ul class="absolute bg-red-500 p-4">
                     <li>hi</li>
                 </ul>
@@ -34,7 +34,7 @@
 
 
             <li>
-                {{-- <a class="md:p-4 py-2 block hover:text-bb" href="{{route('notices.index')}}">Notices</a> --}}
+                <a class="md:p-4 py-2 block hover:text-bb" href="{{route('notices.index')}}">Notices</a>
             </li>
             <li>
                 <a class="md:p-4 py-2 block hover:text-bb" href="#">General Members</a>
@@ -86,7 +86,7 @@
                         </div>
                     </div>
 
-                    {{-- <a class="md:p-4 py-2 block hover:text-bb" href="{{route('notices.index')}}">Notices</a> --}}
+                    <a class="md:p-4 py-2 block hover:text-bb" href="{{route('notices.index')}}">Notices</a>
                     <a href="#" class="text-gray-800 hover:text-blue-500 px-3 py-2">Contact</a>
                     <a class="md:p-4 py-2 block hover:text-bb" href="{{ route('general-member') }}">General Members</a>
 

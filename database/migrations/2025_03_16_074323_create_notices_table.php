@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('file_link');
-            $table->date('publish_date');
-            $table->date('archive_date');
+            $table->dateTime('publish_date');
+            $table->dateTime('archive_date')->nullable();
             $table->string('status')->default('active'); // active, archived
             $table->timestamps();
         });

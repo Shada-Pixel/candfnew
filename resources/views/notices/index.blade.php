@@ -16,6 +16,56 @@
             <div class="max-w-7xl mx-auto py-10">
                 <div class="container mx-auto px-4 py-8">
 
+                    @role('admin')
+                    {{-- Notice Create Form --}}
+                    <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+                        <h2 class="text-xl font-bold mb-4">Create New Notice</h2>
+                        <form action="{{ route('notices.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Title -->
+                                <div class="md:col-span-2">
+                                    <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                                    <input type="text" name="title" id="title" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                                </div>
+
+                                <!-- File -->
+                                <div>
+                                    <label for="file" class="block text-sm font-medium text-gray-700">File (PDF)</label>
+                                    <input type="file" name="file" id="file" accept="application/pdf" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                                </div>
+
+                                <!-- Publish Date -->
+                                <div>
+                                    <label for="publish_date" class="block text-sm font-medium text-gray-700">Publish Date</label>
+                                    <input type="date" name="publish_date" id="publish_date" class="mt-1 block w-full file:border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                                </div>
+
+                                {{-- <!-- Archive Date -->
+                                <div>
+                                    <label for="archive_date" class="block text-sm font-medium text-gray-700">Archive Date</label>
+                                    <input type="date" name="archive_date" id="archive_date" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                                </div> --}}
+
+                                {{-- <!-- Status -->
+                                <div>
+                                    <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                                    <select name="status" id="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                                        <option value="active">Active</option>
+                                        <option value="archived">Archived</option>
+                                    </select>
+                                </div> --}}
+                            </div>
+
+                            <div class="mt-6">
+                                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                    Create Notice
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    @endrole
+
                     <!-- Notices List -->
                     <div class="bg-white shadow-md rounded-lg overflow-hidden">
                         <table id="noticesTable" class="min-w-full">
@@ -43,7 +93,9 @@
 
                                         <!-- Publish Date -->
                                         <td class="px-6 py-4 whitespace-nowrap text-center">
-                                            <div class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($notice->publish_date)->format('d-m-y') }}</div>
+                                            <div class="text-sm text-gray-500">
+                                                {{$notice->publish_date }}
+                                            </div>
                                         </td>
 
                                         <!-- Actions -->

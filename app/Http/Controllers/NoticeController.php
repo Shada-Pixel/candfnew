@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Notice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class NoticeController extends Controller
 {
@@ -34,8 +35,6 @@ class NoticeController extends Controller
             'title' => 'required|string|max:255',
             'file' => 'required|file|mimes:pdf|max:2048', // PDF file, max 2MB
             'publish_date' => 'required|date',
-            'archive_date' => 'required|date',
-            'status' => 'required|string|in:active,archived',
         ]);
 
         // Upload the file to the public disk
@@ -46,9 +45,8 @@ class NoticeController extends Controller
         Notice::create([
             'title' => $request->title,
             'file_link' => $fileLink,
-            'publish_date' => $request->publish_date,
-            'archive_date' => $request->archive_date,
-            'status' => $request->status,
+            'publish_date' => Carbon::parse($request->publish_date)->format('Y-m-d H:i:s'),
+            'status' => 'active',
         ]);
 
         return redirect()->route('notices.index')->with('success', 'Notice created successfully.');

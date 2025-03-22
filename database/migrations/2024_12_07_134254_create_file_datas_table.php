@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('file_datas', function (Blueprint $table) {
             $table->id();
             $table->string('lodgement_no')->nullable();
-            $table->string('lodgement_date')->nullable();
+            $table->date('lodgement_date')->nullable();
             $table->string('manifest_no')->nullable();
-            $table->string('manifest_date')->nullable();
+            $table->date('manifest_date')->nullable();
             $table->string('group')->nullable();
             $table->string('ie_type')->nullable();
             $table->string('ie_group')->nullable();
             $table->string('goods_name')->nullable();
             $table->string('goods_type')->nullable();
             $table->string('be_number')->nullable();
-            $table->string('be_date')->nullable();
+            $table->date('be_date')->nullable();
             $table->string('fees')->nullable();
             $table->string('page')->nullable();
             $table->string('no_of_items')->nullable();

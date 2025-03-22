@@ -58,7 +58,6 @@ class FileDataController extends Controller
      */
     public function store(Request $request)
     {
-
         // Retrieve the latest File_data record
         $latest_file_data = File_data::latest()->first();
         // Determine the next lodgement number
@@ -80,12 +79,6 @@ class FileDataController extends Controller
         $agent_id = null;
         $ie_data_id = null;
 
-        // if ($isDuplicateManifest) {
-        //     return redirect()->back()->withErrors([
-        //         'manifest_no' => 'The manifest number already exists for this year.'
-        //     ])->withInput();
-        // }
-
         if ($request->agentain != null) {
             $agent_id = Agent::where('name', $request->agentain)->value('id');
         }
@@ -94,42 +87,34 @@ class FileDataController extends Controller
             $ie_data_id = Ie_data::where('name', $request->impexp)->value('id');
         }
 
-        $time = strtotime($request->lodgement_date);
-        $lmd = date('d/m/Y', $time);
-        $mtime = strtotime($request->manifest_date);
-        $mnfd = date('d/m/Y', $mtime);
-
-
         $file_data = new File_data();
+
+        $file_data->be_date = $request->be_date; // Automatically handled by the model
+        $file_data->lodgement_date = $request->lodgement_date; // Automatically handled by the model
+        $file_data->manifest_date = $request->manifest_date; // Automatically handled by the model
+    
+        // Lodgement No
         $file_data->lodgement_no = $next_lodgement_no;
 
-
+        // Manifest No
         if ($request->manifest_no) {
             $file_data->manifest_no = $request->manifest_no;
         }
         if ($request->be_number) {
             $file_data->be_number = $request->be_number;
         }
-        if ($request->be_date) {
-            $bedate = strtotime($request->be_date);
-            $betatestore = date('d/m/Y', $bedate);
-            $file_data->be_date = $betatestore;
-        }
         if ($request->page) {
-            $pages =  $request->page;
-            $numberofPages = ($pages  >  1) ? ceil((($pages - 1) / 3  + 1)) : 1;
+            $pages = $request->page;
+            $numberofPages = ($pages > 1) ? ceil((($pages - 1) / 3 + 1)) : 1;
             $file_data->page = $pages;
-            $file_data->no_of_items  = $numberofPages;
+            $file_data->no_of_items = $numberofPages;
         }
 
-        $file_data->lodgement_date = $lmd;
-        $file_data->manifest_date = $mnfd;
-
-        // Assign agent_id if  exist
+        // Assign agent_id if exist
         if ($agent_id) {
             $file_data->agent_id = $agent_id;
         }
-        // Assign ie_data_id if  exist
+        // Assign ie_data_id if exist
         if ($ie_data_id) {
             $file_data->ie_data_id = $ie_data_id;
         }
@@ -138,13 +123,11 @@ class FileDataController extends Controller
         $file_data->reciver_id = Auth::user()->id;
         $file_data->save();
 
-
         if (Auth::user()->hasRole('extra') && $request->printable == 1) {
             $file_data->status = 'Printed';
             $file_data->save();
             return redirect()->route('file_datas.show', $file_data->id)->with(['status' => 200, 'message' => 'File Received and Printed!']);
         }
-
 
         return redirect()->route('file_datas.create')->with(['status' => 200, 'message' => 'File Received!']);
     }
@@ -179,12 +162,6 @@ class FileDataController extends Controller
      */
     public function update(UpdateFile_dataRequest $request, File_data $file_data)
     {
-        $time = \DateTime::createFromFormat('d/m/Y', $request->lodgement_date);
-        $lmd = $time ? $time->format('d/m/Y') : null;
-
-        $mtime = \DateTime::createFromFormat('d/m/Y', $request->manifest_date);
-        $mnfd = $mtime ? $mtime->format('d/m/Y') : null;
-
         if ($request->agentain != null) {
             $agent_id = Agent::where('name', $request->agentain)->value('id');
             $file_data->agent_id = $agent_id;
@@ -202,21 +179,14 @@ class FileDataController extends Controller
         $pages = $request->page;
         $numberofPages = ($pages > 1) ? ceil((($pages - 1) / 3 + 1)) : 1;
         $file_data->no_of_items = $numberofPages;
-
         $file_data->lodgement_no = $request->lodgement_no;
-        $file_data->lodgement_date = $lmd;
         $file_data->manifest_no = $request->manifest_no;
-        $file_data->manifest_date = $mnfd;
 
-        // Fix for be_date
-        if ($request->be_date) {
-            $date = \DateTime::createFromFormat('d/m/Y', $request->be_date);
-            if ($date) {
-                $file_data->be_date = $date->format('d/m/Y'); // Save in the same format
-            } else {
-                return redirect()->back()->withErrors(['be_date' => 'Invalid date format. Please use dd/mm/yyyy.'])->withInput();
-            }
-        }
+
+        $file_data->be_date = $request->be_date; // Automatically handled by the model
+        $file_data->lodgement_date = $request->lodgement_date; // Automatically handled by the model
+        $file_data->manifest_date = $request->manifest_date; // Automatically handled by the model
+    
 
         $file_data->ie_type = $request->ie_type;
         $file_data->group = $request->group;
@@ -255,6 +225,9 @@ class FileDataController extends Controller
         }
 
         if (Auth::user()->hasRole('operator')) {
+            // Mark SMS as sent
+            $file_data->deliverer_id = Auth::user()->id;
+            $file_data->save();
             return redirect()->route('dashboard')->with(['status' => 200, 'message' => 'File Operated and Delivered!']);
         }
 

@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AgentSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(BankSeeder::class);
-        $this->call(NoticeSeeder::class);
+        // $this->call(NoticeSeeder::class);
         // $this->call(BankAccountSeeder::class);
         // $this->call(BankTransactionSeeder::class);
         // $this->call(IeDataSeeder::class);

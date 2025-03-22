@@ -13,18 +13,16 @@
                     <h2 class="text-3xl font-bold text-left mb-8 text-gray-800">Notice Board</h2>
 
                     <div class="flex flex-col gap-4">
-                        {{-- Notice --}}
-                        <p class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg"> > এতদ্বারা বেনাপোল কাস্টমস সি এন্ড এফ এজেন্টস এসোসিয়েশনের সকল সম্মানিত সদস্যগণের সদয় অবগতির জন্য জানানো যাচ্ছে যে,
-                        </p>
-                        <p class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg"> > এতদ্বারা বেনাপোল কাস্টমস সি এন্ড এফ এজেন্টস এসোসিয়েশনের সকল সম্মানিত সদস্যগণের সদয় অবগতির জন্য জানানো যাচ্ছে যে,
-                        </p>
-                        <p class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg"> > এতদ্বারা বেনাপোল কাস্টমস সি এন্ড এফ এজেন্টস এসোসিয়েশনের সকল সম্মানিত সদস্যগণের সদয় অবগতির জন্য জানানো যাচ্ছে যে,
-                        </p>
-                        <p class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg"> > এতদ্বারা বেনাপোল কাস্টমস সি এন্ড এফ এজেন্টস এসোসিয়েশনের সকল সম্মানিত সদস্যগণের সদয় অবগতির জন্য জানানো যাচ্ছে যে,
-                        </p>
-                        {{-- <div class="flex items-center justify-center mt-4">
+                        @forelse ($notices as $notice)
+                            {{-- Displaying notice title and id --}}
+                            <a href="{{ route('notices.show', $notice->id) }}" class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg"> > {{ $notice->title }}
+                            </a>
+                        @empty
+                            <p>No notices available.</p>
+                        @endforelse
+                        <div class="flex items-center justify-center mt-4">
                             <a class="text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-110 duration-150 transition-all  font-bold text-lg text-white" href="{{route('notices.index')}}">See All</a>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
                 <x-aside></x-aside>

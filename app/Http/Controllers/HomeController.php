@@ -7,6 +7,7 @@ use Illuminate\View\View;
 use App\Models\Category;
 use App\Models\Project;
 use App\Models\Member;
+use App\Models\Notice;
 use App\Models\Agent;
 
 
@@ -33,7 +34,8 @@ class HomeController extends Controller
      */
     public function index(Request $request): View
     {
-        return view('welcome');
+        $notices = Notice::orderBy('publish_date', 'desc')->take(5)->get();
+        return view('welcome', ['notices' => $notices]);
     }
 
 

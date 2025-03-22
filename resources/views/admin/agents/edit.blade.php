@@ -22,31 +22,31 @@
                     <div class="grid grid-cols-3 lg:grid-cols-4 gap-4">
                         <div>
                             <label for="ain_no" class="block mb-2">AIN No</label>
-                            <input type="text" class="form-input" id="ain_no" name="ain_no" required placeholder="AIN Number">
+                            <input type="text" class="form-input" id="ain_no" name="ain_no" required placeholder="AIN Number" value="{{$agent->ain_no}}">
                         </div> <!-- end -->
 
                         <div class="">
                             <label for="name" class="block mb-2">Agency Name</label>
-                            <input type="text" class="form-input" id="name" name="name" placeholder="Agent Name" required>
+                            <input type="text" class="form-input" id="name" name="name" placeholder="Agent Name" required value="{{$agent->name}}">
                         </div> <!-- end -->
 
                         <div class="">
                             <label for="bangla_name" class="block mb-2">Bangla Name</label>
-                            <input type="text" class="form-input" id="bangla_name" name="bangla_name" placeholder="Bangla Name" >
+                            <input type="text" class="form-input" id="bangla_name" name="bangla_name" placeholder="Bangla Name" {{ $agent->bangla_name ? $agent->bangla_name:''}}>
                         </div> <!-- end -->
 
                         <div class="">
                             <label for="license_no" class="block mb-2">License No</label>
-                            <input type="text" class="form-input" id="license_no" name="license_no" placeholder="License No" >
+                            <input type="text" class="form-input" id="license_no" name="license_no" placeholder="License No" value="{{$agent->license_no}}">
                         </div> <!-- end -->
                         <div class="">
                             <label for="license_issue_date" class="block mb-2">Issue Date</label>
-                            <input type="date" class="form-input" id="license_issue_date" name="license_issue_date" >
+                            <input type="date" class="form-input" id="license_issue_date" name="license_issue_date" value="{{$agent->license_issue_date}}">
                         </div> <!-- end -->
 
                         <div class="">
                             <label for="membership_no" class="block mb-2">Membership No</label>
-                            <input type="text" class="form-input" id="membership_no" name="membership_no" placeholder="Membership No" >
+                            <input type="text" class="form-input" id="membership_no" name="membership_no" placeholder="Membership No" value="{{$agent->membership_no ?? ''}}">
                         </div> <!-- end -->
 
                         <div class="">
@@ -59,7 +59,7 @@
 
                         <div class="">
                             <label for="office_address" class="block mb-2">Office Address</label>
-                            <input type="text" class="form-input" id="office_address" name="office_address" placeholder="Office Adderss">
+                            <input type="text" class="form-input" id="office_address" name="office_address" placeholder="Office Adderss" value="{{$agent->office_address}}">
                         </div> <!-- end -->
 
                         <div class="col-span-3 lg:col-span-4">
@@ -106,19 +106,21 @@
 
                         <div class="">
                             <label for="phone" class="block mb-2">Phone Number</label>
-                            <input type="text" class="form-input" id="phone" name="phone" required>
+                            <input type="text" class="form-input" id="phone" name="phone" required value="{{$agent->phone}}">
                         </div> <!-- end -->
 
 
                         <div class="">
                             <label for="email" class="block mb-2">Email</label>
-                            <input type="email" class="form-input" id="email" name="email" required>
+                            <input type="email" class="form-input" id="email" name="email" required 
+                                value="{{$agent->email}}">
                         </div> <!-- end -->
 
 
                         <div class="">
                             <label for="house" class="block mb-2">Station / House</label>
-                            <input type="text" class="form-input" id="house" name="house" required value="Benapole">
+                            <input type="text" class="form-input" id="house" name="house" required value="Benapole"
+                                value="{{$agent->house}}">
                         </div> <!-- end -->
 
                         <div class="col-span-3 lg:col-span-4">

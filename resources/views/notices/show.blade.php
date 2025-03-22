@@ -12,7 +12,7 @@
                 <div class="bg-white shadow-md rounded-lg overflow-hidden p-6">
                     <div class="flex justify-between items-center">
 
-                        <h2>{{$notice->title}}</h2>
+                        <h2 class="mb-4">{{$notice->title}}</h2>
                         <!-- Download Button -->
                         <a href="{{ $notice->file_link }}" download class="text-green-500 hover:text-green-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -23,7 +23,7 @@
 
                     <div class="flex justify-center">
 
-                        <iframe src="//techedu.gov.bd//sites/default/files/files/techedu.portal.gov.bd/notices/538d2bbf_848e_4842_b656_f4f616f2ae2b/238(14)_19.03.2025.pdf" class="w-[720px] h-[600px] aspect-auto"></iframe>
+                        <iframe src="{{ $notice->file_link }}" class="w-[720px] h-[600px] aspect-auto"></iframe>
                     </div>
                 </div>
 

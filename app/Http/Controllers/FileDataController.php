@@ -179,12 +179,11 @@ class FileDataController extends Controller
      */
     public function update(UpdateFile_dataRequest $request, File_data $file_data)
     {
+        $time = \DateTime::createFromFormat('d/m/Y', $request->lodgement_date);
+        $lmd = $time ? $time->format('d/m/Y') : null;
 
-        // return $request->all();
-         $time = strtotime($request->lodgement_date);
-         $lmd = date('d/m/Y', $time);
-         $mtime = strtotime($request->manifest_date);
-         $mnfd = date('d/m/Y', $mtime);
+        $mtime = \DateTime::createFromFormat('d/m/Y', $request->manifest_date);
+        $mnfd = $mtime ? $mtime->format('d/m/Y') : null;
 
         if ($request->agentain != null) {
             $agent_id = Agent::where('name', $request->agentain)->value('id');
@@ -195,29 +194,35 @@ class FileDataController extends Controller
             $ie_data_id = Ie_data::where('name', $request->impexp)->value('id');
             $file_data->ie_data_id = $ie_data_id;
             if (!$ie_data_id) {
-                // return redirect()->back()->withInput()->with(['status' => 200, 'message' => 'Please create Importer/Exporter first!']);
                 return redirect()->back()->withInput()->withErrors(['Please create valid Importer/Exporter first!']);
             }
         }
 
         // Calculate the number of pages
-        $pages =  $request->page;
-        $numberofPages = ($pages  >  1) ? ceil((($pages - 1) / 3  + 1)) : 1;
-        $file_data->no_of_items  = $numberofPages;
+        $pages = $request->page;
+        $numberofPages = ($pages > 1) ? ceil((($pages - 1) / 3 + 1)) : 1;
+        $file_data->no_of_items = $numberofPages;
 
         $file_data->lodgement_no = $request->lodgement_no;
         $file_data->lodgement_date = $lmd;
         $file_data->manifest_no = $request->manifest_no;
         $file_data->manifest_date = $mnfd;
 
+        // Fix for be_date
+        if ($request->be_date) {
+            $date = \DateTime::createFromFormat('d/m/Y', $request->be_date);
+            if ($date) {
+                $file_data->be_date = $date->format('d/m/Y'); // Save in the same format
+            } else {
+                return redirect()->back()->withErrors(['be_date' => 'Invalid date format. Please use dd/mm/yyyy.'])->withInput();
+            }
+        }
 
         $file_data->ie_type = $request->ie_type;
-
         $file_data->group = $request->group;
         $file_data->goods_name = $request->goods_name;
         $file_data->goods_type = $request->goods_type;
         $file_data->be_number = $request->be_number;
-        $file_data->be_date = $request->be_date;
         $file_data->page = $request->page;
 
         $file_data->fees = $request->fees;
@@ -225,8 +230,7 @@ class FileDataController extends Controller
         $file_data->delivered_at = Carbon::now();
         $file_data->save();
 
-
-         // Check if SMS has already been sent
+        // Check if SMS has already been sent
         if (!$file_data->sms_sent) {
             $agent = Agent::where('id', $file_data->agent_id)->first();
             $agent_email = $agent->email;
@@ -255,7 +259,6 @@ class FileDataController extends Controller
         }
 
         return redirect()->route('file_datas.show', $file_data->id);
-
     }
 
     /**

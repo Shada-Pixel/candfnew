@@ -23,16 +23,16 @@ class FileDataSeeder extends Seeder
         for ($i = 0; $i < 1000; $i++) {
             DB::table('file_datas')->insert([
                 'lodgement_no' => $faker->randomNumber(4, true), // 4-digit number
-                'lodgement_date' => $faker->date('d/m').'/2025', // Random date
+                'lodgement_date' => '2024-'.$faker->date('m-d'), // Random date
                 'manifest_no' => $faker->randomNumber(4, true), // 4-digit number
-                'manifest_date' => $faker->date('d/m').'/2025', // Random date
+                'manifest_date' => '2024-'.$faker->date('m-d'), // Random date
                 'group' => null, // Random word
                 'ie_type' => null, // Random type
                 'ie_group' => null,
                 'goods_name' => null,
                 'goods_type' => null,
                 'be_number' => $faker->randomNumber(6, true), // 6-digit number
-                'be_date' => $faker->date('d/m').'/2025',
+                'be_date' => '2024-'.$faker->date('m-d'),
                 'fees' => $faker->randomFloat(2, 100, 10000), // Random float between 100 - 10000
                 'page' => $faker->randomDigitNotNull(),
                 'no_of_items' => $faker->numberBetween(1, 100),

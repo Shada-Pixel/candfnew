@@ -107,16 +107,12 @@
                             </div> <!-- end -->
                             <div class=""><input type="hidden" name="printable" id="printable"></div><!-- end -->
 
-                            <div class="self-end">
+                            <div class="self-end col-span-2 flex justify-end">
                                 <input type="submit" value="Submit" class="font-mont px-10 py-4 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110"
                                 id="baccountSaveBtn">
                             </div><!-- end -->
 
-                            @role('extra')
-                            <div class="self-end ">
-                                <input type="submit" value="Print" class="font-mont px-10 py-4 bg-red-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" onclick="submitAndPrint()">
-                            </div><!-- end -->
-                            @endrole
+
                         </div>
 
 

@@ -49,8 +49,8 @@ class ReportController extends Controller
     // Deliver report
     public function deliver_report(Request $request)
     {
-        $i = 0;
-        $agents = Agent::pluck('name', 'id');
+        $agents = Agent::select('id', 'name', 'ain_no')->orderBy('name', 'asc')->get();
+
         if (request()->ajax()) {
             if (!empty($request->from_date)) {
                 $startdate = $request->from_date;
@@ -58,6 +58,7 @@ class ReportController extends Controller
                 $agent_id = $request->agent_id;
 
                 $query = 'date(created_at) between "' . $startdate . '" AND "' . $enddate . '"';
+
                 if ($agent_id == '') {
                     $file_datas = File_data::whereRaw($query)->where('status', 'Delivered')->with('agent')->with('ie_data')->get();
                 } else {
@@ -68,8 +69,6 @@ class ReportController extends Controller
             }
             return DataTables::of($file_datas)->make(true);
         }
-        return view('admin.reports.deliverer',['agents' => $agents,'i' => $i]);
+        return view('admin.reports.deliverer', ['agents' => $agents]);
     }
-
-
 }

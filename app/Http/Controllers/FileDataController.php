@@ -92,7 +92,7 @@ class FileDataController extends Controller
         $file_data->be_date = $request->be_date; // Automatically handled by the model
         $file_data->lodgement_date = $request->lodgement_date; // Automatically handled by the model
         $file_data->manifest_date = $request->manifest_date; // Automatically handled by the model
-    
+
         // Lodgement No
         $file_data->lodgement_no = $next_lodgement_no;
 
@@ -123,7 +123,7 @@ class FileDataController extends Controller
         $file_data->reciver_id = Auth::user()->id;
         $file_data->save();
 
-        if (Auth::user()->hasRole('extra') && $request->printable == 1) {
+        if (Auth::user()->hasRole('extra') && $request->be_number) {
             $file_data->status = 'Printed';
             $file_data->save();
             return redirect()->route('file_datas.show', $file_data->id)->with(['status' => 200, 'message' => 'File Received and Printed!']);
@@ -186,7 +186,7 @@ class FileDataController extends Controller
         $file_data->be_date = $request->be_date; // Automatically handled by the model
         $file_data->lodgement_date = $request->lodgement_date; // Automatically handled by the model
         $file_data->manifest_date = $request->manifest_date; // Automatically handled by the model
-    
+
 
         $file_data->ie_type = $request->ie_type;
         $file_data->group = $request->group;

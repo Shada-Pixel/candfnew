@@ -191,6 +191,16 @@ Route::group(['middleware' => ['auth']], function() {
         Route::put('{notice}', [NoticeController::class, 'update'])->name('notices.update');
         Route::delete('{notice}', [NoticeController::class, 'destroy'])->name('notices.destroy');
     });
+
+    // Custom file routes
+    Route::prefix('customfiles')->group(function () {
+        Route::get('/', [CareerController::class, 'index'])->name('careers.index');
+        Route::get('create', [CareerController::class, 'create'])->name('careers.create');
+        Route::post('/', [CareerController::class, 'store'])->name('careers.store');
+        Route::get('{career}/edit', [CareerController::class, 'edit'])->name('careers.edit');
+        Route::put('{career}', [CareerController::class, 'update'])->name('careers.update');
+        Route::delete('{career}', [CareerController::class, 'destroy'])->name('careers.destroy');
+    });
 });
 
 

@@ -15,7 +15,7 @@
                     <div class="flex flex-col gap-4">
                         @forelse ($notices as $notice)
                             {{-- Displaying notice title and id --}}
-                            <a href="{{ route('notices.show', $notice->id) }}" class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg"> > {{ $notice->title }}
+                            <a href="{{ route('notices.show', $notice->id) }}" class="card px-6 py-4 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg"><i class="mdi mdi-arrow-right-bold-circle text-lg text-green-500"></i> {{ $notice->title }}
                             </a>
                         @empty
                             <p>No notices available.</p>

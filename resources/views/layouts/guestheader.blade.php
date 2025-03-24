@@ -72,7 +72,7 @@
 
                     <!-- Dropdown Container -->
                     <div class="relative">
-                        <button id="desktop-dropdown-button" class="text-gray-800 hover:text-blue-500 px-3 py-2 flex items-center">ITC Reports
+                        <button id="desktop-dropdown-button" class="desktop-dropdown-button text-gray-800 hover:text-blue-500 px-3 py-2 flex items-center">ITC Reports
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>

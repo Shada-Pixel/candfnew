@@ -11,7 +11,9 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <link rel="stylesheet" href="{{asset('css/custom.css')}}">
+        <link href="{{asset('css/custom.css')}}" rel="stylesheet" type="text/css">
+        <!-- Icons css -->
+        <link href="{{asset('css/icons.min.css')}}" rel="stylesheet" type="text/css">
         {{-- Header style --}}
         @if (isset($headerstyle))
             {{ $headerstyle }}

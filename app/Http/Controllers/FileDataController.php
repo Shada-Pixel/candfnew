@@ -27,28 +27,30 @@ class FileDataController extends Controller
      */
     public function create()
     {
-        $now = Carbon::now();
-        $year = $now->year;
+        $now = Carbon::now(); // Get the current date and time
+        $year = $now->year; // Extract the current year
 
         // Retrieve the latest File_data record
         $file_data = File_data::latest()->first();
 
-        // Get the last agent ID from the latest File_data record
-        $lastagent = $file_data ? $file_data->agent->name : null;
+        // Get the last agent name from the latest File_data record
+        $lastagent = $file_data && $file_data->agent ? $file_data->agent->name : null;
 
         // Determine the next lodgement number
         if ($file_data) {
             if ($file_data->lodgement_no == '94020') {
-                $next_lodgement_no = 1;
+                $next_lodgement_no = 1; // Reset the lodgement number if it reaches 94020
             } else {
-                $next_lodgement_no = $file_data->lodgement_no + 1;
+                $next_lodgement_no = $file_data->lodgement_no + 1; // Increment the lodgement number
             }
         } else {
-            $next_lodgement_no = 1;
+            $next_lodgement_no = 1; // Default to 1 if no File_data records exist
         }
 
-        $today = date('d-m-Y');
+        $today = date('d-m-Y'); // Format the current date as 'day-month-year'
 
+        // Return the view for creating a new File_data record
+        // Pass the calculated variables to the view
         return view('admin.file_datas.create', compact('next_lodgement_no', 'file_data', 'today', 'lastagent'));
     }
 

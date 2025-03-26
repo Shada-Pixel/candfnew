@@ -25,5 +25,8 @@ class Agent extends Model
     ];
 
 
+    public function donations(){
+        return $this->hasMany(Donation::class)->orderBy('id', 'desc');
+    }
 
 }

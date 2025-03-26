@@ -43,7 +43,7 @@ class CustomFileController extends Controller
         }
 
         // Use Maatwebsite Excel to read the file
-        $data = \Maatwebsite\Excel\Facades\Excel::toArray([], $filePath);
+        // $data = \Maatwebsite\Excel\Facades\Excel::toArray([], $filePath);
 
         // Loop through the data and save it to the database
         foreach ($data[0] as $row) {

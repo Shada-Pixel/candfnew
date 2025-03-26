@@ -20,6 +20,7 @@ use App\Http\Controllers\AgentController;
 use App\Http\Controllers\IeDataController;
 use App\Http\Controllers\FileDataController;
 use App\Http\Controllers\SmsController;
+use App\Http\Controllers\DonationController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\ITCReportController;
 use Illuminate\Support\Facades\Route;
@@ -111,6 +112,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/assignrole',[UserController::class, 'assignrole'])->name('assignrole');
     Route::post('/unassignrole',[UserController::class, 'unassignrole'])->name('unassignrole');
 
+    Route::get('/createagentuser', [UserController::class, 'createAgentUser'])->name('createagentuser');
+    Route::post('/storeagentuser', [UserController::class, 'storeAgentUser'])->name('storeagentuser');
+
 
     // Importer / Exporter management
     Route::resource('ie_datas', IeDataController::class);
@@ -201,8 +205,10 @@ Route::group(['middleware' => ['auth']], function() {
         Route::put('{career}', [CareerController::class, 'update'])->name('careers.update');
         Route::delete('{career}', [CareerController::class, 'destroy'])->name('careers.destroy');
     });
-});
 
+    Route::resource('donations', DonationController::class);
+});
+//Auth user routes end
 
 // Notice routes for guests
 Route::prefix('notices')->group(function () {

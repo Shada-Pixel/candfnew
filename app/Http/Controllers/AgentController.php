@@ -97,7 +97,7 @@ class AgentController extends Controller implements HasMiddleware
      */
     public function show($id)
     {
-        $agent = Agent::find($id);
+        $agent = Agent::find($id)->with('donations')->first();
 
         // Information completions parcentage
         $attributes = $agent->toArray();

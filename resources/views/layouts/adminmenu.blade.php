@@ -59,7 +59,7 @@
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="{{route('agents.index')}}" class="menu-link">
+                        <a href="{{route('donations.index')}}" class="menu-link">
                             <span class="menu-text">Donations</span>
                         </a>
                     </li>
@@ -174,15 +174,20 @@
                         </a>
                     </li>
                     <li class="menu-item">
+                        <a href="{{route('createagentuser')}}" class="menu-link">
+                            <span class="menu-text">New Agent User</span>
+                        </a>
+                    </li>
+                    {{-- <li class="menu-item">
                         <a href="#" class="menu-link">
                             <span class="menu-text">Add Salary</span>
                         </a>
-                    </li>
-                    <li class="menu-item">
+                    </li> --}}
+                    {{-- <li class="menu-item">
                         <a href="{{route('users.index')}}" class="menu-link">
                             <span class="menu-text">Trash</span>
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </li>
 

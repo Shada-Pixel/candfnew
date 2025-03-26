@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Agent;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -227,6 +228,17 @@ class UserController extends Controller implements HasMiddleware
         }
         $user->delete();
         return response()->json(['success' => 'User deleted !']);
+    }
+
+
+
+
+
+    public function createAgentUser(Request $request)
+    {
+        $agents = Agent::all();
+        $roles = Role::where('name', 'agent')->get();
+        return view('admin.users.agentcreate',['roles'=> $roles, 'agents'=>$agents]);
     }
 
 }

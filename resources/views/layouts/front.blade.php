@@ -30,6 +30,3 @@
     </body>
 </html>
 
-.bg-\[radial-gradient\(\#14353A_1px\,transparent_1px\)\] {
-	background-image: radial-gradient(#14353A 1px,transparent 1px);
-}

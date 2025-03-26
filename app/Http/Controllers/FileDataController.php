@@ -168,15 +168,16 @@ class FileDataController extends Controller
             $agent_id = Agent::where('name', $request->agentain)->value('id');
             $file_data->agent_id = $agent_id;
         }
+        // Assign ie_data_id if exist, if not create a new one and assign it
 
-        if ($request->impexp != null) {
-            $ie_data_id = Ie_data::where('name', $request->impexp)->value('id');
-            $file_data->ie_data_id = $ie_data_id;
-            if (!$ie_data_id) {
-                return redirect()->back()->withInput()->withErrors(['Please create valid Importer/Exporter first!']);
-            }
+        if (!empty($request->impexp)) {
+            $ie_data = Ie_data::firstOrCreate(
+                ['name' => $request->impexp], // Check if an Ie_data with this name exists
+                ['ie' => 'Import'] // If not, create it with the default 'Import' value
+            );
+        
+            $file_data->ie_data_id = $ie_data->id; // Assign the ie_data_id to the file_data
         }
-
         // Calculate the number of pages
         $pages = $request->page;
         $numberofPages = ($pages > 1) ? ceil((($pages - 1) / 3 + 1)) : 1;

@@ -113,7 +113,7 @@
                         <tr>
                             <th>Sl</th>
                             <th>BIN No</th>
-                            <th>Agent Name</th>
+                            <th>IM/EX Name</th>
                             <th>Owner Name</th>
                             <th>Phone</th>
                             <th>Type</th>

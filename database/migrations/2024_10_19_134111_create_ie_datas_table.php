@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('bin_no')->nullable();
             $table->string('ie')->nullable();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('owners_name')->nullable();
             $table->string('photo')->nullable();
             $table->string('destination')->nullable();

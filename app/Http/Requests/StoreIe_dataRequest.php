@@ -23,7 +23,7 @@ class StoreIe_dataRequest extends FormRequest
     {
         return [
             'bin_no' => 'nullable',
-            'name' => 'required',
+            'name' => 'required|unique:ie_datas,name',
             'ie' => 'nullable',
             'owners_name' => 'nullable',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2024',

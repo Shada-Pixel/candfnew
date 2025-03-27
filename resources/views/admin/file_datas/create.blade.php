@@ -19,6 +19,9 @@
                 cursor: pointer;
             }
         </style>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
     </x-slot>
 
     {{-- Page Content --}}
@@ -66,21 +69,20 @@
                                 <input type="text" class="form-input skipme" id="lodgement_date" name="lodgement_date" placeholder="Lodgement Date" required value="{{ date('d/m/Y') }}">
                             </div> <!-- end -->
 
-                            <div class="col-span-2">
+                            {{-- <div class="col-span-2">
                                 <label for="agentain" class="block mb-2">Agent AIN</label>
                                 <input type="text" class="form-input" id="agentain" name="agentain" required @role('extra') autofocus @endrole value="{{$lastagent ?? ''}}">
-                            </div> <!-- end -->
+                            </div> <!-- end --> --}}
 
 
-                            {{-- <div class="col-span-2">
-                                <label for="agent_name" class="block mb-2">Agent Name</label>
-                                <datalist id="agentNameList">
+                            <div class="col-span-2">
+                                <label for="agentain" class="block mb-2">Agent Name</label>
+                                <select class="form-select agentain" id="agentain" name="agentain" required>
                                     @foreach($agents as $agent)
                                         <option value="{{ $agent->name }}">{{ $agent->name.' ('.$agent->ain_no.')'  }}</option>
                                     @endforeach
-                                </datalist>
-                                <input type="text" class="form-input" id="agent_name" name="agent_name" placeholder="Agent Name" required list="agentNameList">
-                            </div> <!-- end --> --}}
+                                </select>
+                            </div> <!-- end -->
 
                             <div class="">
                                 <label for="manifest_no" class="block mb-2">Manifest No</label>
@@ -138,8 +140,9 @@
 
     <x-slot name="script">
         {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
             $(document).ready(function() {
 
@@ -149,19 +152,19 @@
                 $('#printable').val('');
 
                 // Autocomplete for Agent
-                $('#agentain').autocomplete({
-                    source: function (request, response) {
-                        $.ajax({
-                            url: '/ainautocomplete',
-                            data: { query: request.term },
-                            success: function (data) {
-                                response(data);
-                            }
-                        });
-                    },
-                    minLength: 2, // Start searching after 2 characters
-                    autoFocus: true, // Highlight the first suggestion
-                });
+                // $('#agentain').autocomplete({
+                //     source: function (request, response) {
+                //         $.ajax({
+                //             url: '/ainautocomplete',
+                //             data: { query: request.term },
+                //             success: function (data) {
+                //                 response(data);
+                //             }
+                //         });
+                //     },
+                //     minLength: 2, // Start searching after 2 characters
+                //     autoFocus: true, // Highlight the first suggestion
+                // });
 
                 // Autocomplete for Importer/Exporter
                 $('#impexp').autocomplete({
@@ -206,6 +209,7 @@
 
                 // Focus and select the input field
                 $('#agentain').focus().select();
+                $('.agentain').select2();
 
 
 

@@ -79,7 +79,7 @@
                                 <label for="agentain" class="block mb-2">Agent Name</label>
                                 <select class="form-select agentain" id="agentain" name="agentain" required>
                                     @foreach($agents as $agent)
-                                        <option value="{{ $agent->name }}">{{ $agent->name.' ('.$agent->ain_no.')'  }}</option>
+                                        <option value="{{ $agent->name }}" @if ($lastagent == $agent->name) selected @endif>{{ $agent->name.' ('.$agent->ain_no.')'  }}</option>
                                     @endforeach
                                 </select>
                             </div> <!-- end -->

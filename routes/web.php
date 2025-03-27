@@ -1,44 +1,35 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
 use App\Models\Ie_data;
 use App\Models\Agent;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\BankController;
-use App\Http\Controllers\QueryController;
-use App\Http\Controllers\CareerController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\BankAccountController;
-use App\Http\Controllers\BankTransactionController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\AgentController;
-use App\Http\Controllers\IeDataController;
-use App\Http\Controllers\FileDataController;
-use App\Http\Controllers\SmsController;
-use App\Http\Controllers\DonationController;
-use App\Http\Controllers\NoticeController;
-use App\Http\Controllers\ITCReportController;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Http;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+use App\Http\Controllers\{
+    HomeController,
+    RoleController,
+    UserController,
+    BankController,
+    QueryController,
+    CareerController,
+    ProfileController,
+    DashboardController,
+    PermissionController,
+    BankAccountController,
+    BankTransactionController,
+    ReportController,
+    AgentController,
+    IeDataController,
+    FileDataController,
+    SmsController,
+    DonationController,
+    NoticeController,
+    ITCReportController
+};
 
 // Guest user routes
-Route::controller( HomeController::class )->group(function () {
+Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home');
     Route::get('/story', 'story')->name('story');
     Route::get('/contact', 'contact')->name('contact');
@@ -47,148 +38,97 @@ Route::controller( HomeController::class )->group(function () {
     Route::get('/works/{industry}', 'industries')->name('industries.show');
     Route::get('/project_details/{project}', 'pdtails')->name('projects.details');
     Route::get('/members_protfolio/{member}', 'memberProtfolio')->name('memberProtfolio');
+    Route::get('/general-member', 'generalMember')->name('general-member');
+    Route::get('/agency', 'myagency')->name('myagency');
 });
 
-
-
-// Auth users routes
-Route::group(['middleware' => ['auth']], function() {
-
-    // Dashboard routes
+// Authenticated user routes
+Route::middleware(['auth'])->group(function () {
+    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
-
-    // Only for the developer
-    Route::get('/route-cache', function () {
-        Artisan::call('route:cache');
-        return 'Routes cache cleared!';
-    })->name('cache.route');
-
-    Route::get('/config-cache', function () {
-        Artisan::call('config:cache');
-        return 'Config cache cleared!';
-    })->name('cache.config');
-
-    Route::get('/cache-clear', function () {
-        Artisan::call('cache:clear');
-        return 'Application cache cleared!';
-    })->name('cache.clear');
-
-    Route::get('/view-clear', function () {
-        Artisan::call('view:clear');
-        return 'View cache cleared!';
-    })->name('cache.view');
-    Route::get('/optimize-clear', function (){
-        Artisan::call('optimize:clear');
-        return 'App Optimize';
-    })->name('optimize.clear');
-
+    // Cache management
+    Route::prefix('cache')->group(function () {
+        Route::get('/route', fn() => Artisan::call('route:cache') && 'Routes cache cleared!')->name('cache.route');
+        Route::get('/config', fn() => Artisan::call('config:cache') && 'Config cache cleared!')->name('cache.config');
+        Route::get('/clear', fn() => Artisan::call('cache:clear') && 'Application cache cleared!')->name('cache.clear');
+        Route::get('/view', fn() => Artisan::call('view:clear') && 'View cache cleared!')->name('cache.view');
+        Route::get('/optimize', fn() => Artisan::call('optimize:clear') && 'App Optimize')->name('optimize.clear');
+    });
 
     // Finance management
-    Route::resource('banks', BankController::class);
-    Route::resource('baccounts', BankAccountController::class);
-    Route::resource('transactions', BankTransactionController::class);
-    Route::get('/btransactions/deposit', [BankTransactionController::class, 'deposit'])->name('btransactions.deposit');
-    Route::get('/btransactions/withdrawal', [BankTransactionController::class, 'withdrawal'])->name('btransactions.withdrawal');
-    Route::get('/btransactions/trash', [BankTransactionController::class, 'trash'])->name('btransactions.trash');
-    Route::patch('/btransactions/{transaction}/restore', [BankTransactionController::class, 'restore'])->name('btransactions.restore');
-    Route::delete('/btransactions/{transaction}/forcedelete', [BankTransactionController::class, 'forceDelete'])->name('btransactions.forcedelete');
-
+    Route::resources([
+        'banks' => BankController::class,
+        'baccounts' => BankAccountController::class,
+        'transactions' => BankTransactionController::class,
+    ]);
+    Route::prefix('btransactions')->group(function () {
+        Route::get('/deposit', [BankTransactionController::class, 'deposit'])->name('btransactions.deposit');
+        Route::get('/withdrawal', [BankTransactionController::class, 'withdrawal'])->name('btransactions.withdrawal');
+        Route::get('/trash', [BankTransactionController::class, 'trash'])->name('btransactions.trash');
+        Route::patch('/{transaction}/restore', [BankTransactionController::class, 'restore'])->name('btransactions.restore');
+        Route::delete('/{transaction}/forcedelete', [BankTransactionController::class, 'forceDelete'])->name('btransactions.forcedelete');
+    });
 
     // Reports
-    // Financial reporting
-    Route::get('/monthly-financial-report', [ReportController::class, 'financialMonth'])->name('reports.financial.monthly');
-
-    Route::any('/receiver_report', [ReportController::class, 'receiver_report'])->name('reports.receiver_report');
-    Route::any('/deliver_report', [ReportController::class, 'deliver_report'])->name('reports.deliver_report');
-
-
+    Route::prefix('reports')->group(function () {
+        Route::get('/monthly-financial', [ReportController::class, 'financialMonth'])->name('reports.financial.monthly');
+        Route::any('/receiver', [ReportController::class, 'receiver_report'])->name('reports.receiver_report');
+        Route::any('/deliver', [ReportController::class, 'deliver_report'])->name('reports.deliver_report');
+    });
 
     // User management
-    Route::resource('roles', RoleController::class);
-    Route::resource('users', UserController::class);
-    Route::resource('permissions', PermissionController::class);
-    Route::get('/showuserrole/{user}',[UserController::class, 'showUserRoles'])->name('get.userrole');
-    Route::post('/assignrole',[UserController::class, 'assignrole'])->name('assignrole');
-    Route::post('/unassignrole',[UserController::class, 'unassignrole'])->name('unassignrole');
+    Route::resources([
+        'roles' => RoleController::class,
+        'users' => UserController::class,
+        'permissions' => PermissionController::class,
+    ]);
+    Route::prefix('users')->group(function () {
+        Route::get('/showuserrole/{user}', [UserController::class, 'showUserRoles'])->name('get.userrole');
+        Route::post('/assignrole', [UserController::class, 'assignrole'])->name('assignrole');
+        Route::post('/unassignrole', [UserController::class, 'unassignrole'])->name('unassignrole');
+        Route::get('/createagentuser', [UserController::class, 'createAgentUser'])->name('createagentuser');
+        Route::post('/storeagentuser', [UserController::class, 'storeAgentUser'])->name('storeagentuser');
+    });
 
-    Route::get('/createagentuser', [UserController::class, 'createAgentUser'])->name('createagentuser');
-    Route::post('/storeagentuser', [UserController::class, 'storeAgentUser'])->name('storeagentuser');
-
-
-    // Importer / Exporter management
+    // Importer/Exporter management
     Route::resource('ie_datas', IeDataController::class);
-    Route::get('/ie_datatrash', [IeDataController::class, 'trash'])->name('ie_datas.trash');
-    Route::patch('/agentrestore/{transaction}', [IeDataController::class, 'restore'])->name('ie_datas.restore');
-    Route::delete('/agentforcedelete/{transaction}', [IeDataController::class, 'forcedelete'])->name('ie_datas.forcedelete');
+    Route::prefix('ie_datas')->group(function () {
+        Route::get('/trash', [IeDataController::class, 'trash'])->name('ie_datas.trash');
+        Route::patch('/restore/{transaction}', [IeDataController::class, 'restore'])->name('ie_datas.restore');
+        Route::delete('/forcedelete/{transaction}', [IeDataController::class, 'forcedelete'])->name('ie_datas.forcedelete');
+    });
 
-
-    // Project management
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-
+    // Profile management
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
 
     // Agent management
     Route::resource('agents', AgentController::class);
-    Route::get('/agenttrash', [AgentController::class, 'trash'])->name('agents.trash');
-    Route::patch('/agentrestore/{transaction}', [AgentController::class, 'restore'])->name('agents.restore');
-    Route::delete('/agentforcedelete/{transaction}', [AgentController::class, 'forcedelete'])->name('agents.forcedelete');
-
+    Route::prefix('agents')->group(function () {
+        Route::get('/trash', [AgentController::class, 'trash'])->name('agents.trash');
+        Route::patch('/restore/{transaction}', [AgentController::class, 'restore'])->name('agents.restore');
+        Route::delete('/forcedelete/{transaction}', [AgentController::class, 'forcedelete'])->name('agents.forcedelete');
+    });
 
     // File Data
     Route::resource('file_datas', FileDataController::class);
 
-
-    // Importer / Exporter autocomplete
-    Route::get('/ieautocomplete', function (Request $request) {
-        $query = $request->get('query');
-        $results = Ie_data::where('name', 'LIKE', "{$query}%")
-                          ->pluck('name');
-        return response()->json($results);
+    // SMS routes
+    Route::prefix('sms')->group(function () {
+        Route::get('/send-sms', [SmsController::class, 'sendSms'])->name('sendSms');
+        Route::post('/send-single', [SmsController::class, 'sendSingleSms']);
+        Route::post('/send-bulk', [SmsController::class, 'sendBulkSms']);
+        Route::post('/send-dynamic', [SmsController::class, 'sendDynamicSms']);
     });
 
-    // Agent autocomplete
-    Route::get('/ainautocomplete', function (Request $request) {
-        $query = $request->get('query');
-        $results = Agent::where('ain_no', 'LIKE', "%{$query}%")
-                ->orWhere('name', 'LIKE', "%{$query}%")
-                ->pluck('name');
-        return response()->json($results);
-    });
+    // ITC Reports
+    Route::resource('itc-reports', ITCReportController::class);
 
-
-    // sms routes
-    Route::post('/test_sms', function(){
-        $message = 'Hello, This is a test message from the system. Please ignore this message.';
-        $phone = '01711000000';
-        $response = sendSMS($phone, $message);
-        return $response;
-    })->name('sms.test');
-
-    Route::get('/sms/send-sms', [SmsController::class, 'sendSms'])->name('sendSms');
-    Route::post('/sms/send-single', [SmsController::class, 'sendSingleSms']);
-    Route::post('/sms/send-bulk', [SmsController::class, 'sendBulkSms']);
-    Route::post('/sms/send-dynamic', [SmsController::class, 'sendDynamicSms']);
-
-    // Add middleware to the delete route
-    // Route::delete('/notices/{filename}', [NoticeController::class, 'destroy'])
-    // ->middleware('auth') // Only authenticated users can delete
-    // ->name('notices.destroy');
-
-    // Route::get('/admin/notices', [NoticeController::class, 'adminnotice'])->name('adminnotices');
-    // Route::post('/admin/notices', [NoticeController::class, 'store'])->name('notices.store');
-
-
-    Route::get('itc-reports/create', [ITCReportController::class, 'create'])->name('itc-reports.create');
-    Route::post('itc-reports', [ITCReportController::class, 'store'])->name('itc-reports.store');
-    Route::get('itc-reports/{itc_report}', [ITCReportController::class, 'show'])->name('itc-reports.show');
-    Route::get('itc-reports/{itc_report}/edit', [ITCReportController::class, 'edit'])->name('itc-reports.edit');
-    Route::put('itc-reports/{itc_report}', [ITCReportController::class, 'update'])->name('itc-reports.update');
-    Route::delete('itc-reports/{itc_report}', [ITCReportController::class, 'destroy'])->name('itc-reports.destroy');
-
-    // Notice routes for authenticated users
+    // Notices
     Route::prefix('notices')->group(function () {
         Route::get('create', [NoticeController::class, 'create'])->name('notices.create');
         Route::post('/', [NoticeController::class, 'store'])->name('notices.store');
@@ -197,69 +137,54 @@ Route::group(['middleware' => ['auth']], function() {
         Route::delete('{notice}', [NoticeController::class, 'destroy'])->name('notices.destroy');
     });
 
-    // Custom file routes
-    Route::prefix('customfiles')->group(function () {
-        Route::get('/', [CareerController::class, 'index'])->name('careers.index');
-        Route::get('create', [CareerController::class, 'create'])->name('careers.create');
-        Route::post('/', [CareerController::class, 'store'])->name('careers.store');
-        Route::get('{career}/edit', [CareerController::class, 'edit'])->name('careers.edit');
-        Route::put('{career}', [CareerController::class, 'update'])->name('careers.update');
-        Route::delete('{career}', [CareerController::class, 'destroy'])->name('careers.destroy');
-    });
+    // Careers
+    Route::resource('careers', CareerController::class);
 
+    // Donations
     Route::resource('donations', DonationController::class);
-
-
-
-    Route::get('/agency', [HomeController::class, 'myagency'])->name('myagency');
 });
-//Auth user routes end
 
-// Notice routes for guests
+// Guest-accessible routes
 Route::prefix('notices')->group(function () {
     Route::get('/', [NoticeController::class, 'index'])->name('notices.index');
     Route::get('{notice}', [NoticeController::class, 'show'])->name('notices.show');
 });
 
-// // Route to view or download a notice
-// Route::get('/notices/{filename}', [NoticeController::class, 'show'])->name('notices.show');
-// Route::get('/notices', [NoticeController::class, 'index'])->name('notices.index');
-
-
-
-// Allow 'index' to be accessible to guests
+// ITC Reports
 Route::get('itc-reports', [ITCReportController::class, 'index'])->name('itc-reports.index');
-
 Route::get('monthly-itc-reports', [ITCReportController::class, 'monthly'])->name('itc-reports.monthly');
 Route::get('yearly-itc-reports', [ITCReportController::class, 'yearly'])->name('itc-reports.yearly');
-Route::get('general-member', [HomeController::class, 'generalMember'])->name('general-member');
 
+// Autocomplete routes
+Route::get('/ieautocomplete', function (Request $request) {
+    return response()->json(Ie_data::where('name', 'LIKE', "{$request->get('query')}%")->pluck('name'));
+});
+Route::get('/ainautocomplete', function (Request $request) {
+    return response()->json(Agent::where('ain_no', 'LIKE', "%{$request->get('query')}%")
+        ->orWhere('name', 'LIKE', "%{$request->get('query')}%")
+        ->pluck('name'));
+});
 
-Route::get('trysending', function(){
+// Test SMS
+Route::post('/test_sms', function () {
+    $response = sendSMS('01711000000', 'Hello, This is a test message from the system. Please ignore this message.');
+    return $response;
+})->name('sms.test');
+
+// Test sending SMS
+Route::get('trysending', function () {
     $response = Http::post(env('SSL_SMS_BASE_URL'), [
         'api_token' => env('SSL_SMS_API_TOKEN'),
         'sid' => env('SSL_SMS_SID'),
         'msisdn' => '01956113999',
         'sms' => "test message",
-        'csms_id' =>  bin2hex(random_bytes(10)),
-        // 'csms_id' => "4473433434pZ684333392",
+        'csms_id' => bin2hex(random_bytes(10)),
     ]);
 
     $data = $response->json();
-
-    if ($data['status_code'] !== 200) {
-        return [
-            'success' => false,
-            'message' => $data['error_message'] ?? 'An error occurred'
-        ];
-    }
-
-    return [
-        'success' => true,
-        'message' => 'SMS sent successfully',
-        'response' => $data
-    ];
+    return $data['status_code'] !== 200
+        ? ['success' => false, 'message' => $data['error_message'] ?? 'An error occurred']
+        : ['success' => true, 'message' => 'SMS sent successfully', 'response' => $data];
 });
 
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

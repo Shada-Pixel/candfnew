@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Agent;
 use App\Models\Ie_data;
 use App\Models\File_data;
+use App\Helpers\LogHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -35,8 +36,8 @@ class FileDataController extends Controller
         $file_data_year = $file_data ? $file_data->created_at->year : null;
 
         if ($file_data && $file_data_year == $currentYear) {
-            $next_lodgement_no = ($file_data->lodgement_no == '94020') 
-            ? 1 
+            $next_lodgement_no = ($file_data->lodgement_no == '94020')
+            ? 1
             : ($file_data->lodgement_no ?? 0) + 1;
         } else {
             $next_lodgement_no = 1; // Reset to 1 at the start of a new year
@@ -180,7 +181,7 @@ class FileDataController extends Controller
                 ['name' => $request->impexp], // Check if an Ie_data with this name exists
                 ['ie' => 'Import'] // If not, create it with the default 'Import' value
             );
-        
+
             $file_data->ie_data_id = $ie_data->id; // Assign the ie_data_id to the file_data
         }
         // Calculate the number of pages
@@ -226,6 +227,21 @@ class FileDataController extends Controller
                 'sms' => $newSmsData,
                 'csms_id' => bin2hex(random_bytes(10)),
             ]);
+            $responseData = $sendSMS->json();
+
+
+            // Extract status for logging
+            $status = $responseData['status'] ?? 'FAILED';
+            $statusCode = $responseData['status_code'] ?? 'Unknown';
+            $statusMessage = $responseData['error_message'] ?? 'No error message';
+
+            // Log the SMS response
+            LogHelper::log(
+                action: "SMS Sent to $agent_phone",
+                description: "Status: $status, Code: $statusCode, Message: $statusMessage",
+                log_type: 'sms',
+                responseData: $responseData
+            );
 
             // Mark SMS as sent
             $file_data->sms_sent = true;

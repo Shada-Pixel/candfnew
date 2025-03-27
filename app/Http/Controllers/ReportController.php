@@ -35,15 +35,23 @@ class ReportController extends Controller
             if (!empty($request->from_date)) {
                 $startdate = $request->from_date;
                 $enddate = $request->to_date;
+                $agent_id = $request->agent_id;
+
                 $query = 'date(lodgement_date) between "' . $startdate . '" AND "' . $enddate . '"';
-                $file_datas = File_data::whereRaw($query)->with('agent')->with('ie_data')->get();
+                if ($agent_id == '') {
+                    $file_datas = File_data::whereRaw($query)->with('agent')->with('ie_data')->get();
+                } else {
+                    $file_datas = File_data::whereRaw($query)->where('agent_id', $request->agent_id)->with('agent')->with('ie_data')->get();
+                }
             } else {
+                //              $sales_date = Trip::orderBy('id', 'desc')->get();
+                //                $file_datas = File_data::with('agent')->with('ie_data')->get();
                 $djloldate = 'date(lodgement_date) between "2023-01-01" AND "2023-12-31"';
                 $file_datas = File_data::whereRaw($djloldate)->with('agent')->with('ie_data')->limit(2000)->get();
             }
             return DataTables::of($file_datas)->make(true);
         }
-        return view('admin.reports.receiver');
+        return view('admin.reports.receiver',['agents' => $agents]);
     }
 
     // Deliver report

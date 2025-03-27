@@ -71,12 +71,11 @@
         <!-- Datatable script-->
         <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
         <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-        <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.20/filtering/row-based/range_dates.js"></script>
-
         <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-        <script !src="">
+        <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.20/filtering/row-based/range_dates.js"></script>
+
+        <script>
             // date rang picker
             $(function() {
                 var start = moment().subtract(29, 'days');
@@ -111,9 +110,10 @@
                 var customer_name = '';
                 load_data();
 
-                function load_data(from_date = '', to_date = '') {
-
+                function load_data(from_date = '', to_date = '', agent_id = '')
+                {
                     $('#all_report').DataTable({
+
                         processing: true,
                         serverSide: true,
                         dom: 'lBftip',
@@ -132,8 +132,8 @@
                             }
                         ],
                         ajax: {
-                            url:'{!! route("reports.receiver_report") !!}',
-                            data:{from_date:from_date, to_date:to_date}
+                            url:'{!! route("get_receiver_report") !!}',
+                            data:{from_date:from_date, to_date:to_date, agent_id:agent_id}
                         },
                         columns: [
                             {
@@ -174,11 +174,22 @@
                 $('#filter').click(function(){
                     var from_date = $('#from_date').val();
                     var to_date = $('#to_date').val();
+                    var agent_id = $("#agent_id option:selected").val();
+
+                    if (agent_id != ''){
+                        // customer_name = '-'+ $("#agent_id option:selected").text();
+                        customer_name = '';
+                        document.getElementById("tr").innerHTML = 'File Receive Report'+customer_name;
+                    }else {
+                        customer_name = '';
+                        document.getElementById("tr").innerHTML = 'File Receive Report'+customer_name;
+                    }
+
 
                     if( from_date != '' &&  to_date != '')
                     {
                         $('#all_report').DataTable().destroy();
-                        load_data(from_date, to_date);
+                        load_data(from_date, to_date, agent_id);
                     }
                     else
                     {
@@ -189,7 +200,10 @@
                 $('#refresh').click(function(){
                     $('#from_date').val('');
                     $('#to_date').val('');
+                    $("#agent_id").select2().val('').trigger("change");
                     $('#all_report').DataTable().destroy();
+                    customer_name = '';
+                    document.getElementById("tr").innerHTML = 'File Receive Report '+customer_name;
                     load_data();
                 });
 

@@ -69,20 +69,20 @@
                                 <input type="text" class="form-input skipme" id="lodgement_date" name="lodgement_date" placeholder="Lodgement Date" required value="{{ date('d/m/Y') }}">
                             </div> <!-- end -->
 
-                            {{-- <div class="col-span-2">
-                                <label for="agentain" class="block mb-2">Agent AIN</label>
-                                <input type="text" class="form-input" id="agentain" name="agentain" required @role('extra') autofocus @endrole value="{{$lastagent ?? ''}}">
-                            </div> <!-- end --> --}}
-
-
                             <div class="col-span-2">
+                                <label for="agentain" class="block mb-2">Agent Name</label>
+                                <input type="text" class="form-input" id="agentain" name="agentain" required @role('extra') autofocus @endrole value="{{$lastagent ?? ''}}">
+                            </div> <!-- end -->
+
+
+                            {{-- <div class="col-span-2">
                                 <label for="agentain" class="block mb-2">Agent Name</label>
                                 <select class="form-select agentain" id="agentain" name="agentain" required>
                                     @foreach($agents as $agent)
                                         <option value="{{ $agent->name }}" @if ($lastagent == $agent->name) selected @endif>{{ $agent->name.' ('.$agent->ain_no.')'  }}</option>
                                     @endforeach
                                 </select>
-                            </div> <!-- end -->
+                            </div> <!-- end --> --}}
 
                             <div class="">
                                 <label for="manifest_no" class="block mb-2">Manifest No</label>
@@ -152,19 +152,19 @@
                 $('#printable').val('');
 
                 // Autocomplete for Agent
-                // $('#agentain').autocomplete({
-                //     source: function (request, response) {
-                //         $.ajax({
-                //             url: '/ainautocomplete',
-                //             data: { query: request.term },
-                //             success: function (data) {
-                //                 response(data);
-                //             }
-                //         });
-                //     },
-                //     minLength: 2, // Start searching after 2 characters
-                //     autoFocus: true, // Highlight the first suggestion
-                // });
+                $('#agentain').autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: '/ainautocomplete',
+                            data: { query: request.term },
+                            success: function (data) {
+                                response(data);
+                            }
+                        });
+                    },
+                    minLength: 2, // Start searching after 2 characters
+                    autoFocus: true, // Highlight the first suggestion
+                });
 
                 // Autocomplete for Importer/Exporter
                 $('#impexp').autocomplete({

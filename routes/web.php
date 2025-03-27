@@ -153,7 +153,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/ainautocomplete', function (Request $request) {
         $query = $request->get('query');
         $results = Agent::where('ain_no', 'LIKE', "%{$query}%")
-                          ->pluck('name');
+                ->orWhere('name', 'LIKE', "%{$query}%")
+                ->pluck('name');
         return response()->json($results);
     });
 

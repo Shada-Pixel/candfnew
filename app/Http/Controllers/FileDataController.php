@@ -63,7 +63,6 @@ class FileDataController extends Controller
             'manifest_no' => 'required|string',
             'page' => 'nullable|integer',
             'agentain' => 'nullable|string',
-            'impexp' => 'nullable|unique:ie_datas,name',
         ]);
 
         // Retrieve the latest File_data record

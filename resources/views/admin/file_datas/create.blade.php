@@ -71,6 +71,17 @@
                                 <input type="text" class="form-input" id="agentain" name="agentain" required @role('extra') autofocus @endrole value="{{$lastagent ?? ''}}">
                             </div> <!-- end -->
 
+
+                            {{-- <div class="col-span-2">
+                                <label for="agent_name" class="block mb-2">Agent Name</label>
+                                <datalist id="agentNameList">
+                                    @foreach($agents as $agent)
+                                        <option value="{{ $agent->name }}">{{ $agent->name.' ('.$agent->ain_no.')'  }}</option>
+                                    @endforeach
+                                </datalist>
+                                <input type="text" class="form-input" id="agent_name" name="agent_name" placeholder="Agent Name" required list="agentNameList">
+                            </div> <!-- end --> --}}
+
                             <div class="">
                                 <label for="manifest_no" class="block mb-2">Manifest No</label>
                                 <input type="text" class="form-input" id="manifest_no" name="manifest_no" placeholder="Manifest No" required>

@@ -50,6 +50,6 @@ class User extends Authenticatable
 
     public function agency()
     {
-        return $this->hasOne(Agent::class)->orderBy('id', 'desc');
+        return $this->belongsTo(Agent::class, 'agent_id', 'id');
     }
 }

@@ -13,7 +13,7 @@
         <div class="card max-w-3xl mx-auto">
             <div class="p-6">
 
-                <form action="{{ route('storeagentuser') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('users.store') }}" method="post" enctype="multipart/form-data">
                     <div class="grid lg:grid-cols-2 gap-5">
                         @csrf
                         @method('post')

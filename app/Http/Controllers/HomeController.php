@@ -41,24 +41,10 @@ class HomeController extends Controller
 
     public function generalMember(Request $request): View
     {
-        $agents = Agent::all();
+        $agents = Agent::orderBy('name', 'asc')->get();
         return view('general-member',['agents' => $agents]);
     }
 
-
-    // Displaying story page
-    public function story(Request $request): View
-    {
-
-        $exicutives = Member::where('type',1)->get();
-        return view('story',['exicutives' => $exicutives]);
-    }
-
-    // Displaying services page
-    public function services(Request $request): View
-    {
-        return view('services');
-    }
 
 
     // Displaying contact page
@@ -67,47 +53,27 @@ class HomeController extends Controller
         return view('contact');
     }
 
-    // Displaying career page
-    public function career(Request $request): View
+
+    // Displaying my agency page
+    public function myagency(Request $request): View
     {
-        return view('career');
-    }
+        $agent = Agent::with('donations')->find(auth()->user()->agency->id);
 
+        if (!$agent) {
+            abort(404, 'Agency not found');
+        }
 
+        // Information completion percentage
+        $attributes = $agent->getAttributes();
+        $filledColumns = collect($attributes)->filter(fn($value) => !is_null($value) && $value !== '')->count();
+        $completionPercentage = ($filledColumns / count($attributes)) * 100;
 
-    // Displaying uiux work page
-    public function uiux(Request $request): View
-    {
-        return view('works.uiux');
-    }
-
-
-
-    public function industries($industry)
-    {
-        $industry = Category::with('projects')->where('slug', $industry)->first();
-        return view('works.index', [
-            'industry' => $industry,
+        return view('myagency', [
+            'agent' => $agent,
+            'completionPercentage' => round($completionPercentage) // Round to the nearest whole number
         ]);
     }
 
 
-    // Members Parotfolio
-    public function memberProtfolio($member)
-    {
-        $member = Member::with('projects')->find($member);
-        return view('members.index', [
-            'member' => $member,
-        ]);
-    }
-
-    // Returning to project detsils page
-    public function pdtails($project)
-    {
-        $project = Project::with('category','members')->where('slug', $project)->first();
-        return view('works.show', [
-            'project' => $project,
-        ]);
-    }
 
 }

@@ -26,7 +26,12 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
-        $request->session()->regenerate();
+        $request->session()->regenerate();  
+
+        // Check if the authenticated user has the 'agent' role
+        if (auth()->user()->hasRole('agent')) {
+            return redirect()->intended(route('home', absolute: false));
+        }
 
         return redirect()->intended(route('dashboard', absolute: false));
     }

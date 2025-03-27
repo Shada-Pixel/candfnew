@@ -79,6 +79,11 @@ class UserController extends Controller implements HasMiddleware
         $user->password = Hash::make($request->password);
 
 
+        if ($request->agent_id) {
+            $user->agent_id = $request->agent_id;
+        }
+
+
         // user photo
         if ($request->file('photo')) {
             $cover = $request->file('photo');
@@ -102,11 +107,12 @@ class UserController extends Controller implements HasMiddleware
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id): View
+    public function show($id)
     {
         $roles = Role::all();
-        $user = User::find($id);
-        return view('admin.users.show',['user'=>$user, 'roles'=>$roles]);
+        $agents = Agent::all();
+        $user = User::with('agency')->findOrFail($id); // Corrected query
+        return view('admin.users.show', ['user' => $user, 'roles' => $roles, 'agents' => $agents]);
     }
 
 

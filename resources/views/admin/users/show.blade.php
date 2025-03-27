@@ -62,6 +62,18 @@
                             <input type="file" id="photo" class="form-input border" name="photo">
                         </div> <!-- end -->
 
+                        @if ($user->agency)
+                            
+                        <div>
+                            <label class="block text-gray-600 mb-2" for="agent_id">Select Agtent</label>
+                            <select class="form-select" id="agent_id" name="agent_id" required>
+                                @foreach ($agents as $agent)
+                                    <option value="{{ $agent->id }}" @if($agent->id == $user->agency->id) selected @endif>{{ $agent->name }}</option>
+                                @endforeach
+                            </select>
+                        </div> <!-- end -->
+                        @endif
+
 
                         <div class="lg:col-span-2 mt-3">
                             <button type="submit"

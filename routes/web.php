@@ -207,6 +207,10 @@ Route::group(['middleware' => ['auth']], function() {
     });
 
     Route::resource('donations', DonationController::class);
+
+
+
+    Route::get('/agency', [HomeController::class, 'myagency'])->name('myagency');
 });
 //Auth user routes end
 

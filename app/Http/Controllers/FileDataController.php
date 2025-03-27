@@ -27,31 +27,28 @@ class FileDataController extends Controller
      */
     public function create()
     {
-        $now = Carbon::now(); // Get the current date and time
-        $year = $now->year; // Extract the current year
-
-        // Retrieve the latest File_data record
-        $file_data = File_data::latest()->first();
-
-        // Get the last agent name from the latest File_data record
-        $lastagent = $file_data && $file_data->agent ? $file_data->agent->name : null;
+        $year = Carbon::now()->year; // Get the current year
+        $file_data = File_data::latest()->with('agent')->first(); // Retrieve the latest File_data with agent relationship
 
         // Determine the next lodgement number
-        if ($file_data) {
-            if ($file_data->lodgement_no == '94020') {
-                $next_lodgement_no = 1; // Reset the lodgement number if it reaches 94020
-            } else {
-                $next_lodgement_no = $file_data->lodgement_no + 1; // Increment the lodgement number
-            }
+        $currentYear = Carbon::now()->year;
+        $file_data_year = $file_data ? $file_data->created_at->year : null;
+
+        if ($file_data && $file_data_year == $currentYear) {
+            $next_lodgement_no = ($file_data->lodgement_no == '94020') 
+            ? 1 
+            : ($file_data->lodgement_no ?? 0) + 1;
         } else {
-            $next_lodgement_no = 1; // Default to 1 if no File_data records exist
+            $next_lodgement_no = 1; // Reset to 1 at the start of a new year
         }
 
-        $today = date('d-m-Y'); // Format the current date as 'day-month-year'
+        // Get the last agent name and ID if available
+        $lastagent = $file_data->agent->name ?? null;
+        $lastagent_id = $file_data->agent->id ?? null;
 
+        $agents = Agent::select('id', 'name', 'ain_no')->orderBy('name')->get(); // Retrieve only id, name, and ain_number of all agents, ordered by name
         // Return the view for creating a new File_data record
-        // Pass the calculated variables to the view
-        return view('admin.file_datas.create', compact('next_lodgement_no', 'file_data', 'today', 'lastagent'));
+        return view('admin.file_datas.create', compact('next_lodgement_no', 'file_data', 'lastagent', 'lastagent_id', 'agents', 'year'));
     }
 
 
@@ -60,6 +57,15 @@ class FileDataController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the request, including checking for unique `be_number`
+        $request->validate([
+            'be_number' => 'nullable|unique:file_datas,be_number',
+            'manifest_no' => 'required|string',
+            'page' => 'nullable|integer',
+            'agentain' => 'nullable|string',
+            'impexp' => 'nullable|unique:ie_datas,name',
+        ]);
+
         // Retrieve the latest File_data record
         $latest_file_data = File_data::latest()->first();
         // Determine the next lodgement number

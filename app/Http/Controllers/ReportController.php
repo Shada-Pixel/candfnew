@@ -29,29 +29,33 @@ class ReportController extends Controller
     // Receiver report
     public function receiver_report(Request $request)
     {
-        $i = 0;
-        $agents = Agent::pluck('name', 'id');
-        if (request()->ajax()) {
-            if (!empty($request->from_date)) {
-                $startdate = $request->from_date;
-                $enddate = $request->to_date;
-                $agent_id = $request->agent_id;
+        // return $request;
 
-                $query = 'date(lodgement_date) between "' . $startdate . '" AND "' . $enddate . '"';
-                if ($agent_id == '') {
-                    $file_datas = File_data::whereRaw($query)->with('agent')->with('ie_data')->get();
-                } else {
-                    $file_datas = File_data::whereRaw($query)->where('agent_id', $request->agent_id)->with('agent')->with('ie_data')->get();
-                }
+        if (!empty($request->from_date)) {
+
+            $startdate = $request->from_date;
+            $enddate = $request->to_date;
+            $agent_id = $request->agent_id;
+
+
+
+            $query = 'date(lodgement_date) between "' . $startdate . '" AND "' . $enddate . '"';
+
+            if ($agent_id == '') {
+                $file_datas = File_data::whereRaw($query)->with('agent')->with('ie_data')->get();
             } else {
-                //              $sales_date = Trip::orderBy('id', 'desc')->get();
-                //                $file_datas = File_data::with('agent')->with('ie_data')->get();
-                $djloldate = 'date(lodgement_date) between "2023-01-01" AND "2023-12-31"';
-                $file_datas = File_data::whereRaw($djloldate)->with('agent')->with('ie_data')->limit(2000)->get();
+                $file_datas = File_data::whereRaw($query)->where('agent_id', $request->agent_id)->with('agent')->with('ie_data')->get();
             }
-            return DataTables::of($file_datas)->make(true);
+        } else {
+            //              $sales_date = Trip::orderBy('id', 'desc')->get();
+            //                $file_datas = File_data::with('agent')->with('ie_data')->get();
+            $djloldate = 'date(lodgement_date) between "2023-01-01" AND "2023-12-31"';
+            $file_datas = File_data::whereRaw($djloldate)->with('agent')->with('ie_data')->limit(2000)->get();
         }
-        return view('admin.reports.receiver',['agents' => $agents]);
+        // return DataTables::of($file_datas)->make(true);
+
+        $file_datas = File_data::where('status', 'Received')->with('agent')->with('ie_data')->get();
+        return view('admin.reports.receiver',['file_datas' => $file_datas]);
     }
 
     // Deliver report

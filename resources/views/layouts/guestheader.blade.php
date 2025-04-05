@@ -58,10 +58,6 @@
 
                 @auth()
                     
-                
-                @role('admin|receiver|extra|operator|deliver|developer|accountant|manager')
-                <a class="md:p-4 py-2 block hover:text-bb text-purple-500" href="{{route('dashboard')}}">Chada</a>
-                @endrole
                 <div class="relative">
                     <button class="agent-dropdown-button text-gray-800 hover:text-blue-500 px-3 py-2 flex items-center">
                         Others

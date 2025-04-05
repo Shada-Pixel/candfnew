@@ -275,27 +275,6 @@
                             <span class="menu-text">Test SMS </span>
                         </a>
                     </li>
-                    <li class="menu-item">
-                        <a href="{{route('reports.deliver_report')}}" class="menu-link">
-                            <span class="menu-text">Delivery Report</span>
-                        </a>
-                    </li>
-
-                    <li class="menu-item">
-                        <a href="" class="menu-link">
-                            <span class="menu-text">Work Report Per Day</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="" class="menu-link">
-                            <span class="menu-text">Monthly Ope Report</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="{{route('reports.financial.monthly')}}" class="menu-link">
-                            <span class="menu-text">Financial Report</span>
-                        </a>
-                    </li>
                 </ul>
             </li>
 

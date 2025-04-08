@@ -10,14 +10,14 @@
 
 
         <section class=" pb-10 pt-16">
-            <div class="max-w-7xl mx-auto flex gap-4">
-                <div class="basis-3/4">
-                    
+            <div class="container mx-auto flex gap-4 px-4">
+                <div class="basis-4/5">
+
                     {{-- Notice Board --}}
                     <div class="flex-grow">
-    
+
                         <h2 class="text-3xl font-bold text-left mb-8 text-gray-800">Notice Board</h2>
-    
+
                         <div class="flex flex-col gap-4">
                             @forelse ($notices as $notice)
                                 {{-- Displaying notice title and id --}}
@@ -34,10 +34,10 @@
 
 
                     {{-- Mesages From the President --}}
-                    <div class="mt-12 px-6 ">
+                    <div class="mt-12">
                         <h2 class="text-3xl font-bold text-left mb-8 text-gray-800">Mesages From the President</h2>
 
-                        
+
                         <div class="flex justify-between items-start gap-6">
 
                             <div class="basis-1/4 flex flex-col items-center">
@@ -53,19 +53,19 @@
                                     obcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam
                                     nihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat, odit,
                                     tenetur error, harum nesciunt ipsum debitis quas aliquid. Reprehenderit,
-                                    quia. Quo neque error repudiandae fuga? Ipsa laudantium molestias eos 
+                                    quia. Quo neque error repudiandae fuga? Ipsa laudantium molestias eos
                                     sapiente officiis modi at sunt excepturi expedita sint? Sed quibusdam
-                                    recusandae alias error harum maxime adipisci amet laborum. Perspiciatis 
-                                    minima nesciunt dolorem! Officiis iure rerum voluptates a cumque velit 
-                                    quibusdam sed amet tempora. Sit laborum ab, eius fugit doloribus tenetur 
-                                    fugiat, temporibus enim commodi iusto libero magni deleniti quod quam 
+                                    recusandae alias error harum maxime adipisci amet laborum. Perspiciatis
+                                    minima nesciunt dolorem! Officiis iure rerum voluptates a cumque velit
+                                    quibusdam sed amet tempora. Sit laborum ab, eius fugit doloribus tenetur
+                                    fugiat, temporibus enim commodi iusto libero magni deleniti quod quam
                                     consequuntur! Commodi minima excepturi repudiandae velit hic maxime
-                                    doloremque. Quaerat provident commodi consectetur veniam similique ad 
-                                    earum omnis ipsum saepe, voluptas, hic voluptates pariatur est explicabo 
-                                    fugiat, dolorum eligendi quam cupiditate excepturi mollitia maiores labore 
+                                    doloremque. Quaerat provident commodi consectetur veniam similique ad
+                                    earum omnis ipsum saepe, voluptas, hic voluptates pariatur est explicabo
+                                    fugiat, dolorum eligendi quam cupiditate excepturi mollitia maiores labore
                                     suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
-                                    modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam 
-                                    totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam 
+                                    modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam
+                                    totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam
                                     quasi aliquam eligendi, placeat qui corporis!
                                 </p>
                                 <h3 class="font-bold text-lg text-gray-900">Sabbir Hussain</h3>
@@ -76,10 +76,10 @@
 
                     </div>
                     {{-- Mesages From the General Secretary --}}
-                    <div class="mt-12 px-6 ">
+                    <div class="mt-12">
                         <h2 class="text-3xl font-bold text-left mb-8 text-gray-800">Mesages From the General Secretary</h2>
 
-                        
+
                         <div class="flex justify-between items-start gap-6">
 
                             <div class="basis-1/4 flex flex-col items-center">
@@ -95,19 +95,19 @@
                                     obcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam
                                     nihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat, odit,
                                     tenetur error, harum nesciunt ipsum debitis quas aliquid. Reprehenderit,
-                                    quia. Quo neque error repudiandae fuga? Ipsa laudantium molestias eos 
+                                    quia. Quo neque error repudiandae fuga? Ipsa laudantium molestias eos
                                     sapiente officiis modi at sunt excepturi expedita sint? Sed quibusdam
-                                    recusandae alias error harum maxime adipisci amet laborum. Perspiciatis 
-                                    minima nesciunt dolorem! Officiis iure rerum voluptates a cumque velit 
-                                    quibusdam sed amet tempora. Sit laborum ab, eius fugit doloribus tenetur 
-                                    fugiat, temporibus enim commodi iusto libero magni deleniti quod quam 
+                                    recusandae alias error harum maxime adipisci amet laborum. Perspiciatis
+                                    minima nesciunt dolorem! Officiis iure rerum voluptates a cumque velit
+                                    quibusdam sed amet tempora. Sit laborum ab, eius fugit doloribus tenetur
+                                    fugiat, temporibus enim commodi iusto libero magni deleniti quod quam
                                     consequuntur! Commodi minima excepturi repudiandae velit hic maxime
-                                    doloremque. Quaerat provident commodi consectetur veniam similique ad 
-                                    earum omnis ipsum saepe, voluptas, hic voluptates pariatur est explicabo 
-                                    fugiat, dolorum eligendi quam cupiditate excepturi mollitia maiores labore 
+                                    doloremque. Quaerat provident commodi consectetur veniam similique ad
+                                    earum omnis ipsum saepe, voluptas, hic voluptates pariatur est explicabo
+                                    fugiat, dolorum eligendi quam cupiditate excepturi mollitia maiores labore
                                     suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
-                                    modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam 
-                                    totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam 
+                                    modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam
+                                    totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam
                                     quasi aliquam eligendi, placeat qui corporis!
                                 </p>
                                 <h3 class="font-bold text-lg text-gray-900">Sabbir Hussain</h3>
@@ -125,7 +125,7 @@
 
         {{-- Advisory Committee --}}
         <section class=" py-10">
-            <div class="max-w-7xl mx-auto flex gap-4">
+            <div class="container mx-auto flex gap-4 px-4">
                 <div class="flex-grow">
 
                     <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Advisory Committee</h2>
@@ -203,7 +203,7 @@
         </section>
 
         {{-- Contact us form --}}
-        <section class="bg-gray-100 py-10">
+        <section class="bg-gray-100 py-10 hidden">
             <div class="max-w-7xl mx-auto">
                 <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Contact Us</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -219,7 +219,7 @@
                             <li><i class="mdi mdi-map-marker text-indigo-500"></i> <strong>Address:</strong> 123 Main Street, City, Country</li>
                         </ul>
                     </div>
-        
+
                     <!-- Contact Form -->
                     <div class="bg-white shadow-md rounded-lg p-6">
                         <h3 class="text-xl font-semibold text-gray-800 mb-4">Send Us a Message</h3>
@@ -260,10 +260,8 @@
             </div>
         </section>
 
-        {{-- Contact Information --}}
-
         {{-- FAQ --}}
-        <section class="py-12 bg-gray-50">
+        <section class="py-12 bg-gray-50 hidden">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-8">Frequently Asked Questions</h2>
 

@@ -33,7 +33,7 @@
                 </div>
 
                 <a class="md:p-4 py-2 block hover:text-bb" href="{{route('notices.index')}}">Notices</a>
-                <a href="#" class="text-gray-800 hover:text-blue-500 px-3 py-2">Contact</a>
+                <a href="{{route('contact')}}" class="text-gray-800 hover:text-blue-500 px-3 py-2">Contact</a>
 
                 <!-- Member Dropdown Container -->
                 <div class="relative">
@@ -57,7 +57,7 @@
                 @endguest
 
                 @auth()
-                    
+
                 <div class="relative">
                     <button class="agent-dropdown-button text-gray-800 hover:text-blue-500 px-3 py-2 flex items-center">
                         Others
@@ -100,7 +100,7 @@
     <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
         <div class="container mx-auto px-4 py-2">
             <a href="/" class="block py-2 text-gray-800 hover:text-blue-500">Home</a>
-            
+
             <!-- Mobile ITC Reports Dropdown -->
             <div class="relative">
                 <button class="mobile-dropdown-button w-full text-left py-2 text-gray-800 hover:text-blue-500 flex items-center justify-between">
@@ -117,7 +117,7 @@
             </div>
 
             <a href="{{route('notices.index')}}" class="block py-2 text-gray-800 hover:text-blue-500">Notices</a>
-            <a href="#" class="block py-2 text-gray-800 hover:text-blue-500">Contact</a>
+            <a href="{{route('contact')}}" class="block py-2 text-gray-800 hover:text-blue-500">Contact</a>
 
             <!-- Mobile Members Dropdown -->
             <div class="relative">

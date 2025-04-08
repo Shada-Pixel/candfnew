@@ -1,14 +1,16 @@
 <footer class="">
     <div class="bg-gray-100 pt-24">
-        <div class="max-w-7xl px-4 sm:px-6 text-nblue sm:grid md:grid-cols-4 sm:grid-cols-2 mx-auto">
+        <div class="container px-4 text-nblue sm:grid md:grid-cols-4 sm:grid-cols-2 mx-auto">
             <div class="p-5">
-                <div class="py-2.5">
+                <div class="py-2.5 flex flex-col gap-4">
                     <a href="/" >
                         <div class="flex gap-2 items-center">
                             <img src="{{asset('bcnf.png')}}" alt="" srcset="" class="h-[50px]">
                             <p class="text:nblue text-2xl uppercase font-bold leading-none">Benapole<br/>C&F Association</p>
                         </div>
                     </a>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id, aspernatur dolorum natus recusandae odit eos consectetur, aliquid fugit veritatis asperiores architecto. Beatae nostrum quam exercitationem.</p>
+                    <a class="text-center capitalize px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-110 duration-150 transition-all  font-bold text-lg text-white" href="{{route('contact')}}">Get A Free Query</a>
                 </div>
             </div>
             <div class="p-5">
@@ -38,5 +40,5 @@
             <div class="my-5 flex justify-center items-center"><span>© Copyright {{ date('Y') }}. All Rights Reserved. Developed by</span> <a href="https://shadapixel.com" class="inline-block hover:scale-110 transition-all" target="_blank"><img src="{{asset('shadapixel.png')}}" alt="" srcset="" class="h-5 ml-2"></a></div>
         </div>
     </div>
-    
+
 </footer>

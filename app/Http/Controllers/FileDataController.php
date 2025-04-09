@@ -132,8 +132,47 @@ class FileDataController extends Controller
         $file_data->save();
 
         if (Auth::user()->hasRole('extra') && $request->be_number) {
-            $file_data->status = 'Printed';
-            $file_data->save();
+
+
+            // Check if SMS has already been sent
+            if (!$file_data->sms_sent) {
+                $agent = Agent::where('id', $agent_id)->first();
+                $agent_email = $agent->email;
+                $agent_phone = $agent->phone;
+
+                // Sms Data
+                $ie_name = Ie_data::where('id', $ie_data_id)->first();
+                $ie_name = $ie_name->name;
+                $newSmsData = 'Benapole C&F Agents Association, Your register B/E No: ' . $request->be_number . ' Date:' . $request->be_date . ' Im/Ex: ' . $ie_name . ', Manifest No: ' . $request->manifest_no . ' Date:' . $request->manifest_date . '. Thank you.';
+
+                $sendSMS = Http::post(env('SSL_SMS_BASE_URL'), [
+                    'api_token' => env('SSL_SMS_API_TOKEN'),
+                    'sid' => env('SSL_SMS_SID'),
+                    'msisdn' => $agent_phone,
+                    'sms' => $newSmsData,
+                    'csms_id' => bin2hex(random_bytes(10)),
+                ]);
+                $responseData = $sendSMS->json();
+
+
+                // Extract status for logging
+                $status = $responseData['status'] ?? 'FAILED';
+                $statusCode = $responseData['status_code'] ?? 'Unknown';
+                $statusMessage = $responseData['error_message'] ?? 'No error message';
+
+                // Log the SMS response
+                LogHelper::log(
+                    action: "SMS Sent to $agent_phone",
+                    description: "Status: $status, Code: $statusCode, Message: $statusMessage",
+                    log_type: 'sms',
+                    responseData: $responseData
+                );
+
+                // Mark SMS as sent
+                $file_data->status = 'Printed';
+                $file_data->sms_sent = true;
+                $file_data->save();
+            }
             return redirect()->route('file_datas.show', $file_data->id)->with(['status' => 200, 'message' => 'File Received and Printed!']);
         }
 

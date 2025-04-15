@@ -10,22 +10,27 @@ class Agent extends Model
 {
     use HasFactory, SoftDeletes;
 
-
-    protected $fillable=[
+    protected $fillable = [
         'ain_no',
         'name',
+        'bangla_name',
+        'license_no',
+        'license_issue_date',
+        'membership_no',
+        'agency_logo',
         'owners_name',
-        'photo',
-        'destination',
+        'owners_gender',
+        'owner_photo',
+        'owners_designation',
         'office_address',
         'phone',
         'email',
         'house',
+        'parmanent_address',
         'note'
     ];
 
-
-    public function donations(){
+    public function donations() {
         return $this->hasMany(Donation::class)->orderBy('id', 'desc');
     }
 

@@ -22,8 +22,23 @@ class UpdateAgentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'phone' => 'required',
+            'ain_no' => 'required|string',
+            'name' => 'required|string',
+            'bangla_name' => 'nullable|string',
+            'license_no' => 'nullable|string',
+            'license_issue_date' => 'nullable|date',
+            'membership_no' => 'nullable|string',
+            'agency_logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'owners_name' => 'nullable|string',
+            'owners_gender' => 'nullable|in:Male,Female,Other',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'owners_designation' => 'nullable|string',
+            'office_address' => 'nullable|string',
+            'phone' => 'required|string',
+            'email' => 'required|email',
+            'house' => 'required|string',
+            'parmanent_address' => 'nullable|string',
+            'note' => 'nullable|string',
         ];
     }
 }

@@ -1,7 +1,6 @@
 <x-app-layout>
     {{-- Title --}}
-    <x-slot name="title">Edit {{$agent->name}} Project</x-slot>
-
+    <x-slot name="title">Edit {{$agent->name}}</x-slot>
 
     {{-- Header Style --}}
     <x-slot name="headerstyle">
@@ -12,27 +11,38 @@
         {{-- Form --}}
         <div class="card flex-grow">
             <div class="p-6">
-                <h2 class="mb-4 text-xl">New Agent</h2>
+                <h2 class="mb-4 text-xl">Edit Agent</h2>
 
-                <form action="{{route('agents.update', $agent->id)}}" class="" id="agentCreateForm" enctype="multipart/form-data" method="post">
-
+                <form action="{{route('agents.update', $agent->id)}}" class="" id="agentCreateForm" enctype="multipart/form-data" method="post" novalidate>
                     @csrf
                     @method('PATCH')
 
                     <div class="grid grid-cols-3 lg:grid-cols-4 gap-4">
                         <div>
-                            <label for="ain_no" class="block mb-2">AIN No</label>
-                            <input type="text" class="form-input" id="ain_no" name="ain_no" required placeholder="AIN Number" value="{{$agent->ain_no}}">
-                        </div> <!-- end -->
+                            <label for="ain_no" class="block mb-2">AIN No <span class="text-red-500">*</span></label>
+                            <input type="text" class="form-input @error('ain_no') border-red-500 @enderror"
+                                id="ain_no" name="ain_no" required
+                                placeholder="AIN Number" value="{{$agent->ain_no}}"
+                                aria-describedby="ain_no_error">
+                            @error('ain_no')
+                                <p class="text-red-500 text-sm mt-1" id="ain_no_error">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                        <div class="">
-                            <label for="name" class="block mb-2">Agency Name</label>
-                            <input type="text" class="form-input" id="name" name="name" placeholder="Agent Name" required value="{{$agent->name}}">
-                        </div> <!-- end -->
+                        <div>
+                            <label for="name" class="block mb-2">Agency Name <span class="text-red-500">*</span></label>
+                            <input type="text" class="form-input @error('name') border-red-500 @enderror"
+                                id="name" name="name" required
+                                placeholder="Agent Name" value="{{$agent->name}}"
+                                aria-describedby="name_error">
+                            @error('name')
+                                <p class="text-red-500 text-sm mt-1" id="name_error">{{ $message }}</p>
+                            @enderror
+                        </div>
 
                         <div class="">
                             <label for="bangla_name" class="block mb-2">Bangla Name</label>
-                            <input type="text" class="form-input" id="bangla_name" name="bangla_name" placeholder="Bangla Name" {{ $agent->bangla_name ? $agent->bangla_name:''}}>
+                            <input type="text" class="form-input" id="bangla_name" name="bangla_name" placeholder="Bangla Name" value="{{$agent->bangla_name}}">
                         </div> <!-- end -->
 
                         <div class="">
@@ -54,12 +64,16 @@
                             <input type="file" class="form-input pt-[3px] pb-[2px]" id="agency_logo" name="agency_logo">
                         </div> <!-- end -->
 
-
-
-
                         <div class="">
                             <label for="office_address" class="block mb-2">Office Address</label>
-                            <input type="text" class="form-input" id="office_address" name="office_address" placeholder="Office Adderss" value="{{$agent->office_address}}">
+                            <textarea class="form-input @error('office_address') border-red-500 @enderror"
+                                id="office_address" name="office_address"
+                                placeholder="Office Address"
+                                rows="2"
+                                aria-describedby="office_address_error">{{$agent->office_address}}</textarea>
+                            @error('office_address')
+                                <p class="text-red-500 text-sm mt-1" id="office_address_error">{{ $message }}</p>
+                            @enderror
                         </div> <!-- end -->
 
                         <div class="col-span-3 lg:col-span-4">
@@ -68,59 +82,78 @@
 
                         <div class="">
                             <label for="owners_name" class="block mb-2">Owner / Manager Name</label>
-                            <input type="text" class="form-input" id="owners_name" name="owners_name" placeholder="Owner Name" >
+                            <input type="text" class="form-input" id="owners_name" name="owners_name" placeholder="Owner Name" value="{{$agent->owners_name}}">
                         </div> <!-- end -->
 
                         <div class="">
                             <label for="owners_gender" class="block mb-2">Owner Gender</label>
-                            <select name="owners_gender" id="owners_gender" class="form-select text-gray-900" >
-                                <option value="" >Selece One . .</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
+                            <select name="owners_gender" id="owners_gender" class="form-select text-gray-900">
+                                <option value="">Select One . .</option>
+                                <option value="Male" {{ $agent->owners_gender == 'Male' ? 'selected' : '' }}>Male</option>
+                                <option value="Female" {{ $agent->owners_gender == 'Female' ? 'selected' : '' }}>Female</option>
+                                <option value="Other" {{ $agent->owners_gender == 'Other' ? 'selected' : '' }}>Other</option>
                             </select>
                         </div> <!-- end -->
-
 
                         <div class="">
                             <label for="photo" class="block mb-2">Owner Photo</label>
                             <input type="file" class="form-input pt-[3px] pb-[2px]" id="photo" name="photo">
                         </div> <!-- end -->
 
-
-                        <div class="">
-                            <label for="owners_designation" class="block mb-2">Owner Designation</label>
-                            <select name="owners_designation" id="owners_designation" class="form-select text-gray-900">
-                                <option value="" >Selece One . .</option>
-                                <option value="Propitor">Propitor</option>
-                                <option value="Managing Director">Managing Director</option>
-                                <option value="Managing Partner">Managing Partner</option>
-                                <option value="Chairman">Chairman</option>
-                                <option value="Partner">Partner</option>
-                                <option value="Director">Director</option>
+                        <div>
+                            <label for="owners_designation" class="block mb-2">Designation</label>
+                            <select name="owners_designation" id="owners_designation"
+                                class="form-select text-gray-900 @error('owners_designation') border-red-500 @enderror"
+                                aria-describedby="owners_designation_error">
+                                <option value="">Select One...</option>
+                                <option value="Proprietor" {{ $agent->owners_designation == 'Proprietor' ? 'selected' : '' }}>Proprietor</option>
+                                <option value="Managing Director" {{ $agent->owners_designation == 'Managing Director' ? 'selected' : '' }}>Managing Director</option>
+                                <option value="Managing Partner" {{ $agent->owners_designation == 'Managing Partner' ? 'selected' : '' }}>Managing Partner</option>
+                                <option value="Chairman" {{ $agent->owners_designation == 'Chairman' ? 'selected' : '' }}>Chairman</option>
+                                <option value="Partner" {{ $agent->owners_designation == 'Partner' ? 'selected' : '' }}>Partner</option>
+                                <option value="Director" {{ $agent->owners_designation == 'Director' ? 'selected' : '' }}>Director</option>
                             </select>
-                        </div> <!-- end -->
+                            @error('owners_designation')
+                                <p class="text-red-500 text-sm mt-1" id="owners_designation_error">{{ $message }}</p>
+                            @enderror
+                        </div>
 
+                        <div>
+                            <label for="phone" class="block mb-2">Phone Number <span class="text-red-500">*</span></label>
+                            <input type="tel" class="form-input @error('phone') border-red-500 @enderror"
+                                id="phone" name="phone" required
+                                value="{{$agent->phone}}"
+                                pattern="[0-9]{11}"
+                                placeholder="01XXXXXXXXX"
+                                aria-describedby="phone_error">
+                            @error('phone')
+                                <p class="text-red-500 text-sm mt-1" id="phone_error">{{ $message }}</p>
+                            @enderror
+                            <p class="text-gray-500 text-sm mt-1">Format: 01XXXXXXXXX</p>
+                        </div>
 
-
+                        <div>
+                            <label for="email" class="block mb-2">Email <span class="text-red-500">*</span></label>
+                            <input type="email" class="form-input @error('email') border-red-500 @enderror"
+                                id="email" name="email" required
+                                value="{{$agent->email}}"
+                                placeholder="example@domain.com"
+                                aria-describedby="email_error">
+                            @error('email')
+                                <p class="text-red-500 text-sm mt-1" id="email_error">{{ $message }}</p>
+                            @enderror
+                        </div>
 
                         <div class="">
-                            <label for="phone" class="block mb-2">Phone Number</label>
-                            <input type="text" class="form-input" id="phone" name="phone" required value="{{$agent->phone}}">
-                        </div> <!-- end -->
-
-
-                        <div class="">
-                            <label for="email" class="block mb-2">Email</label>
-                            <input type="email" class="form-input" id="email" name="email" required 
-                                value="{{$agent->email}}">
-                        </div> <!-- end -->
-
-
-                        <div class="">
-                            <label for="house" class="block mb-2">Station / House</label>
-                            <input type="text" class="form-input" id="house" name="house" required value="Benapole"
-                                value="{{$agent->house}}">
+                            <label for="house" class="block mb-2">Station / House <span class="text-red-500">*</span></label>
+                            <input type="text" class="form-input @error('house') border-red-500 @enderror"
+                                id="house" name="house" required
+                                value="{{$agent->house}}"
+                                placeholder="Station or House"
+                                aria-describedby="house_error">
+                            @error('house')
+                                <p class="text-red-500 text-sm mt-1" id="house_error">{{ $message }}</p>
+                            @enderror
                         </div> <!-- end -->
 
                         <div class="col-span-3 lg:col-span-4">
@@ -129,13 +162,18 @@
 
                         <div class="">
                             <label for="parmanent_address" class="block mb-2">Parmanent Address</label>
-                            <input type="text" class="form-input" id="parmanent_address" name="parmanent_address" placeholder="Parmanent Adderss">
+                            <input type="text" class="form-input" id="parmanent_address" name="parmanent_address" placeholder="Parmanent Address" value="{{$agent->parmanent_address}}">
                         </div> <!-- end -->
-
 
                         <div class="col-span-2 lg:col-span-3">
                             <label for="note" class="block mb-2">Note</label>
-                            <textarea  class="form-input" name="note" id="note" cols="30" rows="1" placeholder="Note"></textarea>
+                            <textarea class="form-input @error('note') border-red-500 @enderror"
+                                name="note" id="note"
+                                rows="2"
+                                placeholder="Additional notes">{{$agent->note}}</textarea>
+                            @error('note')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div> <!-- end -->
 
                         <div class="col-span-3 lg:col-span-4 ">
@@ -148,7 +186,6 @@
             </div>
         </div>
     </div>
-
 
     <x-slot name="script">
     </x-slot>

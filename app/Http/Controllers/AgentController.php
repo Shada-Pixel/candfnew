@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Requests\StoreAgentRequest;
 use App\Http\Requests\UpdateAgentRequest;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
@@ -97,7 +98,7 @@ class AgentController extends Controller implements HasMiddleware
      */
     public function show($id)
     {
-        $agent = Agent::find($id)->with('donations')->first();
+        $agent = Agent::with('donations')->find($id);
 
         // Information completions parcentage
         $attributes = $agent->toArray();
@@ -128,33 +129,71 @@ class AgentController extends Controller implements HasMiddleware
      */
     public function update(UpdateAgentRequest $request, Agent $agent)
     {
-        $agent->ain_no = $request->ain_no;
-        $agent->name = $request->name;
-        $agent->owners_name = $request->owners_name;
+        try {
+            $validated = $request->validated();
 
-        //$agent->photo = $request->photo;
+            // Update basic information
+            $agent->fill([
+                'ain_no' => $request->ain_no,
+                'name' => $request->name,
+                'bangla_name' => $request->bangla_name,
+                'license_no' => $request->license_no,
+                'license_issue_date' => $request->license_issue_date,
+                'membership_no' => $request->membership_no,
+                'owners_name' => $request->owners_name,
+                'owners_gender' => $request->owners_gender,
+                'owners_designation' => $request->owners_designation,
+                'office_address' => $request->office_address,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'house' => $request->house,
+                'parmanent_address' => $request->parmanent_address,
+                'note' => $request->note
+            ]);
 
-        if ($request->hasFile('photo')) {
-            $image = $request->photo;
-            $ext = $image->getClientOriginalExtension();
-            $filename = uniqid() . '.' . $ext;
-            Storage::delete("images/{$agent->image}");
-            $request->photo->move(public_path('images'), $filename);
-            $agent->photo = 'images/' . $filename;
+            // Handle owner photo upload
+            if ($request->hasFile('photo')) {
+                try {
+                    $image = $request->photo;
+                    $ext = $image->getClientOriginalExtension();
+                    $filename = uniqid() . '.' . $ext;
+
+                    // Delete old photo if exists
+                    if ($agent->photo && file_exists(public_path($agent->photo))) {
+                        unlink(public_path($agent->photo));
+                    }
+
+                    $request->photo->move(public_path('images'), $filename);
+                    $agent->photo = 'images/' . $filename;
+                } catch (\Exception $e) {
+                    return redirect()->back()->with('error', 'Error uploading owner photo: ' . $e->getMessage());
+                }
+            }
+
+            // Handle agency logo upload
+            if ($request->hasFile('agency_logo')) {
+                try {
+                    $image = $request->agency_logo;
+                    $ext = $image->getClientOriginalExtension();
+                    $filename = uniqid() . '.' . $ext;
+
+                    // Delete old logo if exists
+                    if ($agent->agency_logo && file_exists(public_path($agent->agency_logo))) {
+                        unlink(public_path($agent->agency_logo));
+                    }
+
+                    $request->agency_logo->move(public_path('images'), $filename);
+                    $agent->agency_logo = 'images/' . $filename;
+                } catch (\Exception $e) {
+                    return redirect()->back()->with('error', 'Error uploading agency logo: ' . $e->getMessage());
+                }
+            }
+
+            $agent->save();
+            return redirect()->route('agents.index')->with('success', 'Agent updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error updating agent: ' . $e->getMessage());
         }
-
-        $agent->owners_designation = $request->owners_designation;
-        $agent->office_address = $request->office_address;
-        $agent->phone = $request->phone;
-        $agent->email = $request->email;
-        $agent->house = $request->house;
-
-        if ($request->note) {
-            $agent->note = $request->note;
-        }
-        $agent->save();
-
-        return redirect()->route('agents.index') ->with('success', 'Agent updated successfully.');
     }
 
     /**

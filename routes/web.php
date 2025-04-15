@@ -25,7 +25,8 @@ use App\Http\Controllers\{
     SmsController,
     DonationController,
     NoticeController,
-    ITCReportController
+    ITCReportController,
+    ContactController
 };
 
 // Guest user routes
@@ -33,6 +34,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home');
     Route::get('/story', 'story')->name('story');
     Route::get('/contact', 'contact')->name('contact');
+    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
     Route::get('/career', 'career')->name('career');
     Route::get('/allservices', 'services')->name('services');
     Route::get('/works/{industry}', 'industries')->name('industries.show');

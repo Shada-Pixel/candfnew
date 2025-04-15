@@ -155,18 +155,18 @@ class FileDataController extends Controller
                 $responseData = $sendSMS->json();
 
 
-                // Extract status for logging
-                $status = $responseData['status'] ?? 'FAILED';
-                $statusCode = $responseData['status_code'] ?? 'Unknown';
-                $statusMessage = $responseData['error_message'] ?? 'No error message';
+                // // Extract status for logging
+                // $status = $responseData['status'] ?? 'FAILED';
+                // $statusCode = $responseData['status_code'] ?? 'Unknown';
+                // $statusMessage = $responseData['error_message'] ?? 'No error message';
 
-                // Log the SMS response
-                LogHelper::log(
-                    action: "SMS Sent to $agent_phone",
-                    description: "Status: $status, Code: $statusCode, Message: $statusMessage",
-                    log_type: 'sms',
-                    responseData: $responseData
-                );
+                // // Log the SMS response
+                // LogHelper::log(
+                //     action: "SMS Sent to $agent_phone",
+                //     description: "Status: $status, Code: $statusCode, Message: $statusMessage",
+                //     log_type: 'sms',
+                //     responseData: $responseData
+                // );
 
                 // Mark SMS as sent
                 $file_data->status = 'Printed';
@@ -201,6 +201,7 @@ class FileDataController extends Controller
         $now = Carbon::now();
         $year = $now->year;
         $file_data = File_data::where('id', $file_data->id)->with('ie_data')->with('agent')->first();
+        $file_data->load(['ie_data', 'agent']);
         return view('admin.file_datas.edit', compact('file_data','year'));
     }
 
@@ -269,18 +270,18 @@ class FileDataController extends Controller
             $responseData = $sendSMS->json();
 
 
-            // Extract status for logging
-            $status = $responseData['status'] ?? 'FAILED';
-            $statusCode = $responseData['status_code'] ?? 'Unknown';
-            $statusMessage = $responseData['error_message'] ?? 'No error message';
+            // // Extract status for logging
+            // $status = $responseData['status'] ?? 'FAILED';
+            // $statusCode = $responseData['status_code'] ?? 'Unknown';
+            // $statusMessage = $responseData['error_message'] ?? 'No error message';
 
-            // Log the SMS response
-            LogHelper::log(
-                action: "SMS Sent to $agent_phone",
-                description: "Status: $status, Code: $statusCode, Message: $statusMessage",
-                log_type: 'sms',
-                responseData: $responseData
-            );
+            // // Log the SMS response
+            // LogHelper::log(
+            //     action: "SMS Sent to $agent_phone",
+            //     description: "Status: $status, Code: $statusCode, Message: $statusMessage",
+            //     log_type: 'sms',
+            //     responseData: $responseData
+            // );
 
             // Mark SMS as sent
             $file_data->sms_sent = true;
@@ -302,7 +303,26 @@ class FileDataController extends Controller
      */
     public function destroy(File_data $file_data)
     {
-        //
+        // Check if user has permission to delete files
+        if (!Auth::user()->can('delete', $file_data)) {
+            return redirect()->back()->with(['status' => 403, 'message' => 'Unauthorized to delete this file.']);
+        }
+
+        try {
+            // Log the deletion
+            LogHelper::log(
+                action: "File Data Deleted",
+                description: "File Data with BE number: {$file_data->be_number} was deleted",
+                log_type: 'delete'
+            );
+
+            // Delete the record
+            $file_data->delete();
+
+            return redirect()->route('file_datas.index')->with(['status' => 200, 'message' => 'File deleted successfully!']);
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['status' => 500, 'message' => 'Error deleting file: ' . $e->getMessage()]);
+        }
     }
 
     public function isBeNumberUnique(Request $request){

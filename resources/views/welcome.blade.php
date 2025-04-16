@@ -9,9 +9,28 @@
         <x-hero></x-hero>
 
 
+
+
+
         <section class=" pb-10 pt-16">
             <div class="container mx-auto flex gap-4 px-4">
                 <div class="basis-4/5">
+                    {{-- Mashonary grid gallary section --}}
+                    <div class="flex-grow mb-8">
+                        <h2 class="text-3xl font-bold text-left mb-8 text-gray-800">Photo of Recently Activities</h2>
+                        <div class="grid grid-cols-3 gap-6 mt-5">
+                            <div class="gallery-item min-h-52 bg-red-400 col-span-2 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out hover:z-10">
+                            </div>
+                            <div class="gallery-item min-h-52 bg-red-400 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10">
+                            </div>
+                            <div class="gallery-item min-h-52 bg-red-400 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10">
+                            </div>
+                            <div class="gallery-item min-h-52 bg-red-400 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10">
+                            </div>
+                            <div class="gallery-item min-h-52 bg-red-400 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10">
+                            </div>
+                        </div>
+                    </div>
 
                     {{-- Notice Board --}}
                     <div class="flex-grow">
@@ -46,7 +65,7 @@
                             </div>
 
                             <div class="text-gray-600 basis-3/4">
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
+                                <p class="text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
                                     molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
                                     numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
                                     optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis
@@ -88,7 +107,7 @@
                             </div>
 
                             <div class="text-gray-600 basis-3/4">
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
+                                <p class="text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
                                     molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
                                     numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
                                     optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis
@@ -227,7 +246,7 @@
                             <div>
                                 <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                                 <input type="text" name="name" id="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
-                                @error('name') border-red-500 @enderror" value="{{ old('name') }}">
+                                @error('name')  @enderror" value="{{ old('name') }}">
                                 @error('name')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
@@ -235,7 +254,7 @@
                             <div>
                                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                                 <input type="email" name="email" id="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
-                                @error('email') border-red-500 @enderror" value="{{ old('email') }}">
+                                @error('email')  @enderror" value="{{ old('email') }}">
                                 @error('email')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
@@ -244,7 +263,7 @@
                                 <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
                                 <textarea name="message" id="message" rows="4" class="mt-1 block
                                 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
-                                @error('message') border-red-500 @enderror">{{ old('message') }}</textarea>
+                                @error('message') @enderror">{{ old('message') }}</textarea>
                                 @error('message')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
@@ -323,6 +342,31 @@
             </div>
         </section>
 
+
+
+        {{-- Make a two colum add showing section --}}
+        <section>
+            <div class="container mx-auto flex gap-4 px-4 pb-8">
+                <div class="">
+                    <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Advertisement</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-5">
+                        <a class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">Advertisement Title</h3>
+                                <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque rerum!</p>
+                            </div>
+                        </a>
+                        <a class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900">Advertisement Title</h3>
+                                <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque rerum!</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <x-slot name="script">
@@ -351,6 +395,16 @@
                         $otherIcon.removeClass('rotate-180');
                     });
                 });
+
+
+
+                // Pause animation on hover
+                $('.gallery-item').hover(
+                    function() {
+                        $(this).removeClass('col-span-1').addClass('col-span-2');
+                        $(this).siblings().removeClass('col-span-2').addClass('col-span-1');
+                    }
+                );
             });
         </script>
     </x-slot>

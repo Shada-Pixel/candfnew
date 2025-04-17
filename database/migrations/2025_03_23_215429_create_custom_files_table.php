@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('custom_files', function (Blueprint $table) {
-            $table->id();            
+            $table->id();
             $table->string('name')->nullable();
             $table->string('be_number')->nullable();
             $table->string('fees')->nullable();
             $table->string('type')->nullable();
             $table->string('status')->nullable();
-            $table->foreignId('ie_data_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('agent_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -98,9 +98,16 @@ class AgentController extends Controller implements HasMiddleware
      */
     public function show($id)
     {
-        $agent = Agent::with('donations')->find($id);
+        $agent = Agent::with(['donations', 'custom_files' => function($query) {
+            $query->orderBy('status', 'desc'); // This will show Unpaid first (alphabetically)
+        }])->find($id);
 
-        // Information completions parcentage
+        // Get unpaid files info
+        $unpaidFiles = $agent->custom_files->where('status', 'Unpaid');
+        $unpaidCount = $unpaidFiles->count();
+        $unpaidTotal = $unpaidFiles->sum('fees');
+
+        // Information completions percentage
         $attributes = $agent->toArray();
         $totalColumns = count($attributes);
         $filledColumns = collect($attributes)->filter(function ($value) {
@@ -108,10 +115,11 @@ class AgentController extends Controller implements HasMiddleware
         })->count();
         $completionPercentage = ($filledColumns / $totalColumns) * 100;
 
-
         return view('admin.agents.show', [
             'agent' => $agent,
-            'completionPercentage' => round($completionPercentage, 2) // Round to 2 decimal places
+            'completionPercentage' => round($completionPercentage, 2),
+            'unpaidCount' => $unpaidCount,
+            'unpaidTotal' => $unpaidTotal
         ]);
     }
 

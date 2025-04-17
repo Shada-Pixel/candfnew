@@ -14,12 +14,12 @@ class CustomFile extends Model
         'fees',
         'type',
         'status',
-        'ie_data_id'
+        'agent_id'
     ];
-    
-    public function ieData()
+
+    public function agent()
     {
-        return $this->belongsTo(IeData::class);
+        return $this->belongsTo(Agent::class);
     }
-    
+
 }

@@ -11,7 +11,7 @@ class UpdateCustomFileRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;  // Allow updates
     }
 
     /**
@@ -22,7 +22,12 @@ class UpdateCustomFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'be_number' => 'required|string',
+            'type' => 'required|in:IM,EX',
+            'status' => 'required|in:Paid,Unpaid',
+            'fees' => 'required|numeric|min:0',
+            'agent_id' => 'nullable|exists:agents,id'
         ];
     }
 }

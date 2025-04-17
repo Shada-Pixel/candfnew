@@ -1,9 +1,12 @@
 <x-app-layout>
-    {{-- Title --}}
     <x-slot name="title">Operate File</x-slot>
 
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Edit Custom File') }}
+        </h2>
+    </x-slot>
 
-    {{-- Header Style --}}
     <x-slot name="headerstyle">
         <style>
             .ui-autocomplete {
@@ -21,116 +24,74 @@
         </style>
     </x-slot>
 
-    {{-- Page Content --}}
-    <div class="flex flex-col gap-6">
-
-        {{-- Form --}}
-        <div class="card flex-grow max-w-2xl mx-auto">
-            <div class="p-6">
-
-                <div class="flex justify-between items-center mb-4">
-
-                    <h2 class="text-xl">Operate This File</h2>
-                    <div class="">
-                        <a href="{{route('dashboard')}}">
-                            <button class="font-mont px-2 py-2 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Dashboard</button>
-                        </a>
-                        <a href="{{route('agents.create')}}">
-                            <button class="font-mont px-2 py-2 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">New Agent</button>
-                        </a>
-                        <a href="{{route('ie_datas.index')}}">
-                            <button class="font-mont px-2 py-2 bg-indigo-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">New Imp/Exp</button>
-                        </a>
-                    </div>
-                </div>
-
-                <form class="" id="agentCreateForm" enctype="multipart/form-data" action="{{route('file_datas.update', $file_data->id)}}" method="POST">
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
+                <form method="POST" action="{{ route('customfiles.update', $customFile->id) }}" class="space-y-6">
                     @csrf
-                    @method('PATCH')
-                    <div class="">
+                    @method('PUT')
 
-                        {{-- Section One --}}
-                        <div class="grid grid-cols-4 gap-4 mb-4 bg-center bg-no-repeat bg-contain bg-opacity-10 backdrop-blur-2xl" style="background-image: url('{{asset('bcnft.png')}}');">
-                            <div>
-                                <label for="lodgement_no" class="block mb-2">Lodgement No</label>
-                                <div class="flex items-center justify-between">
-                                    <span style="padding-top: 5px;padding-right: 10px">{{date('Y').'-'}}</span>
-                                    <input type="text" class="form-input" id="lodgement_no" name="lodgement_no" required value="{{$file_data->lodgement_no ?? ''}}">
-                                </div>
-                            </div> <!-- end -->
-                            <div class="">
+                    <!-- Name -->
+                    <div>
+                        <label for="name" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Name') }}</label>
+                        <input id="name" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="text" name="name" value="{{ old('name', $customFile->name) }}" required autofocus />
+                    </div>
 
-                            </div><!-- end -->
+                    <!-- BE Number -->
+                    <div>
+                        <label for="be_number" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('BE Number') }}</label>
+                        <input id="be_number" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="text" name="be_number" value="{{ old('be_number', $customFile->be_number) }}" required />
+                    </div>
 
-                            <div class="">
-                                <label for="lodgement_date" class="block mb-2">Lodgement Date</label>
-                                <input type="text" class="form-input skipme" id="lodgement_date" name="lodgement_date" placeholder="Lodgement Date" required value="{{ $file_data->lodgement_date ?? date('d/m/Y') }}">
-                            </div> <!-- end -->
+                    <!-- Type -->
+                    <div>
+                        <label for="type" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Type') }}</label>
+                        <select id="type" name="type" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                            <option value="IM" {{ old('type', $customFile->type) === 'IM' ? 'selected' : '' }}>Import</option>
+                            <option value="EX" {{ old('type', $customFile->type) === 'EX' ? 'selected' : '' }}>Export</option>
+                        </select>
+                    </div>
 
+                    <!-- Status -->
+                    <div>
+                        <label for="status" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Status') }}</label>
+                        <select id="status" name="status" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                            <option value="Unpaid" {{ old('status', $customFile->status) === 'Unpaid' ? 'selected' : '' }}>Unpaid</option>
+                            <option value="Paid" {{ old('status', $customFile->status) === 'Paid' ? 'selected' : '' }}>Paid</option>
+                        </select>
+                    </div>
 
+                    <!-- Fees -->
+                    <div>
+                        <label for="fees" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Fees') }}</label>
+                        <input id="fees" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="number" name="fees" value="{{ old('fees', $customFile->fees) }}" required />
 
-                            <div class="col-span-2">
-                                <label for="agentain" class="block mb-2">Agent AIN</label>
-                                <input type="text" class="form-input" id="agentain" name="agentain" required @role('extra') autofocus @endrole value="{{ $file_data->agent->name ?? '' }}">
-                            </div> <!-- end -->
+                    </div>
 
+                    <!-- Agent -->
+                    <div>
+                        <label for="agent_id" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Agent') }}</label>
+                        <select id="agent_id" name="agent_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                            <option value="">Select Agent</option>
+                            @foreach($agents as $agent)
+                                <option value="{{ $agent->id }}" {{ old('agent_id', $customFile->agent_id) == $agent->id ? 'selected' : '' }}>
+                                    {{ $agent->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                            <div class="">
-                                <label for="manifest_no" class="block mb-2">Manifest No</label>
-                                <input type="text" class="form-input" id="manifest_no" name="manifest_no" placeholder="Manifest No" required value="{{ $file_data->manifest_no ?? '' }}">
-
-                            </div> <!-- end -->
-
-                            <div class="">
-                                <label for="manifest_date" class="block mb-2">Manifest Date</label>
-                                <input type="text" class="form-input skipme" id="manifest_date" name="manifest_date" placeholder="Manifest Date" required value="{{$file_data->manifest_date ??  date('d/m/Y')}}">
-                            </div> <!-- end -->
-
-
-                            <div class="col-span-2">
-                                <label for="impexp" class="block mb-2">Importer/Exporter</label>
-                                <input type="text" class="form-input" id="impexp" name="impexp" placeholder="Importer/Exporter"  @role('operator') required autofocus @endrole value="{{ $file_data->ie_data->name ?? '' }}">
-
-                            </div> <!-- end -->
-
-
-                            <div class="">
-                                <label for="be_number" class="block mb-2">B/E Number</label>
-                                <input type="text" class="form-input" id="be_number" name="be_number" placeholder="B/E Number"  value="{{ $file_data->be_number ?? '' }}" @role('operator') required @endrole>
-                            </div> <!-- end -->
-
-                            <div class="">
-                                <label for="be_date" class="block mb-2">B/E Date</label>
-                                <input type="text" class="form-input skipme" id="be_date" name="be_date" placeholder="B/E Date" value="{{ $file_data->be_date ?? date('d/m/Y') }}">
-                            </div> <!-- end -->
-
-
-                            <div class="w-20">
-                                <label for="page" class="block mb-2">Item</label>
-                                <input type="text" class="form-input " id="page" name="page" placeholder="00" max="999" value="{{ $file_data->page ?? $file_data->page}}" required>
-                            </div> <!-- end -->
-
-
-                            <div class=""><input type="hidden" name="printable" id="printable"></div><!-- end -->
-
-                            <div class="self-end">
-                                <button type="submit" class="font-mont px-10 py-4 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150  hover:scale-110"
-                                    id="baccountSaveBtn">Submit</button>
-                            </div><!-- end -->
-
-                        </div>
-
-
-
+                    <div class="flex items-center justify-end mt-4">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                            {{ __('Update') }}
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-
     <x-slot name="script">
-        {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
         <script>
@@ -191,9 +152,6 @@
                     }
                 });
             });
-
-
-
         </script>
     </x-slot>
 </x-app-layout>

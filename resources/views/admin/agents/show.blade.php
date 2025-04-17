@@ -7,6 +7,19 @@
     <x-slot name="headerstyle">
         {{-- Datatable css --}}
         <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <style>
+            .tablinks.active {
+                color: #6d28d9;
+                border-bottom: 2px solid #6d28d9;
+            }
+            .tabcontent {
+                animation: fadeEffect 1s;
+            }
+            @keyframes fadeEffect {
+                from {opacity: 0;}
+                to {opacity: 1;}
+            }
+        </style>
     </x-slot>
 
     <section>
@@ -76,92 +89,212 @@
                             </div>
                         </div>
                     </div>
+                    {{-- General Information End --}}
 
+                    {{-- Three tab Custom Files, Donation, Fees --}}
+                    <div class="mb-6">
+                        <div class="border-b border-gray-200">
+                            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab">
+                                <li class="mr-2" role="presentation">
+                                    <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 tablinks active" id="custom-files-tab" data-tab="custom-files">
+                                        Custom Files
+                                        @if($unpaidCount > 0)
+                                            <span class="ml-1 px-2 py-1 text-xs text-red-600 bg-red-100 rounded-full">{{ $unpaidCount }} unpaid</span>
+                                        @endif
+                                    </button>
+                                </li>
+                                <li class="mr-2" role="presentation">
+                                    <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 tablinks" id="donation-tab" data-tab="donation">Donation</button>
+                                </li>
+                                <li role="presentation">
+                                    <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 tablinks" id="fees-tab" data-tab="fees">Fees</button>
+                                </li>
+                            </ul>
+                        </div>
 
-
-
-                    <div class="text-center">
-                        <h3 class="text-2xl font-medium">Donation</h3>
-                        <p>
-                            Treatment: {{ $agent->donations->where('status', 'Approved')->where('type', 'Treatment')->count() }},
-                            Education: {{ $agent->donations->where('status', 'Approved')->where('type', 'Education')->count() }},
-                            Marriage: {{ $agent->donations->where('status', 'Approved')->where('type', 'Marrige')->count() }},
-                            Other: {{ $agent->donations->where('status', 'Approved')->where('type', 'Other')->count() }}
-                        </p>
-                    </div>
-                    <table id="donationTable" class="display stripe text-xs sm:text-base" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Sl</th>
-                                <th>Agent</th>
-                                <th>Date</th>
-                                <th>Perpose</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                @role('admin')
-                                <th class="text-right">Action</th>
-                                @endrole
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($agent->donations as $donation)
-                            <tr>
-                                <td>{{$loop->iteration}}</td>
-                                <td>{{$donation->agent->name}}</td>
-                                <td>{{ $donation->formatted_date }}</td>
-                                <td>{{$donation->purpose}}</td>
-                                <td>{{$donation->amount}} Taka</td>
-                                <td>{{$donation->status}}</td>
-                                @role('admin')
-                                <td>
-                                    <div class="flex flex-col sm:flex-row gap-5 justify-end items-center">
-                                        <a href="{{route('donations.edit',$donation->id)}}" class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-xl" >
-                                            <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
-                                        </a>
-
-                                        <form action="{{ route('donations.destroy',$donation->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"  class="text-red-500/70 hover:text-red  hover:scale-105 transition duration-150 ease-in-out text-xl">
-                                                <span class="menu-icon"><i class="mdi mdi-delete"></i></span>
-                                            </button>
-                                        </form>
+                        <!-- Tab content -->
+                        <div class="tab-content mt-6">
+                            <!-- Custom Files Tab -->
+                            <div id="custom-files" class="tabcontent active">
+                                @if($unpaidCount > 0)
+                                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0">
+                                                <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm text-yellow-700">
+                                                    There are <strong>{{ $unpaidCount }}</strong> unpaid custom files with a total pending amount of <strong>৳{{ number_format($unpaidTotal, 2) }}</strong>
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </td>
-                                @endrole
-                            </tr>
-                            @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="4" class="text-right font-bold">Total Approved Amount:</td>
-                                <td colspan="2" class="font-bold">
-                                    {{ $agent->donations->where('status', 'Approved')->sum('amount') }} Taka
-                                </td>
-                                <td></td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                                @endif
+
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Agent Name In Customs File</th>
+                                            <th>B/E No</th>
+                                            <th>Fees</th>
+                                            <th>Agent Name in Chada</th>
+                                            <th>Type</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    @foreach ($agent->custom_files as $file)
+                                        <tr class="{{ $file->status == 'Unpaid' ? 'bg-red-50' : '' }}">
+                                            <th>{{ $loop->index+1 }}</th>
+                                            <td>{{$file->name}}</td>
+                                            <td>{{$file->be_number}}</td>
+                                            <td>৳{{number_format($file->fees, 2)}}</td>
+                                            <td>{{$file->agent ? $file->agent->name : 'Unknown'}}</td>
+                                            <td>{{$file->type}}</td>
+                                            <td>
+                                                @if ($file->status == 'Unpaid')
+                                                    <span class="text-red-400">Unpaid</span>
+                                                @else
+                                                    <span class="text-green-600">Paid</span>
+                                                @endif
+                                            </td>
+
+                                            <td class="flex justify-end items-center gap-2">
+                                                @role('admin')
+                                                <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('customfiles.edit', $file->id)}}">
+                                                    <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
+                                                </a>
+                                                <a class="text-red-500/70 hover:text-red  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{ route('customfiles.destroy', $file->id) }}"
+                                                onclick="event.preventDefault(); document.getElementById('delete-form-{{ $file->id }}').submit();">
+                                                <span class="menu-icon"><i class="mdi mdi-delete"></i></span>
+                                                </a>
+
+                                                <form id="delete-form-{{ $file->id }}" action="{{ route('customfiles.destroy', $file->id) }}" method="POST" style="display: none;">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                </form>
+                                                @endrole
+
+                                                @role('agent')
+                                                <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('customfiles.edit', $file->id)}}">
+                                                    <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
+                                                </a>
+                                                @endrole
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Donation Tab -->
+                            <div id="donation" class="tabcontent hidden">
+                                <div class="text-center mb-4">
+                                    <h3 class="text-2xl font-medium">Donation</h3>
+                                    <p>
+                                        Treatment: {{ $agent->donations->where('status', 'Approved')->where('type', 'Treatment')->count() }},
+                                        Education: {{ $agent->donations->where('status', 'Approved')->where('type', 'Education')->count() }},
+                                        Marriage: {{ $agent->donations->where('status', 'Approved')->where('type', 'Marrige')->count() }},
+                                        Other: {{ $agent->donations->where('status', 'Approved')->where('type', 'Other')->count() }}
+                                    </p>
+                                </div>
+                                <table id="donationTable" class="display stripe text-xs sm:text-base" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Sl</th>
+                                            <th>Agent</th>
+                                            <th>Date</th>
+                                            <th>Purpose</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            @role('admin')
+                                            <th class="text-right">Action</th>
+                                            @endrole
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($agent->donations as $donation)
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$donation->agent->name}}</td>
+                                            <td>{{ $donation->formatted_date }}</td>
+                                            <td>{{$donation->purpose}}</td>
+                                            <td>{{$donation->amount}} Taka</td>
+                                            <td>{{$donation->status}}</td>
+                                            @role('admin')
+                                            <td>
+                                                <div class="flex flex-col sm:flex-row gap-5 justify-end items-center">
+                                                    <a href="{{route('donations.edit',$donation->id)}}" class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-xl" >
+                                                        <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
+                                                    </a>
+
+                                                    <form action="{{ route('donations.destroy',$donation->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"  class="text-red-500/70 hover:text-red  hover:scale-105 transition duration-150 ease-in-out text-xl">
+                                                            <span class="menu-icon"><i class="mdi mdi-delete"></i></span>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                            @endrole
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4" class="text-right font-bold">Total Approved Amount:</td>
+                                            <td colspan="2" class="font-bold">
+                                                {{ $agent->donations->where('status', 'Approved')->sum('amount') }} Taka
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                            <!-- Fees Tab -->
+                            <div id="fees" class="tabcontent hidden">
+                                <h3 class="text-2xl font-medium mb-4">Fees</h3>
+                                <!-- Add your fees content here -->
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Three tab Custom Files, Donation, Fees End --}}
 
                 </div>
-
-
-
             </div> <!-- end card -->
-
-
 
         </div>
     </section>
-
-
-
 
     <x-slot name="script">
         <!-- Datatable script-->
         <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         <script>
             var datatablelist = $('#donationTable').DataTable();
+            var customsfiles = $('#customsfiles').DataTable();
+
+            // Tab functionality
+            $(document).ready(function() {
+                $('.tablinks').click(function() {
+                    // Remove active class from all tabs and content
+                    $('.tablinks').removeClass('active');
+                    $('.tabcontent').addClass('hidden').removeClass('active');
+
+                    // Add active class to clicked tab
+                    $(this).addClass('active');
+
+                    // Show corresponding content
+                    const tabId = $(this).data('tab');
+                    $(`#${tabId}`).removeClass('hidden').addClass('active');
+                });
+            });
         </script>
     </x-slot>
 </x-guest-layout>

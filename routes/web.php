@@ -26,7 +26,8 @@ use App\Http\Controllers\{
     DonationController,
     NoticeController,
     ITCReportController,
-    ContactController
+    ContactController,
+    CustomFileController
 };
 
 // Guest user routes
@@ -144,6 +145,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Donations
     Route::resource('donations', DonationController::class);
+
+
+    // Custom File
+    Route::resource('customfiles', CustomFileController::class);
 });
 
 // Guest-accessible routes

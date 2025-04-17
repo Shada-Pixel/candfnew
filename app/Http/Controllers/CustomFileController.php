@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\CustomFile;
+use App\Models\Agent;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreCustomFileRequest;
 use App\Http\Requests\UpdateCustomFileRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CustomFileController extends Controller
 {
@@ -34,28 +37,56 @@ class CustomFileController extends Controller
      */
     public function store(StoreCustomFileRequest $request)
     {
-        // Define the path to the Excel file in the public folder
-        $filePath = public_path('your-file.xlsx');
+        try {
+            $file = $request->file('excel_file');
 
-        // Check if the file exists
-        if (!file_exists($filePath)) {
-            return redirect()->back()->with('error', 'File not found in the public folder.');
+            if (!$file) {
+                return redirect()->back()->with('error', 'No file was uploaded.');
+            }
+
+            // Validate file extension
+            $extension = $file->getClientOriginalExtension();
+            if (!in_array($extension, ['xlsx', 'xls'])) {
+                return redirect()->back()->with('error', 'Please upload a valid Excel file.');
+            }
+
+            // Use Laravel Excel to import the file
+            $data = Excel::toArray([], $file);
+
+            // Process each row from the first sheet
+            foreach ($data[0] as $index => $row) {
+                // Skip header row
+                if ($index === 0) continue;
+
+                // Only process non-empty rows
+                if (!empty(array_filter($row))) {
+                    // Set fees based on type (IM/EX)
+                    $type = trim(strtoupper($row[3] ?? '')); // Convert to uppercase and trim
+                    $fees = $type === 'IM' ? 500 : ($type === 'EX' ? 400 : null);
+
+                    // Search for matching agent by name
+                    $agentName = trim($row[1] ?? '');
+                    $agent = null;
+                    if ($agentName) {
+                        $agent = Agent::where('name', 'LIKE', '%' . $agentName . '%')
+                                    ->first();
+                    }
+
+                    CustomFile::create([
+                        'name' => $row[1] ?? null,
+                        'be_number' => $row[2] ?? null,
+                        'fees' => $fees, // Use calculated fees
+                        'type' => $type,
+                        'status' => 'Unpaid',
+                        'agent_id' => $agent ? $agent->id : null
+                    ]);
+                }
+            }
+
+            return redirect()->route('customfiles.index')->with('success', 'Data imported successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error importing file: ' . $e->getMessage());
         }
-
-        // Use Maatwebsite Excel to read the file
-        // $data = \Maatwebsite\Excel\Facades\Excel::toArray([], $filePath);
-
-        // Loop through the data and save it to the database
-        foreach ($data[0] as $row) {
-            CustomFile::create([
-                'column1' => $row[0], // Replace 'column1' with your actual database column name
-                'column2' => $row[1], // Replace 'column2' with your actual database column name
-                // Add more columns as needed
-            ]);
-        }
-
-        // Redirect back with a success message
-        return redirect()->route('customfiles.index')->with('success', 'Data imported successfully.');
     }
 
     /**
@@ -69,24 +100,51 @@ class CustomFileController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CustomFile $customFile)
+    public function edit($customFile)
     {
-        //
+        $customFile = CustomFile::find($customFile);
+        $agents = Agent::orderBy('name')->get();
+        return view('admin.customfiles.edit', compact('customFile', 'agents'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCustomFileRequest $request, CustomFile $customFile)
+    public function update(UpdateCustomFileRequest $request, $customFile)
     {
-        //
+        $customFile = CustomFile::find($customFile);
+
+        try {
+            // Set fees based on type if it's changed
+            if ($request->type !== $customFile->type) {
+                $request->merge([
+                    'fees' => $request->type === 'IM' ? 500 : 400
+                ]);
+            }
+
+            $customFile->update($request->validated());
+
+            return redirect()->route('customfiles.index')
+                ->with('success', 'Custom file updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Error updating custom file: ' . $e->getMessage());
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CustomFile $customFile)
+    public function destroy( $customFile)
     {
-        //
+        $customFile = CustomFile::find($customFile);
+        try {
+            $customFile->delete();
+            return redirect()->route('customfiles.index')
+                ->with('success', 'Custom file deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Error deleting custom file: ' . $e->getMessage());
+        }
     }
 }

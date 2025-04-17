@@ -104,6 +104,11 @@
                         </a>
                     </li>
                     <li class="menu-item">
+                        <a href="{{route('customfiles.index')}}" class="menu-link">
+                            <span class="menu-text">Customs Report</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
                         <a href="{{route('reports.financial.monthly')}}" class="menu-link">
                             <span class="menu-text">Monthly Report</span>
                         </a>

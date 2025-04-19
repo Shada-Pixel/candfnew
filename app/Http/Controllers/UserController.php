@@ -10,10 +10,11 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
@@ -29,222 +30,176 @@ class UserController extends Controller implements HasMiddleware
         ];
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-    */
     public function index(Request $request)
     {
-
         if ($request->ajax()) {
-
             $users = User::with('roles')->get();
             return Datatables::of($users)->make(true);
         }
-
-
         return view('admin.users.index');
     }
-
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-    */
 
     public function create(): View
     {
         $roles = Role::all();
-
-        return view('admin.users.create',['roles'=> $roles]);
+        return view('admin.users.create', ['roles' => $roles]);
     }
 
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    // : RedirectResponse
-    public function store(Request $request)
+    public function store(StoreUserRequest $request): RedirectResponse
     {
-        $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        try {
+            DB::beginTransaction();
+            
+            $user = new User;
+            $user->fill($request->safe()->only(['name', 'email']));
+            $user->password = Hash::make($request->password);
 
+            if ($request->agent_id) {
+                $user->agent_id = $request->agent_id;
+            }
 
-        if ($request->agent_id) {
-            $user->agent_id = $request->agent_id;
+            if ($request->hasFile('photo')) {
+                $path = $request->file('photo')->store('users/photos', 'public');
+                $user->photo = $path;
+            }
+
+            $user->save();
+            $user->assignRole($request->role);
+
+            DB::commit();
+            return redirect()->route('users.index')
+                ->with(['status' => 200, 'message' => 'User created successfully']);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withInput()
+                ->with(['status' => 500, 'message' => 'Error creating user: ' . $e->getMessage()]);
         }
-
-
-        // user photo
-        if ($request->file('photo')) {
-            $cover = $request->file('photo');
-            $image_full_name = time().'photo'.'.'.$cover->getClientOriginalExtension();
-            $upload_path = 'images/users/';
-            $image_url = $upload_path.$image_full_name;
-            $success = $cover->move($upload_path, $image_full_name);
-            $user->photo = $image_url;
-        }
-        $user->save();
-
-        $user->assignRole($request->role);
-        return redirect()->route('users.index')->with(['status' => 200, 'message' => 'User Created!']);
-
     }
 
-
-
-    /**
-     * Display the specified resource.
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show($id): View
     {
+        $user = User::with('agency')->findOrFail($id);
         $roles = Role::all();
         $agents = Agent::all();
-        $user = User::with('agency')->findOrFail($id); // Corrected query
-        return view('admin.users.show', ['user' => $user, 'roles' => $roles, 'agents' => $agents]);
+        return view('admin.users.show', compact('user', 'roles', 'agents'));
     }
 
-
-    // show all roles and user roles
-    public function showUserRoles(Request $request, $id){
-        $user = User::find($id);
-        $roles = Role::all();
-        $userRoles =  $user->roles;
-
-        return response()->json([
-            'roles' => $roles,
-            'userRoles' => $userRoles,
-        ]);
-    }
-
-    // role assignment
-    public function assignrole(Request $request){
-        $roles = Role::all();
-        $user = User::find($request->userid);
-        $user->assignRole($request->rolename);
-        $userRoles =  $user->roles;
-
-        return response()->json([
-            'success' => 'Role Assigned',
-            'roles' => $roles,
-            'userRoles' => $userRoles,
-        ]);
-    }
-
-    // role unassignment
-    public function unassignrole(Request $request){
-        $roles = Role::all();
-        $user = User::find($request->userid);
-        $user->removeRole($request->rolename);
-        $userRoles =  $user->roles;
-
-        return response()->json([
-            'success' => 'Role Unassigned',
-            'roles' => $roles,
-            'userRoles' => $userRoles,
-        ]);
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id): View
+    public function showUserRoles($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         $roles = Role::all();
-        $userRole = $user->roles->pluck('name','name')->all();
-        return view('admin.users.edit',compact('user','roles','userRole'));
+        $userRoles = $user->roles;
+
+        return response()->json([
+            'roles' => $roles,
+            'userRoles' => $userRoles,
+        ]);
     }
 
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-
-    //  : RedirectResponse
-    public function update(Request $request, $id)
+    public function assignrole(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
+            'userid' => 'required|exists:users,id',
+            'rolename' => 'required|exists:roles,name',
         ]);
 
-
-        $user = User::find($id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-
-        // user photo
-        if ($request->file('photo')) {
-            // Delete old photo
-            if ($user->photo) {
-                unlink($user->photo);
-            }
-            $cover = $request->file('photo');
-            $image_full_name = time() . 'photo' . '.' . $cover->getClientOriginalExtension();
-            $upload_path = 'images/users/';
-            $image_url = $upload_path . $image_full_name;
-            $success = $cover->move($upload_path, $image_full_name);
-            $user->photo = $image_url;
+        try {
+            $user = User::findOrFail($request->userid);
+            $user->assignRole($request->rolename);
+            
+            return response()->json([
+                'success' => 'Role Assigned',
+                'roles' => Role::all(),
+                'userRoles' => $user->roles,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error assigning role: ' . $e->getMessage()], 500);
         }
-
-        $user->update();
-
-
-        return redirect()->route('users.index')->with(['status' => 200, 'message' => 'User updated successfully']);
-
     }
 
+    public function unassignrole(Request $request)
+    {
+        $request->validate([
+            'userid' => 'required|exists:users,id',
+            'rolename' => 'required|exists:roles,name',
+        ]);
 
+        try {
+            $user = User::findOrFail($request->userid);
+            $user->removeRole($request->rolename);
+            
+            return response()->json([
+                'success' => 'Role Unassigned',
+                'roles' => Role::all(),
+                'userRoles' => $user->roles,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error removing role: ' . $e->getMessage()], 500);
+        }
+    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function edit($id): View
+    {
+        $user = User::findOrFail($id);
+        $roles = Role::all();
+        $userRole = $user->roles->pluck('name', 'name')->all();
+        return view('admin.users.edit', compact('user', 'roles', 'userRole'));
+    }
+
+    public function update(UpdateUserRequest $request, $id): RedirectResponse
+    {
+        try {
+            DB::beginTransaction();
+
+            $user = User::findOrFail($id);
+            $user->fill($request->safe()->only(['name', 'email']));
+
+            if ($request->hasFile('photo')) {
+                if ($user->photo) {
+                    Storage::disk('public')->delete($user->photo);
+                }
+                $path = $request->file('photo')->store('users/photos', 'public');
+                $user->photo = $path;
+            }
+
+            $user->save();
+            DB::commit();
+
+            return redirect()->route('users.index')
+                ->with(['status' => 200, 'message' => 'User updated successfully']);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withInput()
+                ->with(['status' => 500, 'message' => 'Error updating user: ' . $e->getMessage()]);
+        }
+    }
 
     public function destroy($id)
     {
+        try {
+            DB::beginTransaction();
+            $user = User::findOrFail($id);
+            
+            if ($user->photo) {
+                Storage::disk('public')->delete($user->photo);
+            }
+            
+            $user->delete();
+            DB::commit();
 
-        $user = User::find($id);
-        // Delete old photo
-        if ($user->photo) {
-            unlink($user->photo);
+            return response()->json(['success' => 'User deleted successfully']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Error deleting user: ' . $e->getMessage()], 500);
         }
-        $user->delete();
-        return response()->json(['success' => 'User deleted !']);
     }
-
-
-
-
 
     public function createAgentUser(Request $request)
     {
         $agents = Agent::all();
         $roles = Role::where('name', 'agent')->get();
-        return view('admin.users.agentcreate',['roles'=> $roles, 'agents'=>$agents]);
+        return view('admin.users.agentcreate', compact('roles', 'agents'));
     }
-
 }

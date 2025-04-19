@@ -22,7 +22,8 @@ class SmsService
      */
     public function sendSingleSms($to, $message)
     {
-        $url = $this->baseUrl . "/send-sms";
+        $url = $this->baseUrl;
+
         $response = Http::post($url, [
             'api_token' => $this->apiToken,
             'sid' => $this->sid,
@@ -32,17 +33,10 @@ class SmsService
         ]);
 
         $data = $response->json();
-
-        if ($data['status_code'] !== 200) {
-            return [
-                'success' => false,
-                'message' => $data['message'] ?? 'An error occurred'
-            ];
-        }
-
+        
         return [
-            'success' => true,
-            'message' => 'SMS sent successfully',
+            'success' => $data['status_code'] === 200,
+            'message' => $data['status_code'] === 200 ? 'SMS sent successfully' : ($data['error_message'] ?? 'An error occurred'),
             'response' => $data
         ];
     }
@@ -50,36 +44,59 @@ class SmsService
     /**
      * Send Bulk SMS
      */
-    public function sendBulkSms(array $recipients, $message)
+    public function sendBulkSms($phones, $message)
     {
-        $url = $this->baseUrl . "/send-sms/bulk";
+        // Convert comma-separated string to array if needed
+        if (is_string($phones)) {
+            $phones = array_map('trim', explode(',', $phones));
+        }
+
+        $url = $this->baseUrl ;
         $response = Http::post($url, [
             'api_token' => $this->apiToken,
             'sid' => $this->sid,
-            'msisdn' => $recipients,
+            'msisdn' => $phones,
             'sms' => $message,
             'batch_csms_id' => bin2hex(random_bytes(10)),
         ]);
 
-        return $response->json();
+        $data = $response->json();
+        
+        return [
+            'success' => $data['status_code'] === 200,
+            'message' => $data['status_code'] === 200 ? 'Bulk SMS sent successfully' : ($data['error_message'] ?? 'An error occurred'),
+            'response' => $data
+        ];
     }
 
     /**
      * Send Dynamic SMS (Different Message for Each Recipient)
      */
-    public function sendDynamicSms(array $messages)
+    public function sendDynamicSms($messages)
     {
+        // Format messages into required structure if needed
+        $formattedMessages = [];
+        foreach ($messages as $index => $message) {
+            $formattedMessages[] = [
+                'msisdn' => $message['msisdn'],
+                'text' => $message['text'],
+                'csms_id' => bin2hex(random_bytes(5)) . $index
+            ];
+        }
+
         $url = $this->baseUrl . "/send-sms/dynamic";
         $response = Http::post($url, [
             'api_token' => $this->apiToken,
             'sid' => $this->sid,
-            'sms' => $messages,
+            'sms' => $formattedMessages,
         ]);
 
-        return $response->json();
+        $data = $response->json();
+        
+        return [
+            'success' => $data['status_code'] === 200,
+            'message' => $data['status_code'] === 200 ? 'Dynamic SMS sent successfully' : ($data['error_message'] ?? 'An error occurred'),
+            'response' => $data
+        ];
     }
-
-
-
-    // {"success":true,"message":"SMS sent successfully","response":{"status":"SUCCESS","status_code":200,"error_message":"","smsinfo":[{"sms_status":"SUCCESS","status_message":"Success","msisdn":"8801956113999","sms_type":"EN","sms_body":"test message","csms_id":"4473433434pZ684333392","reference_id":"67cc09279e2a8156495"}]}}
 }

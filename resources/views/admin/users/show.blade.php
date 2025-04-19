@@ -25,15 +25,7 @@
                     @endif
                 </div>
                 {{-- user role --}}
-                <div class="flex justify-start items-center gap-2 mt-4" id="rolediv">
-                    @foreach ($user->roles as $role)
-
-                    <span class="inline-flex items-center gap-1.5 py-0.5 text-sm font-medium bg-seagreen text-white px-4 capitalize rounded-full hover:scale-110 cursor-pointer">{{$role->name}} x</span>
-                    @endforeach
-
-                    @foreach ($roles->diff($user->roles) as $role)
-                        <span class="inline-flex items-center gap-1.5 py-0.5 text-sm font-medium bg-red-500/40 text-white px-4 capitalize rounded-full hover:scale-110 cursor-pointer">{{$role->name}} +</span>
-                    @endforeach
+                <div class="grid grid-cols-4 gap-2 mt-4" id="rolediv">
                 </div>
             </div>
         </div> <!-- end card -->
@@ -94,9 +86,16 @@
             const rolesContainer = $('#rolediv');
 
             $(document).ready(function () {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
                 const userid = $('#userid').val();
+                
                 $.ajax({
-                    url: '/showuserrole/'+ userid,
+                    url: '/users/showuserrole/'+ userid,
                     method: 'GET',
                     success: function (response) {
                         rolesContainer.empty(); // Clear the container
@@ -115,7 +114,7 @@
                             let isUserRole = response.userRoles.some(userRole => userRole.id === role.id);
                             if (!isUserRole) {
                                 rolesContainer.append(`
-                                    <span class="inline-flex items-center gap-1.5 py-0.5 text-sm font-medium bg-red-500/40 text-white px-4 capitalize rounded-full hover:scale-110 cursor-pointer" onClick="roleMount('${role.name}',${userid});">
+                                    <span class="inline-flex items-center gap-1.5 py-0.5 text-sm font-medium bg-red-500 text-white px-4 capitalize rounded-full hover:scale-110 cursor-pointer" onClick="roleMount('${role.name}',${userid});">
                                         ${role.name} +
                                     </span>
                                 `);
@@ -146,7 +145,7 @@
                     if (result.value) {
                         $.ajax({
                             method: 'POST',
-                            url: BASE_URL + 'unassignrole',
+                            url: BASE_URL + 'users/unassignrole',
                             dataType: 'json',
                             data: {
                                 userid: userID,
@@ -169,7 +168,7 @@
                                     let isUserRole = response.userRoles.some(userRole => userRole.id === role.id);
                                     if (!isUserRole) {
                                         rolesContainer.append(`
-                                            <span class="inline-flex items-center gap-1.5 py-0.5 text-sm font-medium bg-red-500/40 text-white px-4 capitalize rounded-full hover:scale-110 cursor-pointer" onClick="roleMount('${role.name}',${userID})">
+                                            <span class="inline-flex items-center gap-1.5 py-0.5 text-sm font-medium bg-red-500 text-white px-4 capitalize rounded-full hover:scale-110 cursor-pointer" onClick="roleMount('${role.name}',${userID})">
                                                 ${role.name} +
                                             </span>
                                         `);
@@ -202,7 +201,7 @@
                     if (result.value) {
                         $.ajax({
                             method: 'POST',
-                            url: BASE_URL + 'assignrole',
+                            url: BASE_URL + 'users/assignrole',
                             dataType: 'json',
                             data: {
                                 userid: userID,
@@ -225,7 +224,7 @@
                                     let isUserRole = response.userRoles.some(userRole => userRole.id === role.id);
                                     if (!isUserRole) {
                                         rolesContainer.append(`
-                                            <span class="inline-flex items-center gap-1.5 py-0.5 text-sm font-medium bg-red-500/40 text-white px-4 capitalize rounded-full hover:scale-110 cursor-pointer" onClick="roleMount('${role.name}',${userID})">
+                                            <span class="inline-flex items-center gap-1.5 py-0.5 text-sm font-medium bg-red-500 text-white px-4 capitalize rounded-full hover:scale-110 cursor-pointer" onClick="roleMount('${role.name}',${userID})">
                                                 ${role.name} +
                                             </span>
                                         `);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agent;
+use Carbon\Carbon;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -106,6 +107,8 @@ class AgentController extends Controller implements HasMiddleware
         $unpaidFiles = $agent->custom_files->where('status', 'Unpaid');
         $unpaidCount = $unpaidFiles->count();
         $unpaidTotal = $unpaidFiles->sum('fees');
+        
+        
 
         // Information completions percentage
         $attributes = $agent->toArray();
@@ -119,7 +122,10 @@ class AgentController extends Controller implements HasMiddleware
             'agent' => $agent,
             'completionPercentage' => round($completionPercentage, 2),
             'unpaidCount' => $unpaidCount,
-            'unpaidTotal' => $unpaidTotal
+            'unpaidTotal' => $unpaidTotal,
+            // 'duefees' => $duefees,
+            // 'due_memberFee_months' => $due_memberFee_months,
+            // 'due_welfareFund_months' => $due_welfareFund_months
         ]);
     }
 

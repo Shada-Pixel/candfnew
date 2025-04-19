@@ -8,7 +8,6 @@
         <meta content="Chada - A File management web application for benapole port c &f association." name="description">
         <meta content="shadapixel" name="author">
 
-
         <!-- App favicon -->
         <link rel="shortcut icon" href="{{asset('favicon.ico')}}">
 
@@ -17,6 +16,9 @@
 
         <!-- Icons css -->
         <link href="{{asset('css/icons.min.css')}}" rel="stylesheet" type="text/css">
+
+        <!-- SweetAlert2 -->
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         {{-- Custom css --}}
         <link rel="stylesheet" href="{{asset('css/custom.css')}}">
@@ -97,7 +99,6 @@
         <script src="{{asset('libs/jquery/jquery.min.js')}}"></script>
         <script src="{{asset('libs/simplebar/simplebar.min.js')}}"></script>
         <script src="{{asset('libs/lucide/umd/lucide.min.js')}}"></script>
-        <script src="{{asset('libs/%40frostui/tailwindcss/frostui.js')}}"></script>
 
         <!-- App Js -->
         <script src="{{asset('js/app.js')}}"></script>

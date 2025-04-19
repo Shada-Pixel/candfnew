@@ -61,11 +61,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-account-outline"></i></span>
-                                <p class="text-gray-700"><strong>Owner / Manager:</strong> <span>{{ $agent->owners_name ?? 'N/A' }}</span></p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-briefcase-outline"></i></span>
-                                <p class="text-gray-700"><strong>Designation:</strong> <span>{{ $agent->owners_designation ?? 'N/A' }}</span></p>
+                                <p class="text-gray-700"><strong>{{ $agent->owners_designation ?? 'Owner / Manager' }}:</strong> <span>{{ $agent->owners_name ?? 'N/A' }}</span></p>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-office-building-outline"></i></span>
@@ -107,7 +103,8 @@
                                     <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 tablinks" id="donation-tab" data-tab="donation">Donation</button>
                                 </li>
                                 <li role="presentation">
-                                    <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 tablinks" id="fees-tab" data-tab="fees">Fees</button>
+                                    <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 tablinks" id="fees-tab" data-tab="fees">Fees
+                                    </button>
                                 </li>
                             </ul>
                         </div>
@@ -260,8 +257,140 @@
 
                             <!-- Fees Tab -->
                             <div id="fees" class="tabcontent hidden">
-                                <h3 class="text-2xl font-medium mb-4">Fees</h3>
-                                <!-- Add your fees content here -->
+
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <!-- Member Fee Card -->
+                                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                                        <div class="flex justify-between items-center mb-4">
+                                            <h4 class="text-lg font-semibold text-gray-800">Member Fee</h4>
+                                            <span class="text-sm text-gray-500">Monthly: ৳{{ number_format($agent->member_fee_amount, 2) }}</span>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="flex justify-between text-sm">
+                                                <span class="text-gray-600">Last Paid Date:</span>
+                                                <span class="font-medium">{{ $agent->last_fee_paid_date ? $agent->last_fee_paid_date->format('d M, Y') : 'Not paid yet' }}</span>
+                                            </div>
+                                            <div class="flex justify-between text-sm">
+                                                <span class="text-gray-600">Paid Till:</span>
+                                                <span class="font-medium">{{ $agent->member_fee_paid_till_date ? $agent->member_fee_paid_till_date->format('d M, Y') : 'Not paid yet' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Welfare Fund Card -->
+                                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                                        <div class="flex justify-between items-center mb-4">
+                                            <h4 class="text-lg font-semibold text-gray-800">Welfare Fund Fee</h4>
+                                            <span class="text-sm text-gray-500">Monthly: ৳{{ number_format($agent->welfare_fund_amount, 2) }}</span>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="flex justify-between text-sm">
+                                                <span class="text-gray-600">Last Paid Date:</span>
+                                                <span class="font-medium">{{ $agent->last_fee_paid_date ? $agent->last_fee_paid_date->format('d M, Y') : 'Not paid yet' }}</span>
+                                            </div>
+                                            <div class="flex justify-between text-sm">
+                                                <span class="text-gray-600">Paid Till:</span>
+                                                <span class="font-medium">{{ $agent->welfare_fund_paid_till_date ? $agent->welfare_fund_paid_till_date->format('d M, Y') : 'Not paid yet' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @role('admin')
+                                <!-- Payment Form -->
+                                <div class="bg-white rounded-lg shadow-md mt-6">
+                                    <div class="p-6">
+                                        <h4 class="text-lg font-semibold text-gray-800 mb-4">Record New Payment</h4>
+                                        
+                                        <form action="{{ route('agents.fees.store', $agent->id) }}" method="POST">
+                                            @csrf
+
+                                            <div class="grid grid-cols-3 gap-6 mb-6">
+
+                                                {{-- Add fees type --}}
+                                                <div>
+                                                    <label for="fees_type" class="block text-sm font-medium text-gray-700">Fees Type</label>
+                                                    <select name="fees_type" id="fees_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500">
+                                                        <option value="member_fee">Member Fee</option>
+                                                        <option value="welfare_fund">Welfare Fund Fee</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- Monthly  -->
+                                                <div>
+                                                    <label for="monthly" class="block text-sm font-medium text-gray-700">Monthly</label>
+                                                    <div class="mt-1 relative rounded-md shadow-sm">
+                                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                            <span class="text-gray-500 sm:text-sm">৳</span>
+                                                        </div>
+                                                        <input type="number" name="monthly" id="monthly" step="0.01" 
+                                                            class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500" value="40">
+                                                    </div>
+                                                </div>
+
+                                                {{-- Only if agent dont has any 'last_fee_paid_date' --}}
+                                                @if($agent->member_fee_paid_till_date == null) 
+
+                                                <!-- Member Fee Paid Till Date -->
+                                                <div>
+                                                    <label for="member_fee_paid_till_date" class="block text-sm font-medium text-gray-700">Member Fee paid Till Date</label>
+                                                    <div class="mt-1 relative rounded-md shadow-sm">
+                                                        <input type="date" name="member_fee_paid_till_date" id="member_fee_paid_till_date" 
+                                                            class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500" value="{{ old('member_fee_paid_till_date', $agent->member_fee_paid_till_date ? $agent->member_fee_paid_till_date->format('Y-m-d') : now()->format('Y-m-d')) }}">
+                                                    </div>
+                                                </div>
+                                                @endif
+
+                                                {{-- Only if agtent dont hav any 'welfare_fund_paid_till_date' --}}
+                                                @if($agent->welfare_fund_paid_till_date == null)
+
+                                                <!-- Welfare Fund Paid Till Date -->
+                                                <div>
+                                                    <label for="welfare_fund_paid_till_date" class="block text-sm font-medium text-gray-700">Welfare Fund paid Till Date</label>
+                                                    <div class="mt-1 relative rounded-md shadow-sm">
+                                                        <input type="date" name="welfare_fund_paid_till_date" id="welfare_fund_paid_till_date" 
+                                                            class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500" value="{{ old('welfare_fund_paid_till_date', $agent->welfare_fund_paid_till_date ? $agent->welfare_fund_paid_till_date->format('Y-m-d') : now()->format('Y-m-d')) }}">
+                                                    </div>
+                                                </div>
+                                                @endif
+
+
+
+                                                @if($agent->last_fee_paid_date == null)
+
+                                                <!-- Last Fee Paid Date -->
+                                                <div>
+                                                    <label for="last_fee_paid_date" class="block text-sm font-medium text-gray-700">Last Fee Paid Date</label>
+                                                    <div class="mt-1 relative rounded-md shadow-sm">
+                                                        <input type="date" name="last_fee_paid_date" id="last_fee_paid_date" 
+                                                            class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500" value="{{ old('last_fee_paid_date', $agent->last_fee_paid_date ? $agent->last_fee_paid_date->format('Y-m-d') : now()->format('Y-m-d')) }}">
+                                                    </div>
+                                                </div>
+                                                @endif
+                                                <!-- Payment Amount -->
+                                                <div>
+                                                    <label for="payment_amount" class="block text-sm font-medium text-gray-700">Payment Amount</label>
+                                                    <div class="mt-1 relative rounded-md shadow-sm">
+                                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                            <span class="text-gray-500 sm:text-sm">৳</span>
+                                                        </div>
+                                                        <input type="number" name="payment_amount" id="payment_amount" step="0.01" 
+                                                            class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="mt-6 flex justify-end">
+                                                <button type="submit" class="bg-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600">
+                                                    Record Payment
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                @endrole
                             </div>
                         </div>
                     </div>

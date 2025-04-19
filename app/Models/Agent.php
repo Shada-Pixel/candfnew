@@ -27,7 +27,18 @@ class Agent extends Model
         'email',
         'house',
         'parmanent_address',
-        'note'
+        'note',
+        'member_fee_amount',
+        'welfare_fund_amount',
+        'last_fee_paid_date',
+        'member_fee_paid_till_date',
+        'welfare_fund_paid_till_date'
+    ];
+
+    protected $casts = [
+        'last_fee_paid_date' => 'date',
+        'member_fee_paid_till_date' => 'date',
+        'welfare_fund_paid_till_date' => 'date'
     ];
 
     public function donations() {

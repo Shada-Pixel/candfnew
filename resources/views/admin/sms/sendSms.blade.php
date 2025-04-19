@@ -15,8 +15,8 @@
                 <!-- Tabs for switching between SMS types -->
                 <div class="flex justify-center space-x-4 mb-4">
                     <button class="tab-btn active bg-blue-500 text-white px-4 py-2 rounded-md" data-tab="single">Single SMS</button>
-                    <button class="tab-btn bg-gray-300 px-4 py-2 rounded-md" data-tab="bulk">Bulk SMS</button>
-                    <button class="tab-btn bg-gray-300 px-4 py-2 rounded-md" data-tab="dynamic">Dynamic SMS</button>
+                    {{-- <button class="tab-btn bg-gray-300 px-4 py-2 rounded-md" data-tab="bulk">Bulk SMS</button> --}}
+                    {{-- <button class="tab-btn bg-gray-300 px-4 py-2 rounded-md" data-tab="dynamic">Dynamic SMS</button> --}}
                 </div>
 
                 <!-- Single SMS Form -->
@@ -122,7 +122,7 @@
                                 <p class="error-message text-red-500 text-sm mt-1 hidden"></p>
                                 <p class="text-gray-500 text-sm mt-1"><span class="message-length">0</span>/480 characters</p>
                             </div>
-                            
+
                             <button type="button" class="remove-entry text-red-500 text-sm hover:text-red-700">Remove</button>
                         </div>
                     `;

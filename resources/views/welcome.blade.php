@@ -19,15 +19,15 @@
                     <div class="flex-grow mb-8">
                         <h2 class="text-3xl font-bold text-left mb-8 text-gray-800">Photo of Recently Activities</h2>
                         <div class="grid grid-cols-3 gap-6 mt-5">
-                            <div class="gallery-item min-h-52 col-span-2 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out hover:z-10 bg-[url({{asset('images/galllary (1).jpg')}})]">
+                            <div class="gallery-item min-h-52 col-span-2 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out hover:z-10 bg-cover bg-no-repeat bg-center" style="background: url('{{ asset('images/galllary (1).jpg') }}');">
                             </div>
-                            <div class="gallery-item min-h-52 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10 bg-[url({{asset('images/galllary (1).jpg')}})]">
+                            <div class="gallery-item min-h-52 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10 bg-cover bg-no-repeat bg-center" style="background: url('{{ asset('images/galllary (2).jpg') }}');">
                             </div>
-                            <div class="gallery-item min-h-52 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10 bg-[url({{asset('images/galllary (1).jpg')}})]">
+                            <div class="gallery-item min-h-52 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10 bg-cover bg-no-repeat bg-center" style="background: url('{{ asset('images/galllary (3).jpg') }}');">
                             </div>
-                            <div class="gallery-item min-h-52 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10 bg-[url({{asset('images/galllary (1).jpg')}})]">
+                            <div class="gallery-item min-h-52 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10 bg-cover bg-no-repeat bg-center" style="background: url('{{ asset('images/galllary (4).jpg') }}');">
                             </div>
-                            <div class="gallery-item min-h-52 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10 bg-[url({{asset('images/galllary (1).jpg')}})]">
+                            <div class="gallery-item min-h-52 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10 bg-cover bg-no-repeat bg-center" style="background: url('{{ asset('images/galllary (5).jpg') }}');">
                             </div>
                         </div>
                     </div>

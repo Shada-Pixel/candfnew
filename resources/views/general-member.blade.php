@@ -1,6 +1,6 @@
 <x-guest-layout>
 
-    
+
     {{-- Title --}}
     <x-slot name="title">General Members</x-slot>
 
@@ -23,7 +23,7 @@
             </div>
             <div class="max-w-7xl mx-auto py-10">
                 {{-- General member datatable --}}
-                
+
                 <div class="container mx-auto px-4 py-8">
                     <table class="min-w-full divide-yshadow-md overflow-hidden " id="agenttable">
                         <thead class="bg-gradient-to-r from-violet-400 to-purple-300 text-white">
@@ -37,7 +37,7 @@
                         </thead>
                         <tbody class="divide-y">
                             @foreach ($agents as $member)
-                                <tr class="hover:bg-gray-100 transition-colors duration-200 @if($loop->even) bg-gray-50 @endif">
+                                <tr class="hover:bg-gray-100 transition-colors duration-200 @if($loop->odd) bg-gray-50 @endif">
                                     <td class="text-center">
                                         {{ $loop->iteration }}
                                     </td>
@@ -87,7 +87,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
         <script src="//cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
         <script src="//cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
-    
+
         <script>
             $(document).ready(function () {
                 var datatablelist = $('#agenttable').DataTable({

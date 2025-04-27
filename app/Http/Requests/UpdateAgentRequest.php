@@ -31,7 +31,7 @@ class UpdateAgentRequest extends FormRequest
             'agency_logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'owners_name' => 'nullable|string',
             'owners_gender' => 'nullable|in:Male,Female,Other',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'owner_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'owners_designation' => 'nullable|string',
             'office_address' => 'nullable|string',
             'phone' => 'required|string',

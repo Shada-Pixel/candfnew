@@ -283,13 +283,53 @@
                 </ul>
             </li>
 
-
-            {{-- <li class="menu-item">
-                <a href="{{route('adminnotices')}}" class="menu-link">
-                    <span class="menu-icon"><i class="mdi mdi-relative-scale"></i></span>
-                    <span class="menu-text"> Notices </span>
+            {{-- SMS --}}
+            <li class="menu-item">
+                <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
+                    <span class="menu-icon"><i class="mdi mdi-exclamation"></i></span>
+                    <span class="menu-text">Bolletin</span>
+                    <span class="menu-arrow"></span>
                 </a>
-            </li> --}}
+
+                <ul class="sub-menu hidden">
+                    <li class="menu-item">
+                        <a href="{{route('marquees.index')}}" class="menu-link">
+                            <span class="menu-text">All</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('marquees.create')}}" class="menu-link">
+                            <span class="menu-text">Create</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+            {{-- SMS --}}
+            <li class="menu-item">
+                <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
+                    <span class="menu-icon"><i class="mdi mdi-exclamation"></i></span>
+                    <span class="menu-text">Advisory Committee</span>
+                    <span class="menu-arrow"></span>
+                </a>
+
+                <ul class="sub-menu hidden">
+                    <li class="menu-item">
+                        <a href="{{route('advisory.index')}}" class="menu-link">
+                            <span class="menu-text">All</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('advisory.create')}}" class="menu-link">
+                            <span class="menu-text">Create</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+
 
             @endrole
 

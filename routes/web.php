@@ -28,7 +28,9 @@ use App\Http\Controllers\{
     ITCReportController,
     ContactController,
     CustomFileController,
-    AgentFeeController
+    AgentFeeController,
+    MarqueeController,
+    AdvisoryCommitteeController
 };
 
 // Guest user routes
@@ -154,9 +156,14 @@ Route::middleware(['auth'])->group(function () {
     // Donations
     Route::resource('donations', DonationController::class);
 
-
     // Custom File
     Route::resource('customfiles', CustomFileController::class);
+
+    // Marquees
+    Route::resource('marquees', MarqueeController::class);
+
+    // Advisory Committee
+    Route::resource('advisory', AdvisoryCommitteeController::class);
 });
 
 // Guest-accessible routes

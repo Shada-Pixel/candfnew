@@ -43,10 +43,10 @@
                                     </td>
                                     <td class="whitespace-nowrap text-sm text-gray-900 px-6 py-4">
                                         <div class="flex items-center justify-center">
-                                            @if ($member->agency_logo)
-                                                <img src="{{ asset('storage/'.$member->agency_logo) }}" class="h-12 w-12 rounded-full shadow-md" alt="logo">
-                                            @elseif ($member->owner_photo)
-                                                <img src="{{ asset('storage/'.$member->owner_photo) }}" class="h-12 w-12 rounded-full shadow-md" alt="logo">
+                                            @if ($member->owner_photo)
+                                                <img src="{{ asset($member->owner_photo) }}" class="h-12 w-12 rounded-full shadow-md" alt="logo">
+                                            @elseif ($member->agency_logo)
+                                                <img src="{{ asset($member->agency_logo) }}" class="h-12 w-12 rounded-full shadow-md" alt="logo">
                                             @else
                                                 <img src="{{ asset('images/placeholder.png') }}" class="h-12 w-12 rounded-full shadow-md" alt="logo">
                                             @endif

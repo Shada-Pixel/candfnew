@@ -22,7 +22,7 @@ class UpdateIe_dataRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'bin_no' => 'required',
+            'bin_no' => 'nullable',
             'name' => 'required',
             'ie' => 'required',
             'owners_name' => 'nullable',

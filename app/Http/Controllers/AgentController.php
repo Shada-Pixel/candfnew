@@ -107,8 +107,8 @@ class AgentController extends Controller implements HasMiddleware
         $unpaidFiles = $agent->custom_files->where('status', 'Unpaid');
         $unpaidCount = $unpaidFiles->count();
         $unpaidTotal = $unpaidFiles->sum('fees');
-        
-        
+
+
 
         // Information completions percentage
         $attributes = $agent->toArray();
@@ -166,19 +166,19 @@ class AgentController extends Controller implements HasMiddleware
             ]);
 
             // Handle owner photo upload
-            if ($request->hasFile('photo')) {
+            if ($request->hasFile('owner_photo')) {
                 try {
-                    $image = $request->photo;
+                    $image = $request->owner_photo;
                     $ext = $image->getClientOriginalExtension();
                     $filename = uniqid() . '.' . $ext;
 
                     // Delete old photo if exists
-                    if ($agent->photo && file_exists(public_path($agent->photo))) {
-                        unlink(public_path($agent->photo));
+                    if ($agent->owner_photo && file_exists(public_path($agent->owner_photo))) {
+                        unlink(public_path($agent->owner_photo));
                     }
 
-                    $request->photo->move(public_path('images'), $filename);
-                    $agent->photo = 'images/' . $filename;
+                    $request->owner_photo->move(public_path('images'), $filename);
+                    $agent->owner_photo = 'images/' . $filename;
                 } catch (\Exception $e) {
                     return redirect()->back()->with('error', 'Error uploading owner photo: ' . $e->getMessage());
                 }

@@ -5,7 +5,22 @@
     <x-slot name="title">Home</x-slot>
 
     <main>
-        <x-marquee></x-marguee>
+        {{-- check marquees value --}}
+        @if ($marquees->count() > 0)
+        <div class="overflow-hidden bg-gradient-to-r from-violet-400 to-purple-300 py-2">
+            <div id="marquee" class="whitespace-nowrap">
+                @foreach ($marquees as $marquee)
+                    @if ($marquee->active)
+                        <span class="font-bold text-white">{{ $marquee->content }} 🌟 </span>
+                    @endif
+
+                @endforeach
+                <span class="font-bold text-white"|>আগামী ২৫/০৩/২০২৫ ইং তারিখে বার্ষিক সাধারণ সভা-২০২৪ ও ইফতার মাহফিল এসোসিয়েশন ভবনে অনুষ্ঠিত হবে। 🌟 </span>
+                <span class="font-bold text-white">Ramadan Mubarak 🌟 </span>
+            </div>
+        </div>
+
+        @endif
         <x-hero></x-hero>
 
 
@@ -150,198 +165,29 @@
                     <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Advisory Committee</h2>
 
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 mt-5">
-                        {{-- Member --}}
-                        <div class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-                            {{-- image --}}
-                            <div class="w-20 h-20 rounded-full bg-cover bg-no-repeat" style="background-image: url({{ asset('images/placeholder.jpg') }})"></div>
-                            <div>
-                                {{-- name --}}
-                                <h3 class="font-bold text-lg text-gray-900">Sabbir Hussain</h3>
-                                {{-- designation --}}
-                                <p class="text-gray-600">Developer</p>
+                        @forelse ($advisories as $advisory)
+                            {{-- Member --}}
+                            <div class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                                {{-- image --}}
+                                <div class="w-20 h-20 rounded-full bg-cover bg-no-repeat" style="background-image: url({{ asset($advisory->photo) }})"></div>
+                                <div>
+                                    {{-- name --}}
+                                    <h3 class="font-bold text-lg text-gray-900">{{ $advisory->name }}</h3>
+                                    {{-- designation --}}
+                                    <p class="text-gray-600">{{ $advisory->designation }}</p>
+                                </div>
                             </div>
-                        </div>
-                        {{-- Repeat the above block for other members --}}
-                        <div class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-                            {{-- image --}}
-                            <div class="w-20 h-20 rounded-full bg-cover bg-no-repeat" style="background-image: url({{ asset('images/placeholder.jpg') }})"></div>
-                            <div>
-                                {{-- name --}}
-                                <h3 class="font-bold text-lg text-gray-900">Sabbir Hussain</h3>
-                                {{-- designation --}}
-                                <p class="text-gray-600">Developer</p>
+                        @empty
+                            {{-- No members found --}}
+                            <div class="text-center col-span-2 sm:col-span-3">
+                                <p class="text-gray-600">No advisory committee members found.</p>
                             </div>
-                        </div>
-                        {{-- Repeat the above block for other members --}}
-                        <div class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-                            {{-- image --}}
-                            <div class="w-20 h-20 rounded-full bg-cover bg-no-repeat" style="background-image: url({{ asset('images/placeholder.jpg') }})"></div>
-                            <div>
-                                {{-- name --}}
-                                <h3 class="font-bold text-lg text-gray-900">Sabbir Hussain</h3>
-                                {{-- designation --}}
-                                <p class="text-gray-600">Developer</p>
-                            </div>
-                        </div>
-                        {{-- Repeat the above block for other members --}}
-                        <div class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-                            {{-- image --}}
-                            <div class="w-20 h-20 rounded-full bg-cover bg-no-repeat" style="background-image: url({{ asset('images/placeholder.jpg') }})"></div>
-                            <div>
-                                {{-- name --}}
-                                <h3 class="font-bold text-lg text-gray-900">Sabbir Hussain</h3>
-                                {{-- designation --}}
-                                <p class="text-gray-600">Developer</p>
-                            </div>
-                        </div>
-                        {{-- Repeat the above block for other members --}}
-                        <div class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-                            {{-- image --}}
-                            <div class="w-20 h-20 rounded-full bg-cover bg-no-repeat" style="background-image: url({{ asset('images/placeholder.jpg') }})"></div>
-                            <div>
-                                {{-- name --}}
-                                <h3 class="font-bold text-lg text-gray-900">Sabbir Hussain</h3>
-                                {{-- designation --}}
-                                <p class="text-gray-600">Developer</p>
-                            </div>
-                        </div>
-                        {{-- Repeat the above block for other members --}}
-                        <div class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-                            {{-- image --}}
-                            <div class="w-20 h-20 rounded-full bg-cover bg-no-repeat" style="background-image: url({{ asset('images/placeholder.jpg') }})"></div>
-                            <div>
-                                {{-- name --}}
-                                <h3 class="font-bold text-lg text-gray-900">Sabbir Hussain</h3>
-                                {{-- designation --}}
-                                <p class="text-gray-600">Developer</p>
-                            </div>
-                        </div>
+
+                        @endforelse
                     </div>
                 </div>
             </div>
         </section>
-
-        {{-- Contact us form --}}
-        <section class="bg-gray-100 py-10 hidden">
-            <div class="max-w-7xl mx-auto">
-                <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Contact Us</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Contact Information -->
-                    <div class="bg-white shadow-md rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Get in Touch</h3>
-                        <p class="text-gray-600 mb-4">
-                            You can send us a message using this form, or contact us by email or phone. We’d love to hear from you!
-                        </p>
-                        <ul class="text-gray-600 space-y-3">
-                            <li><i class="mdi mdi-phone text-indigo-500"></i> <strong>Phone:</strong> +123 456 7890</li>
-                            <li><i class="mdi mdi-email text-indigo-500"></i> <strong>Email:</strong> contact@example.com</li>
-                            <li><i class="mdi mdi-map-marker text-indigo-500"></i> <strong>Address:</strong> 123 Main Street, City, Country</li>
-                        </ul>
-                    </div>
-
-                    <!-- Contact Form -->
-                    <div class="bg-white shadow-md rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Send Us a Message</h3>
-                        <form action="#" method="POST" class="grid grid-cols-1 gap-6">
-                            <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                                <input type="text" name="name" id="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
-                                @error('name')  @enderror" value="{{ old('name') }}">
-                                @error('name')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                                <input type="email" name="email" id="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
-                                @error('email')  @enderror" value="{{ old('email') }}">
-                                @error('email')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
-                                <textarea name="message" id="message" rows="4" class="mt-1 block
-                                w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
-                                @error('message') @enderror">{{ old('message') }}</textarea>
-                                @error('message')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <button type="submit" class="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                    Send Message
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        {{-- FAQ --}}
-        <section class="py-12 bg-gray-50 hidden">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-8">Frequently Asked Questions</h2>
-
-                <div class="space-y-4">
-                    <div class="rounded-lg shadow-md overflow-hidden">
-                        <button
-                            class="faq-button block w-full text-left p-4 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out"
-                            aria-expanded="false"
-                        >
-                            <div class="flex items-center justify-between">
-                                <span class="text-lg font-medium text-gray-800">What is ITC?</span>
-                                <svg class="w-5 h-5 text-gray-500 transform transition-transform duration-300 ease-in-out"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
-                        </button>
-                        <div class="faq-content hidden p-4 bg-gray-50 text-gray-700">
-                            ITC is a short form of Information Technology Center. It is a center that provides IT services to the university.
-                        </div>
-                    </div>
-
-                    <div class="rounded-lg shadow-md overflow-hidden">
-                        <button
-                            class="faq-button block w-full text-left p-4 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out"
-                            aria-expanded="false"
-                        >
-                            <div class="flex items-center justify-between">
-                                <span class="text-lg font-medium text-gray-800">What is the purpose of ITC?</span>
-                                <svg class="w-5 h-5 text-gray-500 transform transition-transform duration-300 ease-in-out"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
-                        </button>
-                        <div class="faq-content hidden p-4 bg-gray-50 text-gray-700">
-                            The purpose of ITC is to provide IT services to the university.
-                        </div>
-                    </div>
-
-                    <div class="rounded-lg shadow-md overflow-hidden">
-                        <button
-                            class="faq-button block w-full text-left p-4 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out"
-                            aria-expanded="false"
-                        >
-                            <div class="flex items-center justify-between">
-                                <span class="text-lg font-medium text-gray-800">What services does ITC provide?</span>
-                                <svg class="w-5 h-5 text-gray-500 transform transition-transform duration-300 ease-in-out"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
-                        </button>
-                        <div class="faq-content hidden p-4 bg-gray-50 text-gray-700">
-                            ITC provides services like web development, software development, network management, etc.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
 
 
         {{-- Make a two colum add showing section --}}

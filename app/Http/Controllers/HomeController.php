@@ -9,6 +9,8 @@ use App\Models\Project;
 use App\Models\Member;
 use App\Models\Notice;
 use App\Models\Agent;
+use App\Models\AdvisoryCommittee;
+use App\Models\Marquee;
 
 
 
@@ -35,7 +37,11 @@ class HomeController extends Controller
     public function index(Request $request): View
     {
         $notices = Notice::orderBy('publish_date', 'desc')->take(5)->get();
-        return view('welcome', ['notices' => $notices]);
+        // Get all active marquees ordered by 'order'
+        $marquees = Marquee::where('active', true)->orderBy('order')->get();
+        // Get all advisories ordered by 'order'
+        $advisories = AdvisoryCommittee::where('active', true)->orderBy('order')->get();
+        return view('welcome', ['notices' => $notices, 'marquees' => $marquees, 'advisories' => $advisories]);
     }
 
 

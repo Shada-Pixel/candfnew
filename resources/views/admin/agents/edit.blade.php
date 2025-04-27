@@ -96,8 +96,8 @@
                         </div> <!-- end -->
 
                         <div class="">
-                            <label for="photo" class="block mb-2">Owner Photo</label>
-                            <input type="file" class="form-input pt-[3px] pb-[2px]" id="photo" name="photo">
+                            <label for="owner_photo" class="block mb-2">Owner Photo</label>
+                            <input type="file" class="form-input pt-[3px] pb-[2px]" id="owner_photo" name="owner_photo">
                         </div> <!-- end -->
 
                         <div>

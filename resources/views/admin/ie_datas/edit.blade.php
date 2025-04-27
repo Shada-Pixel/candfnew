@@ -21,7 +21,7 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label for="bin_no" class="block mb-2">BIN No</label>
-                            <input type="text" class="form-input" id="bin_no" name="bin_no" required value="{{$ie_data->bin_no ?? ''}}">
+                            <input type="text" class="form-input" id="bin_no" name="bin_no" value="{{$ie_data->bin_no ?? ''}}">
                         </div> <!-- end -->
 
                         <div class="">
@@ -34,15 +34,11 @@
                             <label class="block mb-2 after:content-['*'] after:text-red-500">Importer / Exporter</label>
                             <div class="flex gap-6">
                                 <div class="flex items-center gap-4">
-                                    <input type="radio" id="contactChoice1" name="ie" value="Importer"  @if ($ie_data->ie == 'Importer')
-                                    checked
-                                    @endif>
+                                    <input type="radio" id="contactChoice1" name="ie" value="Importer" checked>
                                     <label for="contactChoice1">Exporter</label>
                                 </div>
                                 <div class="flex items-center gap-4">
-                                    <input type="radio" id="contactChoice2" name="ie" value="Exporter" @if ($ie_data->ie == 'Exporter')
-                                    checked
-                                    @endif>
+                                    <input type="radio" id="contactChoice2" name="ie" value="Exporter">
                                     <label for="contactChoice2">Exporter</label>
                                 </div>
                             </div>

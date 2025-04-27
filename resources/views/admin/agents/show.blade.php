@@ -27,6 +27,11 @@
         {{-- Page Content --}}
         <div class="bg-gradient-to-r from-violet-400 to-purple-300 py-8">
             <div class="container mx-auto px-4">
+                @if ($agent->agency_logo)
+                    <div class="flex justify-center items-center mb-4">
+                        <img src="{{ asset($agent->agency_logo) }}" alt="Profile Picture" class="w-24 h-24 rounded-full object-cover">
+                    </div>
+                @endif
                 <h1 class="text-3xl font-bold text-center text-gray-800">{{$agent->name}}</h1>
             </div>
         </div>
@@ -54,36 +59,57 @@
                     {{-- General Information --}}
                     <div class="bg-white shadow-md rounded-lg p-6 mb-6" aria-labelledby="general-info-heading">
                         <h3 id="general-info-heading" class="text-xl font-semibold text-gray-800 mb-4">General Information</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="flex items-center gap-2">
-                                <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-numeric"></i></span>
-                                <p class="text-gray-700"><strong>AIN No:</strong> <span>{{ $agent->ain_no ?? 'N/A' }}</span></p>
+                        <div class="flex items-center justify-between gap-4 mb-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-grow">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-numeric"></i></span>
+                                    <p class="text-gray-700"><strong>AIN No:</strong> <span>{{ $agent->ain_no ?? 'N/A' }}</span></p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-numeric"></i></span>
+                                    <p class="text-gray-700"><strong>License No:</strong> <span>{{ $agent->license_no ?? 'N/A' }}</span></p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-numeric"></i></span>
+                                    <p class="text-gray-700"><strong>Membership No:</strong> <span>{{ $agent->membership_no ?? 'N/A' }}</span></p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-account-outline"></i></span>
+                                    <p class="text-gray-700"><strong>{{ $agent->owners_designation ?? 'Owner / Manager' }}:</strong> <span>{{ $agent->owners_name ?? 'N/A' }}</span></p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-office-building-outline"></i></span>
+                                    <p class="text-gray-700"><strong>Office Address:</strong> <span>{!! $agent->office_address ?? 'N/A' !!}</span></p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-office-building-outline"></i></span>
+                                    <p class="text-gray-700"><strong>Parmanent Address:</strong> <span>{!! $agent->parmanent_address ?? 'N/A' !!}</span></p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-phone-outline"></i></span>
+                                    <p class="text-gray-700"><strong>Phone:</strong> <a href="tel:{{ $agent->phone }}" class="hover:text-violet-600 transition-colors">{{ $agent->phone ?? 'N/A' }}</a></p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-email-outline"></i></span>
+                                    <p class="text-gray-700"><strong>Email:</strong> <a href="mailto:{{ $agent->email }}" class="hover:text-violet-600 transition-colors">{{ $agent->email ?? 'N/A' }}</a></p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-home-outline"></i></span>
+                                    <p class="text-gray-700"><strong>House:</strong> <span>{{ $agent->house ?? 'N/A' }}</span></p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-note-outline"></i></span>
+                                    <p class="text-gray-700"><strong>Note:</strong> <span>{{ $agent->note ?? 'N/A' }}</span></p>
+                                </div>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-account-outline"></i></span>
-                                <p class="text-gray-700"><strong>{{ $agent->owners_designation ?? 'Owner / Manager' }}:</strong> <span>{{ $agent->owners_name ?? 'N/A' }}</span></p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-office-building-outline"></i></span>
-                                <p class="text-gray-700"><strong>Office Address:</strong> <span>{!! $agent->office_address ?? 'N/A' !!}</span></p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-phone-outline"></i></span>
-                                <p class="text-gray-700"><strong>Phone:</strong> <a href="tel:{{ $agent->phone }}" class="hover:text-violet-600 transition-colors">{{ $agent->phone ?? 'N/A' }}</a></p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-email-outline"></i></span>
-                                <p class="text-gray-700"><strong>Email:</strong> <a href="mailto:{{ $agent->email }}" class="hover:text-violet-600 transition-colors">{{ $agent->email ?? 'N/A' }}</a></p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-home-outline"></i></span>
-                                <p class="text-gray-700"><strong>House:</strong> <span>{{ $agent->house ?? 'N/A' }}</span></p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-note-outline"></i></span>
-                                <p class="text-gray-700"><strong>Note:</strong> <span>{{ $agent->note ?? 'N/A' }}</span></p>
-                            </div>
+                            {{-- Licence number, membership no, permanent address --}}
+                            @if ($agent->owner_photo)
+                                <div class="flex-shrink-0">
+                                    <img src="{{ asset($agent->owner_photo) }}" alt="Profile Picture" class="w-24 h-24 rounded-full object-cover">
+                                </div>
+                            @endif
                         </div>
+
                     </div>
                     {{-- General Information End --}}
 
@@ -302,7 +328,7 @@
                                 <div class="bg-white rounded-lg shadow-md mt-6">
                                     <div class="p-6">
                                         <h4 class="text-lg font-semibold text-gray-800 mb-4">Record New Payment</h4>
-                                        
+
                                         <form action="{{ route('agents.fees.store', $agent->id) }}" method="POST">
                                             @csrf
 
@@ -324,19 +350,19 @@
                                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                             <span class="text-gray-500 sm:text-sm">৳</span>
                                                         </div>
-                                                        <input type="number" name="monthly" id="monthly" step="0.01" 
+                                                        <input type="number" name="monthly" id="monthly" step="0.01"
                                                             class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500" value="40">
                                                     </div>
                                                 </div>
 
                                                 {{-- Only if agent dont has any 'last_fee_paid_date' --}}
-                                                @if($agent->member_fee_paid_till_date == null) 
+                                                @if($agent->member_fee_paid_till_date == null)
 
                                                 <!-- Member Fee Paid Till Date -->
                                                 <div>
                                                     <label for="member_fee_paid_till_date" class="block text-sm font-medium text-gray-700">Member Fee paid Till Date</label>
                                                     <div class="mt-1 relative rounded-md shadow-sm">
-                                                        <input type="date" name="member_fee_paid_till_date" id="member_fee_paid_till_date" 
+                                                        <input type="date" name="member_fee_paid_till_date" id="member_fee_paid_till_date"
                                                             class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500" value="{{ old('member_fee_paid_till_date', $agent->member_fee_paid_till_date ? $agent->member_fee_paid_till_date->format('Y-m-d') : now()->format('Y-m-d')) }}">
                                                     </div>
                                                 </div>
@@ -349,7 +375,7 @@
                                                 <div>
                                                     <label for="welfare_fund_paid_till_date" class="block text-sm font-medium text-gray-700">Welfare Fund paid Till Date</label>
                                                     <div class="mt-1 relative rounded-md shadow-sm">
-                                                        <input type="date" name="welfare_fund_paid_till_date" id="welfare_fund_paid_till_date" 
+                                                        <input type="date" name="welfare_fund_paid_till_date" id="welfare_fund_paid_till_date"
                                                             class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500" value="{{ old('welfare_fund_paid_till_date', $agent->welfare_fund_paid_till_date ? $agent->welfare_fund_paid_till_date->format('Y-m-d') : now()->format('Y-m-d')) }}">
                                                     </div>
                                                 </div>
@@ -363,7 +389,7 @@
                                                 <div>
                                                     <label for="last_fee_paid_date" class="block text-sm font-medium text-gray-700">Last Fee Paid Date</label>
                                                     <div class="mt-1 relative rounded-md shadow-sm">
-                                                        <input type="date" name="last_fee_paid_date" id="last_fee_paid_date" 
+                                                        <input type="date" name="last_fee_paid_date" id="last_fee_paid_date"
                                                             class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500" value="{{ old('last_fee_paid_date', $agent->last_fee_paid_date ? $agent->last_fee_paid_date->format('Y-m-d') : now()->format('Y-m-d')) }}">
                                                     </div>
                                                 </div>
@@ -375,7 +401,7 @@
                                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                             <span class="text-gray-500 sm:text-sm">৳</span>
                                                         </div>
-                                                        <input type="number" name="payment_amount" id="payment_amount" step="0.01" 
+                                                        <input type="number" name="payment_amount" id="payment_amount" step="0.01"
                                                             class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500">
                                                     </div>
                                                 </div>

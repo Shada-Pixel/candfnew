@@ -130,7 +130,6 @@
                 <div class="mobile-member-dropdown-menu hidden pl-4">
                     <a href="{{ route('general-member') }}" class="block py-2 text-gray-800 hover:text-blue-500">General Members</a>
                     <a href="#" class="block py-2 text-gray-800 hover:text-blue-500">Advisory Committee</a>
-                    <a href="#" class="block py-2 text-gray-800 hover:text-blue-500">Executive Committee</a>
                     <a href="#" class="block py-2 text-gray-800 hover:text-blue-500">Ex-Presidents</a>
                     <a href="#" class="block py-2 text-gray-800 hover:text-blue-500">Ex-General Secretaries</a>
                 </div>

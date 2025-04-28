@@ -15,8 +15,6 @@
                     @endif
 
                 @endforeach
-                <span class="font-bold text-white"|>আগামী ২৫/০৩/২০২৫ ইং তারিখে বার্ষিক সাধারণ সভা-২০২৪ ও ইফতার মাহফিল এসোসিয়েশন ভবনে অনুষ্ঠিত হবে। 🌟 </span>
-                <span class="font-bold text-white">Ramadan Mubarak 🌟 </span>
             </div>
         </div>
 
@@ -30,20 +28,34 @@
         <section class=" pb-10 pt-16">
             <div class="container mx-auto flex gap-4 px-4">
                 <div class="basis-4/5">
-                    {{-- Mashonary grid gallary section --}}
+
+                    {{-- Gallery section --}}
                     <div class="flex-grow mb-8">
-                        <h2 class="text-3xl font-bold text-left mb-8 text-gray-800">Photo of Recently Activities</h2>
-                        <div class="grid grid-cols-3 gap-6 mt-5">
-                            <div class="gallery-item min-h-52 col-span-2 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out hover:z-10 bg-cover bg-no-repeat bg-center" style="background: url('{{ asset('images/galllary (1).jpg') }}');">
-                            </div>
-                            <div class="gallery-item min-h-52 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10 bg-cover bg-no-repeat bg-center" style="background: url('{{ asset('images/galllary (2).jpg') }}');">
-                            </div>
-                            <div class="gallery-item min-h-52 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10 bg-cover bg-no-repeat bg-center" style="background: url('{{ asset('images/galllary (3).jpg') }}');">
-                            </div>
-                            <div class="gallery-item min-h-52 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10 bg-cover bg-no-repeat bg-center" style="background: url('{{ asset('images/galllary (4).jpg') }}');">
-                            </div>
-                            <div class="gallery-item min-h-52 card p-4 shadow-md rounded-lg transform transition-all duration-700 ease-in-out col-span-1 hover:z-10 bg-cover bg-no-repeat bg-center" style="background: url('{{ asset('images/galllary (5).jpg') }}');">
-                            </div>
+                        <h2 class="text-3xl font-bold text-left mb-8 text-gray-800">Photo Gallery</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            @forelse($galleries as $gallery)
+                                <div class="gallery-item group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl"
+                                    style="min-height: 300px;">
+                                    <div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                                        style="background-image: url('{{ asset($gallery->image) }}')">
+                                    </div>
+                                    <div class="absolute inset-0 bg-black bg-opacity-0 transition-all duration-300 group-hover:bg-opacity-50">
+                                    </div>
+                                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white translate-y-full transition-transform duration-300 group-hover:translate-y-0">
+                                        <h3 class="text-lg font-semibold">{{ $gallery->title }}</h3>
+                                        @if($gallery->description)
+                                            <p class="mt-2 text-sm opacity-90">{{ $gallery->description }}</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="col-span-full text-center py-12 bg-gray-50 rounded-lg">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <p class="mt-2 text-gray-500">No gallery images available</p>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
 
@@ -220,38 +232,7 @@
         {{-- Scripts --}}
 
         <script>
-            $(document).ready(function () {
-                $('.faq-button').on('click', function () {
-                    const $this = $(this);
-                    const $content = $this.next('.faq-content');
-                    const $icon = $this.find('svg');
-                    const isExpanded = $this.attr('aria-expanded') === 'true';
 
-                    $this.attr('aria-expanded', !isExpanded);
-                    $content.toggleClass('hidden');
-                    $icon.toggleClass('rotate-180');
-
-                    // Close other accordions
-                    $('.faq-button').not($this).each(function () {
-                        const $otherButton = $(this);
-                        const $otherContent = $otherButton.next('.faq-content');
-                        const $otherIcon = $otherButton.find('svg');
-                        $otherButton.attr('aria-expanded', 'false');
-                        $otherContent.addClass('hidden');
-                        $otherIcon.removeClass('rotate-180');
-                    });
-                });
-
-
-
-                // Pause animation on hover
-                $('.gallery-item').hover(
-                    function() {
-                        $(this).removeClass('col-span-1').addClass('col-span-2');
-                        $(this).siblings().removeClass('col-span-2').addClass('col-span-1');
-                    }
-                );
-            });
         </script>
     </x-slot>
 

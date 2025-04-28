@@ -36,11 +36,11 @@
 
         <!-- Profile Dropdown Button -->
         <div class="relative">
-            <button data-fc-type="dropdown" data-fc-placement="bottom-end" type="button" class="nav-link flex items-center">
-                <span class="text-xl mx-2 font-bold ">{{Auth::user()->name}}</span>
+            <button class="nav-link flex items-center profile-dropdown-button" data-target="profile">
+                <span class="text-xl mx-2 font-bold">{{Auth::user()->name}}</span>
                 <i class="mdi mdi-chevron-down"></i>
             </button>
-            <div class="fc-dropdown fc-dropdown-open:opacity-100 hidden opacity-0 w-44 z-50 transition-[margin,opacity] duration-300 bg-white shadow-lg border rounded py-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 overflow-hidden">
+            <div class="profile-dropdown-menu hidden absolute right-0 w-44 z-50 transition-all duration-300 bg-white shadow-lg border rounded py-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800">
                 <a class="flex items-center py-2 px-5 text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="{{route('profile.edit')}}">
                     <i data-lucide="user" class="w-4 h-4 me-2"></i>
                     <span>My Account</span>
@@ -53,7 +53,6 @@
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
                     <button type="submit" onclick="event.preventDefault(); this.closest('form').submit();" class="w-full flex items-center py-2 px-5 text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300">
                         <i data-lucide="log-out" class="w-4 h-4 me-2"></i>
                         <span>Logout</span>

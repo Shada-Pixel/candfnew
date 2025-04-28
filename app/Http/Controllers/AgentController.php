@@ -267,4 +267,25 @@ class AgentController extends Controller implements HasMiddleware
         $agent->forceDelete();
         return response()->json(['success' => 'Agent deleted permanently.']);
     }
+
+    /**
+     * Print the certificate for an agent
+     */
+    public function printCertificate(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'license_number' => 'required|string',
+            'issue_date' => 'required|string',
+            'expire_date' => 'required|string',
+        ]);
+
+        // Redirect to a dedicated certificate view with the form data
+        return view('admin.print_certificate', [
+            'name' => $request->name,
+            'license_number' => $request->license_number,
+            'issue_date' => $request->issue_date,
+            'expire_date' => $request->expire_date,
+        ]);
+    }
 }

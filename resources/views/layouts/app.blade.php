@@ -17,8 +17,14 @@
         <!-- Icons css -->
         <link href="{{asset('css/icons.min.css')}}" rel="stylesheet" type="text/css">
 
+        <!-- Toastr css -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
         <!-- SweetAlert2 -->
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- Frost UI -->
+        <script src="https://unpkg.com/@agencyhive/frost-ui@1.0.0/dist/frost.min.js"></script>
 
         {{-- Custom css --}}
         <link rel="stylesheet" href="{{asset('css/custom.css')}}">
@@ -34,6 +40,10 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <!-- Theme Config Js -->
         <script src="{{asset('js/config.js')}}"></script>
+
+        <!-- Toastr JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
         <script>
             let BASE_URL = {!! json_encode(url('/')) !!} + "/";
         </script>

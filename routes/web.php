@@ -30,7 +30,9 @@ use App\Http\Controllers\{
     CustomFileController,
     AgentFeeController,
     MarqueeController,
-    AdvisoryCommitteeController
+    AdvisoryCommitteeController,
+    GalleryController,
+    ActivityLogController
 };
 
 // Guest user routes
@@ -162,8 +164,21 @@ Route::middleware(['auth'])->group(function () {
     // Marquees
     Route::resource('marquees', MarqueeController::class);
 
+    // Galleries
+    Route::resource('galleries', GalleryController::class);
+
     // Advisory Committee
     Route::resource('advisory', AdvisoryCommitteeController::class);
+
+    Route::get('/agents_certificate', function(){
+        return view('admin.agents_certificate');
+    })->name('agents.certificate');
+
+    Route::post('/agents_certificate/print', [AgentController::class, 'printCertificate'])->name('agents.certificate.print');
+
+    // Activity Logs
+    Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
+    Route::post('/activity-logs/clear', [ActivityLogController::class, 'clear'])->name('activity-logs.clear');
 });
 
 // Guest-accessible routes

@@ -11,6 +11,7 @@ use App\Models\Notice;
 use App\Models\Agent;
 use App\Models\AdvisoryCommittee;
 use App\Models\Marquee;
+use App\Models\Gallery;
 
 
 
@@ -41,7 +42,15 @@ class HomeController extends Controller
         $marquees = Marquee::where('active', true)->orderBy('order')->get();
         // Get all advisories ordered by 'order'
         $advisories = AdvisoryCommittee::where('active', true)->orderBy('order')->get();
-        return view('welcome', ['notices' => $notices, 'marquees' => $marquees, 'advisories' => $advisories]);
+        // Get active gallery images ordered by order
+        $galleries = Gallery::where('active', true)->orderBy('order')->get();
+
+        return view('welcome', [
+            'notices' => $notices,
+            'marquees' => $marquees,
+            'advisories' => $advisories,
+            'galleries' => $galleries
+        ]);
     }
 
 

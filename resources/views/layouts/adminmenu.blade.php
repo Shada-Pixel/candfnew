@@ -38,6 +38,7 @@
             </li>
 
 
+
             {{-- Agent --}}
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
@@ -66,6 +67,11 @@
                     <li class="menu-item">
                         <a href="{{route('agents.trash')}}" class="menu-link">
                             <span class="menu-text">Trash</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('agents.certificate')}}" class="menu-link">
+                            <span class="menu-text">Certificate</span>
                         </a>
                     </li>
                 </ul>
@@ -158,7 +164,44 @@
 
             @role('admin')
 
+            {{-- Activity Log --}}
+            <li class="menu-item">
+                <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
+                    <span class="menu-icon"><i class="mdi mdi-playlist-play"></i></span>
+                    <span class="menu-text"> Activity Log </span>
+                    <span class="menu-arrow"></span>
+                </a>
 
+                <ul class="sub-menu hidden">
+                    <li class="menu-item">
+                        <a href="{{route('activity-logs.index')}}" class="menu-link">
+                            <span class="menu-text">All</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            {{-- Gallery --}}
+            <li class="menu-item">
+                <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
+                    <span class="menu-icon"><i class="mdi mdi-file-image"></i></span>
+                    <span class="menu-text"> Gallery </span>
+                    <span class="menu-arrow"></span>
+                </a>
+
+                <ul class="sub-menu hidden">
+                    <li class="menu-item">
+                        <a href="{{route('galleries.index')}}" class="menu-link">
+                            <span class="menu-text">All Images</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('galleries.create')}}" class="menu-link">
+                            <span class="menu-text">New Image</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             {{-- User --}}
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
@@ -286,7 +329,7 @@
             {{-- SMS --}}
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
-                    <span class="menu-icon"><i class="mdi mdi-exclamation"></i></span>
+                    <span class="menu-icon"><i class="mdi mdi-caravan"></i></span>
                     <span class="menu-text">Bolletin</span>
                     <span class="menu-arrow"></span>
                 </a>
@@ -309,7 +352,7 @@
             {{-- SMS --}}
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
-                    <span class="menu-icon"><i class="mdi mdi-exclamation"></i></span>
+                    <span class="menu-icon"><i class="mdi mdi-account-multiple-outline"></i></span>
                     <span class="menu-text">Advisory Committee</span>
                     <span class="menu-arrow"></span>
                 </a>

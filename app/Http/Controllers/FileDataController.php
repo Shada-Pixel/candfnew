@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreFile_dataRequest;
 use App\Http\Requests\UpdateFile_dataRequest;
 
@@ -155,24 +156,54 @@ class FileDataController extends Controller
                 $responseData = $sendSMS->json();
 
 
-                // // Extract status for logging
-                // $status = $responseData['status'] ?? 'FAILED';
-                // $statusCode = $responseData['status_code'] ?? 'Unknown';
-                // $statusMessage = $responseData['error_message'] ?? 'No error message';
+                // Extract status for logging
+                $status = $responseData['status'] ?? 'FAILED';
+                $statusCode = $responseData['status_code'] ?? 'Unknown';
+                $statusMessage = $responseData['error_message'] ?? 'No error message';
 
-                // // Log the SMS response
-                // LogHelper::log(
-                //     action: "SMS Sent to $agent_phone",
-                //     description: "Status: $status, Code: $statusCode, Message: $statusMessage",
-                //     log_type: 'sms',
-                //     responseData: $responseData
-                // );
+                // Log the SMS response
+                LogHelper::log(
+                    action: "SMS Sent to $agent_phone",
+                    description: "Status: $status, Code: $statusCode, Message: $statusMessage",
+                    log_type: 'sms',
+                    responseData: $responseData
+                );
 
                 // Mark SMS as sent
                 $file_data->status = 'Printed';
                 $file_data->sms_sent = true;
                 $file_data->save();
             }
+
+            // Email sending logic
+            try {
+                if ($agent_email) {
+                    Mail::send('emails.file_notification', [
+                        'be_number' => $request->be_number,
+                        'be_date' => $request->be_date,
+                        'ie_name' => $ie_name,
+                        'manifest_no' => $request->manifest_no,
+                        'manifest_date' => $request->manifest_date,
+                        'agent_name' => $agent->name
+                    ], function($message) use ($agent_email, $agent) {
+                        $message->to($agent_email, $agent->name)
+                            ->subject('File Registration Notification - Benapole C&F Agents Association');
+                    });
+
+                    LogHelper::log(
+                        action: "Email Sent",
+                        description: "Email notification sent to agent {$agent->name} at {$agent_email}",
+                        log_type: 'email'
+                    );
+                }
+            } catch (\Exception $e) {
+                LogHelper::log(
+                    action: "Email Failed",
+                    description: "Failed to send email to {$agent_email}: " . $e->getMessage(),
+                    log_type: 'error'
+                );
+            }
+
             return redirect()->route('file_datas.show', $file_data->id)->with(['status' => 200, 'message' => 'File Received and Printed!']);
         }
 
@@ -270,22 +301,51 @@ class FileDataController extends Controller
             $responseData = $sendSMS->json();
 
 
-            // // Extract status for logging
-            // $status = $responseData['status'] ?? 'FAILED';
-            // $statusCode = $responseData['status_code'] ?? 'Unknown';
-            // $statusMessage = $responseData['error_message'] ?? 'No error message';
+            // Extract status for logging
+            $status = $responseData['status'] ?? 'FAILED';
+            $statusCode = $responseData['status_code'] ?? 'Unknown';
+            $statusMessage = $responseData['error_message'] ?? 'No error message';
 
-            // // Log the SMS response
-            // LogHelper::log(
-            //     action: "SMS Sent to $agent_phone",
-            //     description: "Status: $status, Code: $statusCode, Message: $statusMessage",
-            //     log_type: 'sms',
-            //     responseData: $responseData
-            // );
+            // Log the SMS response
+            LogHelper::log(
+                action: "SMS Sent to $agent_phone",
+                description: "Status: $status, Code: $statusCode, Message: $statusMessage",
+                log_type: 'sms',
+                responseData: $responseData
+            );
 
             // Mark SMS as sent
             $file_data->sms_sent = true;
             $file_data->save();
+        }
+
+        // Email sending logic
+        try {
+            if ($agent_email) {
+                Mail::send('emails.file_notification', [
+                    'be_number' => $file_data->be_number,
+                    'be_date' => $file_data->be_date,
+                    'ie_name' => $ie_name,
+                    'manifest_no' => $file_data->manifest_no,
+                    'manifest_date' => $file_data->manifest_date,
+                    'agent_name' => $agent->name
+                ], function($message) use ($agent_email, $agent) {
+                    $message->to($agent_email, $agent->name)
+                        ->subject('File Registration Notification - Benapole C&F Agents Association');
+                });
+
+                LogHelper::log(
+                    action: "Email Sent",
+                    description: "Email notification sent to agent {$agent->name} at {$agent_email}",
+                    log_type: 'email'
+                );
+            }
+        } catch (\Exception $e) {
+            LogHelper::log(
+                action: "Email Failed",
+                description: "Failed to send email to {$agent_email}: " . $e->getMessage(),
+                log_type: 'error'
+            );
         }
 
         if (Auth::user()->hasRole('operator')) {

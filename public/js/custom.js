@@ -121,10 +121,18 @@ $(document).ready(function() {
 
     // Mobile Dropdown Handlers
     $.each(mobileDropdowns, function(buttonClass, menuClass) {
-        $(`.${buttonClass}`).click(function() {
+        $(`.${buttonClass}`).click(function(e) {
+            e.stopPropagation();
             const $menu = $(this).next(`.${menuClass}`);
             const $arrow = $(this).find('svg');
 
+            // Close other dropdowns
+            $('.mobile-dropdown-menu, .mobile-member-dropdown-menu, .mobile-agent-dropdown-menu')
+                .not($menu)
+                .addClass('hidden');
+            $('svg.rotate-180').not($arrow).removeClass('rotate-180');
+
+            // Toggle current dropdown
             $menu.toggleClass('hidden');
             $arrow.toggleClass('rotate-180');
         });
@@ -135,29 +143,29 @@ $(document).ready(function() {
      */
     // Desktop Dropdown Handlers
     const dropdownMap = {
-        'desktop-dropdown-button': 'desktop-dropdown',
-        'desktop-member-dropdown-button': 'desktop-member-dropdown',
-        'agent-dropdown-button': 'agent-dropdown'
+        'desktop-dropdown-button': 'desktop-dropdown-menu',
+        'desktop-member-dropdown-button': 'desktop-member-dropdown-menu',
+        'agent-dropdown-button': 'agent-dropdown-menu'
     };
 
     // Initialize dropdown buttons
-    $.each(dropdownMap, function(buttonClass, targetName) {
-        $(`.${buttonClass}`).attr('data-target', targetName);
+    $.each(dropdownMap, function(buttonClass, menuClass) {
+        $(`.${buttonClass}`).attr('data-target', menuClass);
     });
 
     // Handle dropdown clicks
-    $('.desktop-dropdown-button, .desktop-member-dropdown-button, .agent-dropdown-button, .profile-dropdown-button')
+    $('.desktop-dropdown-button, .desktop-member-dropdown-button, .agent-dropdown-button')
         .click(function(e) {
             e.stopPropagation();
             const $button = $(this);
-            const $arrow = $button.find('svg, .mdi-chevron-down');
-            const menuClass = `.${$button.data('target')}-dropdown-menu`;
+            const $arrow = $button.find('svg');
+            const menuClass = `.${$button.data('target')}`;
 
             // Close other dropdowns
-            $('.desktop-dropdown-menu, .desktop-member-dropdown-menu, .agent-dropdown-menu, .profile-dropdown-menu')
+            $('.desktop-dropdown-menu, .desktop-member-dropdown-menu, .agent-dropdown-menu')
                 .not(menuClass)
                 .addClass('hidden');
-            $('svg.rotate-180, .mdi-chevron-down.rotate-180').not($arrow).removeClass('rotate-180');
+            $('svg.rotate-180').not($arrow).removeClass('rotate-180');
 
             // Toggle current dropdown
             $(menuClass).toggleClass('hidden');
@@ -166,9 +174,38 @@ $(document).ready(function() {
 
     // Global click handler to close dropdowns
     $(document).click(() => {
+        $('.desktop-dropdown-menu, .desktop-member-dropdown-menu, .agent-dropdown-menu')
+            .addClass('hidden');
+        $('svg.rotate-180').removeClass('rotate-180');
+    });
+
+    // Prevent dropdown close when clicking inside
+    $('.desktop-dropdown-menu, .desktop-member-dropdown-menu, .agent-dropdown-menu')
+        .click(e => e.stopPropagation());
+
+    /**
+     * Profile Dropdown
+     */
+    $('.profile-dropdown-button').click(function(e) {
+        e.stopPropagation();
+        const $menu = $(this).siblings('.profile-dropdown-menu');
+        const $arrow = $(this).find('i.mdi-chevron-down');
+
+        // Close other dropdowns
+        $('.desktop-dropdown-menu, .desktop-member-dropdown-menu, .agent-dropdown-menu, .profile-dropdown-menu')
+            .not($menu)
+            .addClass('hidden');
+
+        // Toggle current dropdown
+        $menu.toggleClass('hidden');
+        $arrow.toggleClass('rotate-180');
+    });
+
+    // Add profile dropdown menu to global click handler
+    $(document).click(() => {
         $('.desktop-dropdown-menu, .desktop-member-dropdown-menu, .agent-dropdown-menu, .profile-dropdown-menu')
             .addClass('hidden');
-        $('svg.rotate-180, .mdi-chevron-down.rotate-180').removeClass('rotate-180');
+        $('svg.rotate-180, i.rotate-180').removeClass('rotate-180');
     });
 
     // Prevent dropdown close when clicking inside

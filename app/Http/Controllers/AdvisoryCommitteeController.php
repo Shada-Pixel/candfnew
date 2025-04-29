@@ -29,7 +29,8 @@ class AdvisoryCommitteeController extends Controller
             'designation' => 'nullable|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'order' => 'nullable|integer|min:0',
-            'active' => 'nullable|boolean'
+            'active' => 'nullable|boolean',
+            'type' => 'nullable',
         ]);
 
         $data = $request->except('photo');
@@ -57,7 +58,8 @@ class AdvisoryCommitteeController extends Controller
             'designation' => 'nullable|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'order' => 'nullable|integer|min:0',
-            'active' => 'nullable|boolean'
+            'active' => 'nullable|boolean',
+            'type' => 'nullable',
         ]);
 
         $data = $request->except('photo');

@@ -1,7 +1,7 @@
 <x-app-layout>
-    <x-slot name="title">Add Advisory Committee Member</x-slot>
+    <x-slot name="title">Add Committee Member</x-slot>
 
-    <div class="card">
+    <div class="card p-6">
         <div class="card-header">
             <h4 class="card-title">Add New Member</h4>
         </div>
@@ -41,6 +41,19 @@
                             <p class="text-danger mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+                    <div>
+                        <label for="type" class="block mb-2">Type</label>
+                        <select class="form-select" id="type" name="type">
+                            <option value="EC Committee">EC Committee</option>
+                            <option value="Ex-President">Ex-President</option>
+                            <option value="Ex-General Secretary">Ex-General Secretary</option>
+                            <option value="Election Committee">Election Committee</option>
+                            <option value="Internal Audit Committee">Internal Audit Committee</option>
+                        </select>
+                        @error('type')
+                            <p class="text-danger mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
 
                     <div>
                         <label class="inline-flex items-center">
@@ -51,7 +64,7 @@
 
                     <div class="flex justify-end gap-2">
                         <a href="{{ route('advisory.index') }}" class="btn btn-secondary">Cancel</a>
-                        <button type="submit" class="btn bg-primary text-white">Save Member</button>
+                        <button type="submit" class="px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 text-white rounded-md shadow-md hover:shadow-lg transition-all duration-200 ml-2">Save Member</button>
                     </div>
                 </div>
             </form>

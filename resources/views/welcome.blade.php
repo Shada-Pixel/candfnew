@@ -31,7 +31,7 @@
 
                     {{-- Gallery section --}}
                     <div class="flex-grow mb-8">
-                        <h2 class="text-3xl font-bold text-left mb-8 text-gray-800">Photo Gallery</h2>
+                        <h2 class="text-3xl font-bold text-left mb-8 text-gray-800">Photo Of Recent Activities</h2>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             @forelse($galleries as $gallery)
                                 <div class="gallery-item group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl"
@@ -88,33 +88,16 @@
 
                             <div class="basis-1/4 flex flex-col items-center">
                                 {{-- image --}}
-                                <img src="{{ asset('images/placeholder.jpg') }}" alt="President">
+                                <img src="{{ asset('images/President.jpg') }}" alt="President">
                             </div>
 
                             <div class="text-gray-600 basis-3/4">
                                 <p class="text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
                                     molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
                                     numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
-                                    optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis
-                                    obcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam
-                                    nihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat, odit,
-                                    tenetur error, harum nesciunt ipsum debitis quas aliquid. Reprehenderit,
-                                    quia. Quo neque error repudiandae fuga? Ipsa laudantium molestias eos
-                                    sapiente officiis modi at sunt excepturi expedita sint? Sed quibusdam
-                                    recusandae alias error harum maxime adipisci amet laborum. Perspiciatis
-                                    minima nesciunt dolorem! Officiis iure rerum voluptates a cumque velit
-                                    quibusdam sed amet tempora. Sit laborum ab, eius fugit doloribus tenetur
-                                    fugiat, temporibus enim commodi iusto libero magni deleniti quod quam
-                                    consequuntur! Commodi minima excepturi repudiandae velit hic maxime
-                                    doloremque. Quaerat provident commodi consectetur veniam similique ad
-                                    earum omnis ipsum saepe, voluptas, hic voluptates pariatur est explicabo
-                                    fugiat, dolorum eligendi quam cupiditate excepturi mollitia maiores labore
-                                    suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
-                                    modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam
-                                    totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam
-                                    quasi aliquam eligendi, placeat qui corporis!
+                                    optio, eaque rerum!
                                 </p>
-                                <h3 class="font-bold text-lg text-gray-900">Sabbir Hussain</h3>
+                                <h3 class="font-bold text-lg text-gray-900">Alhaz MD. Shamsur Rahman</h3>
                                 <p class="text-gray-600">President</p>
                             </div>
                         </div>
@@ -130,7 +113,7 @@
 
                             <div class="basis-1/4 flex flex-col items-center">
                                 {{-- image --}}
-                                <img src="{{ asset('images/placeholder.jpg') }}" alt="President">
+                                <img src="{{ asset('images/General Secretary.jpg') }}" alt="President">
                             </div>
 
                             <div class="text-gray-600 basis-3/4">
@@ -138,25 +121,9 @@
                                     molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
                                     numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
                                     optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis
-                                    obcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam
-                                    nihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat, odit,
-                                    tenetur error, harum nesciunt ipsum debitis quas aliquid. Reprehenderit,
-                                    quia. Quo neque error repudiandae fuga? Ipsa laudantium molestias eos
-                                    sapiente officiis modi at sunt excepturi expedita sint? Sed quibusdam
-                                    recusandae alias error harum maxime adipisci amet laborum. Perspiciatis
-                                    minima nesciunt dolorem! Officiis iure rerum voluptates a cumque velit
-                                    quibusdam sed amet tempora. Sit laborum ab, eius fugit doloribus tenetur
-                                    fugiat, temporibus enim commodi iusto libero magni deleniti quod quam
-                                    consequuntur! Commodi minima excepturi repudiandae velit hic maxime
-                                    doloremque. Quaerat provident commodi consectetur veniam similique ad
-                                    earum omnis ipsum saepe, voluptas, hic voluptates pariatur est explicabo
-                                    fugiat, dolorum eligendi quam cupiditate excepturi mollitia maiores labore
-                                    suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
-                                    modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam
-                                    totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam
-                                    quasi aliquam eligendi, placeat qui corporis!
+                                    obcaecati tenetur iure
                                 </p>
-                                <h3 class="font-bold text-lg text-gray-900">Sabbir Hussain</h3>
+                                <h3 class="font-bold text-lg text-gray-900">Emdadul Haq Lata</h3>
                                 <p class="text-gray-600">President</p>
                             </div>
                         </div>
@@ -169,12 +136,12 @@
         </section>
 
 
-        {{-- Advisory Committee --}}
-        <section class=" py-10">
+        {{-- EC Committee --}}
+        <section class=" py-10" id="ec-committee">
             <div class="container mx-auto flex gap-4 px-4">
                 <div class="flex-grow">
 
-                    <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Advisory Committee</h2>
+                    <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">EC Committee</h2>
 
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 mt-5">
                         @forelse ($advisories as $advisory)

@@ -40,7 +40,6 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home');
     Route::get('/story', 'story')->name('story');
     Route::get('/contact', 'contact')->name('contact');
-    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
     Route::get('/career', 'career')->name('career');
     Route::get('/allservices', 'services')->name('services');
     Route::get('/works/{industry}', 'industries')->name('industries.show');
@@ -48,7 +47,21 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/members_protfolio/{member}', 'memberProtfolio')->name('memberProtfolio');
     Route::get('/general-member', 'generalMember')->name('general-member');
     Route::get('/agency', 'myagency')->name('myagency');
+
+    Route::get('/expresidents', 'expresidents')->name('expresidents');
+    Route::get('/exgsecratary', 'exgsecratary')->name('exgsecratary');
+    Route::get('/electioncommittee', 'electioncommittee')->name('electioncommittee');
+    Route::get('/internalaidcommittee', 'internalaidcommittee')->name('internalaidcommittee');
+    Route::get('/photoalbum', 'photoalbum')->name('photoalbum');
+
 });
+Route::get('/weblinks', function(){
+    return view('weblinks');
+})->name('weblinks');
+Route::get('/aboutus', function(){
+    return view('aboutus');
+})->name('aboutus');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 // Authenticated user routes
 Route::middleware(['auth'])->group(function () {

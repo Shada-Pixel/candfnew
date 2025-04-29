@@ -18,7 +18,7 @@
 
                 <!-- Dropdown Container -->
                 <div class="relative">
-                    <button id="desktop-dropdown-button" class="desktop-dropdown-button text-gray-800 hover:text-blue-500 px-3 py-2 flex items-center">ITC Reports
+                    <button id="desktop-dropdown-button" data-target="desktop" class="desktop-dropdown-button text-gray-800 hover:text-blue-500 px-3 py-2 flex items-center">ITC Reports
                         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
@@ -37,19 +37,20 @@
 
                 <!-- Member Dropdown Container -->
                 <div class="relative">
-                    <button id="" class="desktop-member-dropdown-button text-gray-800 hover:text-blue-500 px-3 py-2 flex items-center">Members
+                    <button id="desktop-member-dropdown-button" data-target="desktop-member" class="desktop-member-dropdown-button text-gray-800 hover:text-blue-500 px-3 py-2 flex items-center">Members
                         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
 
                     <!-- Dropdown Menu -->
-                    <div id="" class="desktop-member-dropdown-menu absolute hidden bg-white shadow-md rounded-lg mt-2 py-2 w-48 z-10">
+                    <div id="desktop-member-dropdown-menu" class="desktop-member-dropdown-menu absolute hidden bg-white shadow-md rounded-lg mt-2 py-2 w-48 z-10">
                         <a href="{{ route('general-member') }}" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">General Members</a>
-                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Advisory Committee</a>
-                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Executive Committee</a>
-                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Ex-Presidents</a>
-                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Ex-General Secretaries</a>
+                        <a href="{{ route('home').'/#ec-committee' }}" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">EC Committee</a>
+                        <a href="{{ route('expresidents') }}" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Ex-Presidents</a>
+                        <a href="{{ route('exgsecratary') }}" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Ex-General Secretaries</a>
+                        <a href="{{ route('electioncommittee') }}" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Election Committee</a>
+                        <a href="{{ route('internalaidcommittee') }}" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Internal Audit Committee</a>
                     </div>
                 </div>
                 @guest
@@ -96,14 +97,13 @@
     </div>
 
     <!-- Mobile Menu (Hidden by default) -->
-    <!-- Mobile Menu (Hidden by default) -->
     <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
         <div class="container mx-auto px-4 py-2">
             <a href="/" class="block py-2 text-gray-800 hover:text-blue-500">Home</a>
 
             <!-- Mobile ITC Reports Dropdown -->
             <div class="relative">
-                <button class="mobile-dropdown-button w-full text-left py-2 text-gray-800 hover:text-blue-500 flex items-center justify-between">
+                <button class="mobile-dropdown-button w-full text-left py-2 text-gray-800 hover:text-blue-500 flex items-center justify-between" data-target="mobile">
                     ITC Reports
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -121,7 +121,7 @@
 
             <!-- Mobile Members Dropdown -->
             <div class="relative">
-                <button class="mobile-member-dropdown-button w-full text-left py-2 text-gray-800 hover:text-blue-500 flex items-center justify-between">
+                <button class="mobile-member-dropdown-button w-full text-left py-2 text-gray-800 hover:text-blue-500 flex items-center justify-between" data-target="mobile-member">
                     Members
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -129,7 +129,7 @@
                 </button>
                 <div class="mobile-member-dropdown-menu hidden pl-4">
                     <a href="{{ route('general-member') }}" class="block py-2 text-gray-800 hover:text-blue-500">General Members</a>
-                    <a href="#" class="block py-2 text-gray-800 hover:text-blue-500">Advisory Committee</a>
+                    <a href="#" class="block py-2 text-gray-800 hover:text-blue-500">EC Committee</a>
                     <a href="#" class="block py-2 text-gray-800 hover:text-blue-500">Ex-Presidents</a>
                     <a href="#" class="block py-2 text-gray-800 hover:text-blue-500">Ex-General Secretaries</a>
                 </div>

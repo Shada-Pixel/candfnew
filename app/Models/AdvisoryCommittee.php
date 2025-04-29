@@ -13,7 +13,8 @@ class AdvisoryCommittee extends Model
         'designation',
         'photo',
         'order',
-        'active'
+        'active',
+        'type'
     ];
 
     protected $casts = [

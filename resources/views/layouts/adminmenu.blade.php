@@ -59,6 +59,7 @@
                             <span class="menu-text">New Agents</span>
                         </a>
                     </li>
+                    @role('admin')
                     <li class="menu-item">
                         <a href="{{route('donations.index')}}" class="menu-link">
                             <span class="menu-text">Donations</span>
@@ -74,6 +75,7 @@
                             <span class="menu-text">Certificate</span>
                         </a>
                     </li>
+                    @endrole
                 </ul>
             </li>
             {{-- Importer/Exporter --}}
@@ -121,13 +123,6 @@
                     </li>
                 </ul>
             </li>
-            {{-- Green --}}
-            {{-- <li class="menu-item">
-                <a href="{{route('home')}}" class="menu-link">
-                    <span class="menu-icon"><i class="mdi mdi-file-cloud-outline"></i></span>
-                    <span class="menu-text"> Green Files </span>
-                </a>
-            </li> --}}
 
             @role('admin|accountant')
 
@@ -326,11 +321,11 @@
                 </ul>
             </li>
 
-            {{-- SMS --}}
+            {{-- Bulletin --}}
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
                     <span class="menu-icon"><i class="mdi mdi-caravan"></i></span>
-                    <span class="menu-text">Bolletin</span>
+                    <span class="menu-text">Bulletin</span>
                     <span class="menu-arrow"></span>
                 </a>
 
@@ -349,11 +344,11 @@
             </li>
 
 
-            {{-- SMS --}}
+            {{-- Committee --}}
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
                     <span class="menu-icon"><i class="mdi mdi-account-multiple-outline"></i></span>
-                    <span class="menu-text">Advisory Committee</span>
+                    <span class="menu-text">Committee</span>
                     <span class="menu-arrow"></span>
                 </a>
 
@@ -371,13 +366,21 @@
                 </ul>
             </li>
 
+            {{-- ITC Reports --}}
+            <li class="menu-item">
+                <a href="{{route('itc-reports.create')}}" class="menu-link">
+                    <span class="menu-icon"><i class="mdi mdi-clock-out"></i></span>
+                    <span class="menu-text"> ITC Reports </span>
+                </a>
+            </li>
+
 
 
 
             @endrole
 
 
-            @role('developer')
+            @role('developer|admin')
             <hr>
             {{-- Development --}}
             <li class="menu-item">
@@ -418,13 +421,7 @@
 
             @endrole
 
-            {{-- ITC Reports --}}
-            <li class="menu-item">
-                <a href="{{route('itc-reports.create')}}" class="menu-link">
-                    <span class="menu-icon"><i class="mdi mdi-clock-out"></i></span>
-                    <span class="menu-text"> ITC Reports </span>
-                </a>
-            </li>
+
 
         </ul>
     </div>

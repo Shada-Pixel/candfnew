@@ -41,7 +41,7 @@ class HomeController extends Controller
         // Get all active marquees ordered by 'order'
         $marquees = Marquee::where('active', true)->orderBy('order')->get();
         // Get all advisories ordered by 'order'
-        $advisories = AdvisoryCommittee::where('active', true)->orderBy('order')->get();
+        $advisories = AdvisoryCommittee::where('active', true)->where('type','EC Committee')->orderBy('order')->get();
         // Get active gallery images ordered by order
         $galleries = Gallery::where('active', true)->orderBy('order')->get();
 
@@ -49,6 +49,13 @@ class HomeController extends Controller
             'notices' => $notices,
             'marquees' => $marquees,
             'advisories' => $advisories,
+            'galleries' => $galleries
+        ]);
+    }
+    public function photoalbum(): View
+    {
+        $galleries = Gallery::where('active', true)->where('order', 1)->get();
+        return view('photoalbum', [
             'galleries' => $galleries
         ]);
     }
@@ -87,6 +94,30 @@ class HomeController extends Controller
             'agent' => $agent,
             'completionPercentage' => round($completionPercentage) // Round to the nearest whole number
         ]);
+    }
+
+
+
+
+    public function expresidents(Request $request): View
+    {
+        $advisories = AdvisoryCommittee::where('active', true)->where('type','Ex-President')->orderBy('order')->get();
+        return view('expresidents', ['advisories' => $advisories]);
+    }
+    public function exgsecratary(Request $request): View
+    {
+        $advisories = AdvisoryCommittee::where('active', true)->where('type','Ex-General Secretary')->orderBy('order')->get();
+        return view('exgsecratary', ['advisories' => $advisories]);
+    }
+    public function electioncommittee(Request $request): View
+    {
+        $advisories = AdvisoryCommittee::where('active', true)->where('type','Election Committee')->orderBy('order')->get();
+        return view('electioncommittee', ['advisories' => $advisories]);
+    }
+    public function internalaidcommittee(Request $request): View
+    {
+        $advisories = AdvisoryCommittee::where('active', true)->where('type','Internal Audit Committee')->orderBy('order')->get();
+        return view('internalaidcommittee', ['advisories' => $advisories]);
     }
 
 

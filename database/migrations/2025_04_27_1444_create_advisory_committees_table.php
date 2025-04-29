@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('designation')->nullable();
             $table->string('photo')->nullable();
+            $table->string('type')->nullable();
             $table->integer('order')->default(0);
             $table->boolean('active')->default(true);
             $table->timestamps();

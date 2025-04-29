@@ -47,6 +47,19 @@
                             <p class="text-danger mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+                    <div>
+                        <label for="type" class="block mb-2">Type</label>
+                        <select class="form-select" id="type" name="type">
+                            <option value="EC Committee" @if ($advisory->type == 'EC Committee') selected @endif>EC Committee</option>
+                            <option value="Ex-President" @if ($advisory->type == 'Ex-President') selected @endif>Ex-President</option>
+                            <option value="Ex-General Secretary" @if ($advisory->type == 'Ex-General Secretary') selected @endif>Ex-General Secretary</option>
+                            <option value="Election Committee" @if ($advisory->type == 'Election Committee') selected @endif>Election Committee</option>
+                            <option value="Internal Audit Committee" @if ($advisory->type == 'Internal Audit Committee') selected @endif>Internal Audit Committee</option>
+                        </select>
+                        @error('type')
+                            <p class="text-danger mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
 
                     <div>
                         <label class="inline-flex items-center">

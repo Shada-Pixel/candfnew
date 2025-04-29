@@ -22,6 +22,7 @@
                             <th class="p-3 text-left">Photo</th>
                             <th class="p-3 text-left">Name</th>
                             <th class="p-3 text-left">Designation</th>
+                            <th class="p-3 text-left">Type</th>
                             <th class="p-3 text-left">Order</th>
                             <th class="p-3 text-left">Status</th>
                             <th class="p-3 text-left">Actions</th>
@@ -55,6 +56,7 @@
                         },
                         {data: 'name', name: 'name'},
                         {data: 'designation', name: 'designation'},
+                        {data: 'type', name: 'type'},
                         {data: 'order', name: 'order'},
                         {
                             data: 'active',

@@ -9,27 +9,35 @@
                             <p class="text:nblue text-2xl uppercase font-bold leading-none">Benapole<br/>C&F Association</p>
                         </div>
                     </a>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id, aspernatur dolorum natus recusandae odit eos consectetur, aliquid fugit veritatis asperiores architecto. Beatae nostrum quam exercitationem.</p>
+                    <p>Benapole customs C&F agents association is the bigest organization in benapole area. It is head office of all C&F agent office in benapole area. Which reg no: 842 by GDL Khulna</p>
+
+                    <p class="mt-4">Benapole land port is the bigest land port in south asia.</p>
                     <a class="text-center capitalize px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-110 duration-150 transition-all  font-bold text-lg text-white" href="{{route('contact')}}">Get A Free Query</a>
                 </div>
             </div>
             <div class="p-5">
                 <div class="text-sm uppercase text-bb font-bold">Resources</div>
-                <a class="my-3 block" href="/#">Documentation <span class="text-teal-600 text-xs p-1"></span></a><a
-                    class="my-3 block" href="/#">Tutorials <span class="text-teal-600 text-xs p-1"></span></a><a
-                    class="my-3 block" href="/#">Support <span class="text-teal-600 text-xs p-1">New</span></a>
+                <a class="my-3 block" href="{{route('aboutus')}}">About Us </a>
+                <a class="my-3 block" href="https://cnfbpl.com:2096" target="_blank">Web Mail</a>
+                <a class="my-3 block" href="{{route('weblinks')}}" target="_blank">Web Links</a>
+                <a class="my-3 block" href="{{route('photoalbum')}}" target="_blank">Photo Album</a>
             </div>
             <div class="p-5">
                 <div class="text-sm uppercase text-bb font-bold">Support</div>
-                <a class="my-3 block" href="/#">Help Center <span class="text-teal-600 text-xs p-1"></span></a><a
-                    class="my-3 block" href="/#">Privacy Policy <span class="text-teal-600 text-xs p-1"></span></a><a
-                    class="my-3 block" href="/#">Conditions <span class="text-teal-600 text-xs p-1"></span></a>
+                <a class="my-3 block" href="/#">Help Center </a><a
+                    class="my-3 block" href="/#">Privacy Policy </a><a
+                    class="my-3 block" href="/#">Conditions </a>
             </div>
             <div class="p-5">
                 <div class="text-sm uppercase text-bb font-bold">Contact us</div>
-                <a class="my-3 block" href="/#">XXX XXXX, Floor 4 San Francisco, CA
-                    <span class="text-teal-600 text-xs p-1"></span></a><a class="my-3 block" href="/#">contact@company.com
-                    <span class="text-teal-600 text-xs p-1"></span></a>
+                <p class="my-3 block" >Association Road, Infront of Private Stand, Benapole Bazar, Jashore, Bangladesh.</p>
+                <p class="my-3 block" ><i class="mdi mdi-phone mr-2"></i> 04228-75778, 76152, 76153</p>
+                <p class="my-3 block" ><i class="mdi mdi-email-outline mr-2"></i> info@cnfbpl.com, associationbpl@cnfbpl.com, associationbpl@gmail.com</p>
+
+                <div class="font-bold text-sm uppercase text-bb mt-5">
+                    <a href=""><i class="mdi mdi-facebook-box"></i></a>
+                    <a href=""><i class="mdi mdi-twitter-box"></i></a>
+                </div>
             </div>
         </div>
     </div>

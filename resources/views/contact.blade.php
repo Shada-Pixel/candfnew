@@ -2,7 +2,7 @@
 
 
     {{-- Title --}}
-    <x-slot name="title">Home</x-slot>
+    <x-slot name="title">Contact</x-slot>
 
     <main>
         <section>

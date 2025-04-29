@@ -24,7 +24,7 @@ class UserController extends Controller implements HasMiddleware
     {
         return [
             new Middleware('permission:user-list', ['only' => ['index']]),
-            new Middleware('permission:user-create', ['only' => ['create', 'store']]),
+            new Middleware('permission:user-create', ['only' => ['create', 'store', 'createAgentUser', 'storeAgentUser']]),
             new Middleware('permission:user-edit', ['only' => ['edit', 'update']]),
             new Middleware('permission:user-delete', ['only' => ['destroy']]),
         ];
@@ -49,7 +49,7 @@ class UserController extends Controller implements HasMiddleware
     {
         try {
             DB::beginTransaction();
-            
+
             $user = new User;
             $user->fill($request->safe()->only(['name', 'email']));
             $user->password = Hash::make($request->password);
@@ -107,7 +107,7 @@ class UserController extends Controller implements HasMiddleware
         try {
             $user = User::findOrFail($request->userid);
             $user->assignRole($request->rolename);
-            
+
             return response()->json([
                 'success' => 'Role Assigned',
                 'roles' => Role::all(),
@@ -128,7 +128,7 @@ class UserController extends Controller implements HasMiddleware
         try {
             $user = User::findOrFail($request->userid);
             $user->removeRole($request->rolename);
-            
+
             return response()->json([
                 'success' => 'Role Unassigned',
                 'roles' => Role::all(),
@@ -181,11 +181,11 @@ class UserController extends Controller implements HasMiddleware
         try {
             DB::beginTransaction();
             $user = User::findOrFail($id);
-            
+
             if ($user->photo) {
                 Storage::disk('public')->delete($user->photo);
             }
-            
+
             $user->delete();
             DB::commit();
 
@@ -201,5 +201,42 @@ class UserController extends Controller implements HasMiddleware
         $agents = Agent::all();
         $roles = Role::where('name', 'agent')->get();
         return view('admin.users.agentcreate', compact('roles', 'agents'));
+    }
+
+    public function storeAgentUser(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:8'],
+                'agent_id' => ['required', 'exists:agents,id'],
+            ]);
+
+            $user = new User;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->agent_id = $request->agent_id;
+
+            if ($request->hasFile('photo')) {
+                $path = $request->file('photo')->store('users/photos', 'public');
+                $user->photo = $path;
+            }
+
+            $user->save();
+            $user->assignRole('agent');
+
+            DB::commit();
+            return redirect()->route('users.index')
+                ->with(['status' => 200, 'message' => 'Agent user created successfully']);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withInput()
+                ->with(['status' => 500, 'message' => 'Error creating agent user: ' . $e->getMessage()]);
+        }
     }
 }

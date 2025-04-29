@@ -12,7 +12,7 @@ use App\Http\Controllers\{
     UserController,
     BankController,
     QueryController,
-    CareerController,
+    // CareerController,
     ProfileController,
     DashboardController,
     PermissionController,
@@ -77,12 +77,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/optimize', fn() => Artisan::call('optimize:clear') && 'App Optimize')->name('optimize.clear');
     });
 
-    // Finance management
-    Route::resources([
-        'banks' => BankController::class,
-        'baccounts' => BankAccountController::class,
-        'transactions' => BankTransactionController::class,
-    ]);
     Route::prefix('btransactions')->group(function () {
         Route::get('/deposit', [BankTransactionController::class, 'deposit'])->name('btransactions.deposit');
         Route::get('/withdrawal', [BankTransactionController::class, 'withdrawal'])->name('btransactions.withdrawal');
@@ -103,7 +97,19 @@ Route::middleware(['auth'])->group(function () {
         'roles' => RoleController::class,
         'users' => UserController::class,
         'permissions' => PermissionController::class,
+        'ie_datas'=> IeDataController::class,
+        // 'careers'=> CareerController::class,
+        'donations'=> DonationController::class,
+        'customfiles'=> CustomFileController::class,
+        'marquees'=> MarqueeController::class,
+        'galleries'=> GalleryController::class,
+        'advisory'=> AdvisoryCommitteeController::class,
+        'banks' => BankController::class,
+        'baccounts' => BankAccountController::class,
+        'transactions' => BankTransactionController::class,
+        'itc-reports'=> ITCReportController::class,
     ]);
+
     Route::prefix('users')->group(function () {
         Route::get('/showuserrole/{user}', [UserController::class, 'showUserRoles'])->name('get.userrole');
         Route::post('/assignrole', [UserController::class, 'assignrole'])->name('assignrole');
@@ -113,7 +119,6 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Importer/Exporter management
-    Route::resource('ie_datas', IeDataController::class);
     Route::prefix('ie_datas')->group(function () {
         Route::get('/trash', [IeDataController::class, 'trash'])->name('ie_datas.trash');
         Route::patch('/restore/{transaction}', [IeDataController::class, 'restore'])->name('ie_datas.restore');
@@ -152,10 +157,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/send-bulk', [SmsController::class, 'sendBulkSms']);
         Route::post('/send-dynamic', [SmsController::class, 'sendDynamicSms']);
     });
-
-    // ITC Reports
-    Route::resource('itc-reports', ITCReportController::class);
-
+    
     // Notices
     Route::prefix('notices')->group(function () {
         Route::get('create', [NoticeController::class, 'create'])->name('notices.create');
@@ -165,28 +167,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('{notice}', [NoticeController::class, 'destroy'])->name('notices.destroy');
     });
 
-    // Careers
-    Route::resource('careers', CareerController::class);
-
-    // Donations
-    Route::resource('donations', DonationController::class);
-
-    // Custom File
-    Route::resource('customfiles', CustomFileController::class);
-
-    // Marquees
-    Route::resource('marquees', MarqueeController::class);
-
-    // Galleries
-    Route::resource('galleries', GalleryController::class);
-
-    // Advisory Committee
-    Route::resource('advisory', AdvisoryCommitteeController::class);
-
-    Route::get('/agents_certificate', function(){
-        return view('admin.agents_certificate');
-    })->name('agents.certificate');
-
+    Route::get('/agents_certificate', function(){ return view('admin.agents_certificate'); })->name('agents.certificate');
     Route::post('/agents_certificate/print', [AgentController::class, 'printCertificate'])->name('agents.certificate.print');
 
     // Activity Logs

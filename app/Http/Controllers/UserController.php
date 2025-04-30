@@ -198,6 +198,7 @@ class UserController extends Controller implements HasMiddleware
 
     public function createAgentUser(Request $request)
     {
+
         $agents = Agent::all();
         $roles = Role::where('name', 'agent')->get();
         return view('admin.users.agentcreate', compact('roles', 'agents'));

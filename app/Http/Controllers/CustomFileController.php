@@ -147,4 +147,26 @@ class CustomFileController extends Controller
                 ->with('error', 'Error deleting custom file: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Toggle the status of the custom file between Paid and Unpaid
+     */
+    public function toggleStatus($id)
+    {
+        try {
+            $customFile = CustomFile::findOrFail($id);
+            $customFile->status = $customFile->status === 'Paid' ? 'Unpaid' : 'Paid';
+            $customFile->save();
+            
+            return response()->json([
+                'success' => true,
+                'status' => $customFile->status,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating status: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

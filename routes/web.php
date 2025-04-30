@@ -12,7 +12,6 @@ use App\Http\Controllers\{
     UserController,
     BankController,
     QueryController,
-    // CareerController,
     ProfileController,
     DashboardController,
     PermissionController,
@@ -63,6 +62,9 @@ Route::get('/aboutus', function(){
 })->name('aboutus');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
+// Guest contact form route
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
 // Authenticated user routes
 Route::middleware(['auth'])->group(function () {
     // Dashboard
@@ -98,7 +100,6 @@ Route::middleware(['auth'])->group(function () {
         'users' => UserController::class,
         'permissions' => PermissionController::class,
         'ie_datas'=> IeDataController::class,
-        // 'careers'=> CareerController::class,
         'donations'=> DonationController::class,
         'customfiles'=> CustomFileController::class,
         'marquees'=> MarqueeController::class,
@@ -108,15 +109,21 @@ Route::middleware(['auth'])->group(function () {
         'baccounts' => BankAccountController::class,
         'transactions' => BankTransactionController::class,
         'itc-reports'=> ITCReportController::class,
+        'agents'=> AgentController::class,
     ]);
+
+    // Custom Files Status Toggle
+    Route::post('/customfiles/{id}/toggle-status', [CustomFileController::class, 'toggleStatus'])->name('customfiles.toggle-status');
 
     Route::prefix('users')->group(function () {
         Route::get('/showuserrole/{user}', [UserController::class, 'showUserRoles'])->name('get.userrole');
         Route::post('/assignrole', [UserController::class, 'assignrole'])->name('assignrole');
         Route::post('/unassignrole', [UserController::class, 'unassignrole'])->name('unassignrole');
-        Route::get('/createagentuser', [UserController::class, 'createAgentUser'])->name('createagentuser');
-        Route::post('/storeagentuser', [UserController::class, 'storeAgentUser'])->name('storeagentuser');
     });
+    
+    Route::get('/createagentuser', [UserController::class, 'createAgentUser'])->name('createagentuser');
+    Route::post('/storeagentuser', [UserController::class, 'storeAgentUser'])->name('storeagentuser');
+
 
     // Importer/Exporter management
     Route::prefix('ie_datas')->group(function () {
@@ -133,7 +140,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Agent management
-    Route::resource('agents', AgentController::class);
+    
     Route::prefix('agents')->group(function () {
         Route::get('/trash', [AgentController::class, 'trash'])->name('agents.trash');
         Route::patch('/restore/{transaction}', [AgentController::class, 'restore'])->name('agents.restore');
@@ -173,6 +180,12 @@ Route::middleware(['auth'])->group(function () {
     // Activity Logs
     Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
     Route::post('/activity-logs/clear', [ActivityLogController::class, 'clear'])->name('activity-logs.clear');
+
+    // Admin contact management routes
+
+    Route::get('/admin/contacts', [ContactController::class, 'index'])->name('contacts.index');
+    Route::get('/admin/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
+    Route::delete('/admin/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 });
 
 // Guest-accessible routes
@@ -195,6 +208,9 @@ Route::get('/ainautocomplete', function (Request $request) {
         ->orWhere('name', 'LIKE', "%{$request->get('query')}%")
         ->pluck('name'));
 });
+
+
+
 
 // Test SMS
 Route::post('/test_sms', function () {

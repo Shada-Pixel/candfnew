@@ -16,16 +16,19 @@
         <section class="bg-gray-100 py-10">
             <div class="max-w-7xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+
+                    
                     <!-- Contact Information -->
                     <div class="bg-white shadow-md rounded-lg p-6">
                         <h3 class="text-xl font-semibold text-gray-800 mb-4">Get in Touch</h3>
+                    
                         <p class="text-gray-600 mb-4">
-                            You can send us a message using this form, or contact us by email or phone. We’d love to hear from you!
+                            You can send us a message using this form, or contact us by email or phone. We'd love to hear from you!
                         </p>
                         <ul class="text-gray-600 space-y-3">
-                            <li><i class="mdi mdi-phone text-indigo-500"></i> <strong>Phone:</strong> +123 456 7890</li>
-                            <li><i class="mdi mdi-email text-indigo-500"></i> <strong>Email:</strong> contact@example.com</li>
-                            <li><i class="mdi mdi-map-marker text-indigo-500"></i> <strong>Address:</strong> 123 Main Street, City, Country</li>
+                            <li><i class="mdi mdi-phone text-indigo-500"></i> <strong>Phone:</strong> <a href="tel:+88029667400" class="hover:text-violet-600 transition-colors">+88029667400</a></li>
+                            <li><i class="mdi mdi-email text-indigo-500"></i> <strong>Email:</strong> <a href="mailto:info@benapole.gov.bd" class="hover:text-violet-600 transition-colors">info@benapole.gov.bd</a></li>
+                            <li><i class="mdi mdi-map-marker text-indigo-500"></i> <strong>Address:</strong> Benapole Customs House Benapole-7431, BANGLADESH</li>
                         </ul>
                     </div>
 

@@ -63,11 +63,13 @@
                             <td>{{$file->agent ? $file->agent->name : 'Unknown'}}</td>
                             <td>{{$file->type}}</td>
                             <td>
-                                @if ($file->status == 'Unpaid')
-                                    <span class="text-red-400">Unpaid</span>
-                                @else
-                                    <span class="text-green-600">Paid</span>
-                                @endif
+                                <button 
+                                    onclick="toggleStatus({{ $file->id }})"
+                                    class="status-btn cursor-pointer hover:opacity-75 transition-opacity {{ $file->status == 'Unpaid' ? 'text-red-400' : 'text-green-600' }}"
+                                    data-id="{{ $file->id }}"
+                                >
+                                    {{ $file->status }}
+                                </button>
                             </td>
 
                             <td class="flex justify-end items-center gap-2">
@@ -101,6 +103,28 @@
                 "pageLength": 100
             });
 
+            function toggleStatus(id) {
+                fetch(`/customfiles/${id}/toggle-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const button = document.querySelector(`button[data-id="${id}"]`);
+                        button.textContent = data.status;
+                        button.classList.toggle('text-red-400', data.status === 'Unpaid');
+                        button.classList.toggle('text-green-600', data.status === 'Paid');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error updating status. Please try again.');
+                });
+            }
         </script>
     </x-slot>
 </x-app-layout>

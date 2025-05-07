@@ -89,6 +89,14 @@
         <script src="//cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
         <script>
+            // Define Bengali font
+            pdfMake.fonts = {
+                Roboto: {
+                    normal: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-bengali@4.5.12/files/noto-sans-bengali-all-400-normal.woff',
+                    bold: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-bengali@4.5.12/files/noto-sans-bengali-all-700-normal.woff',
+                },
+            };
+
             $(document).ready(function () {
                 var datatablelist = $('#agenttable').DataTable({
                     "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]], // Page length options
@@ -105,8 +113,13 @@
                             extend: 'pdfHtml5',
                             text: 'PDF',
                             className: 'text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-110 duration-150 transition-all  font-bold text-lg text-white',
-                            orientation: 'landscape', // Optional: Set PDF orientation
-                            pageSize: 'A4' // Optional: Set PDF page size
+                            orientation: 'landscape',
+                            pageSize: 'A4',
+                            customize: function(doc) {
+                                doc.defaultStyle = {
+                                    font: 'Roboto'  // Use our Bengali-supported font
+                                };
+                            }
                         }
                     ]
                 });

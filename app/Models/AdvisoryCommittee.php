@@ -14,7 +14,12 @@ class AdvisoryCommittee extends Model
         'photo',
         'order',
         'active',
-        'type'
+        'type',
+        'message',
+        'email',
+        'phone',
+        'officename',
+        'officeaddress'
     ];
 
     protected $casts = [

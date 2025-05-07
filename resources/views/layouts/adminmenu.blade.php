@@ -255,13 +255,8 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="" class="menu-link">
-                            <span class="menu-text">Work Report Per Day</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="" class="menu-link">
-                            <span class="menu-text">Monthly Ope Report</span>
+                        <a href="{{route('reports.operator_report')}}" class="menu-link">
+                            <span class="menu-text">Operator Report</span>
                         </a>
                     </li>
                     <li class="menu-item">

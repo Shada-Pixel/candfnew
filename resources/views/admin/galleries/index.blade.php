@@ -13,22 +13,22 @@
         <div class="container-fluid">
             <div class="card p-6">
                 <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="m-0">Gallery Images</h4>
-                        <a href="{{ route('galleries.create') }}" class="btn btn-primary">Add New Image</a>
+                    <div class="flex justify-between items-center mb-6">
+                        <h4 class="text-xl font-semibold text-gray-800">Gallery Images</h4>
+                        <a href="{{ route('galleries.create') }}" class="px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 text-white rounded-md shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">Add New Image</a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="galleryTable" class="table table-bordered table-striped">
-                            <thead>
+                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                        <table id="galleryTable" class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-white uppercase bg-gradient-to-r from-violet-400 to-purple-300">
                                 <tr>
-                                    <th>Title</th>
-                                    <th>Image</th>
-                                    <th>Description</th>
-                                    <th>Order</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <th scope="col" class="px-6 py-3">Title</th>
+                                    <th scope="col" class="px-6 py-3">Image</th>
+                                    <th scope="col" class="px-6 py-3">Description</th>
+                                    <th scope="col" class="px-6 py-3">Order</th>
+                                    <th scope="col" class="px-6 py-3">Status</th>
+                                    <th scope="col" class="px-6 py-3">Actions</th>
                                 </tr>
                             </thead>
                         </table>
@@ -53,7 +53,7 @@
                             data: 'image',
                             name: 'image',
                             render: function(data) {
-                                return `<img src="${data}" alt="Gallery Image" class="img-thumbnail" style="max-height: 50px;">`;
+                                return `<img src="${data}" alt="Gallery Image" class="max-h-[50px] rounded-lg border border-gray-200 shadow-sm">`;
                             }
                         },
                         { data: 'description', name: 'description' },
@@ -62,7 +62,9 @@
                             data: 'active',
                             name: 'active',
                             render: function(data) {
-                                return data ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
+                                return data ? 
+                                    '<span class="px-2 py-1 bg-green-100 text-green-600 rounded">Active</span>' : 
+                                    '<span class="px-2 py-1 bg-red-100 text-red-600 rounded">Inactive</span>';
                             }
                         },
                         {
@@ -72,8 +74,10 @@
                             searchable: false,
                             render: function(data, type, row) {
                                 return `
-                                    <a href="/galleries/${data}/edit" class="btn btn-sm btn-primary">Edit</a>
-                                    <button class="btn btn-sm btn-danger delete-btn" data-id="${data}">Delete</button>
+                                    <div class="flex gap-2">
+                                        <a href="/galleries/${data}/edit" class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors">Edit</a>
+                                        <button class="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition-colors delete-btn" data-id="${data}">Delete</button>
+                                    </div>
                                 `;
                             }
                         }

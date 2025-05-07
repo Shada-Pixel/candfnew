@@ -43,13 +43,20 @@ class HomeController extends Controller
         // Get all advisories ordered by 'order'
         $advisories = AdvisoryCommittee::where('active', true)->where('type','EC Committee')->orderBy('order')->get();
         // Get active gallery images ordered by order
-        $galleries = Gallery::where('active', true)->orderBy('order')->get();
+        $galleries = Gallery::where('active', true)->where('order', 2)->get();
+
+        $president = AdvisoryCommittee::where('active', true)->where('designation','সভাপতি')->first();
+        $generalSecretary = AdvisoryCommittee::where('active', true)->where('designation','সাধারণ সম্পাদক')->first();
+
+        
 
         return view('welcome', [
             'notices' => $notices,
             'marquees' => $marquees,
             'advisories' => $advisories,
-            'galleries' => $galleries
+            'galleries' => $galleries,
+            'president' => $president,
+            'generalSecretary' => $generalSecretary
         ]);
     }
     public function photoalbum(): View

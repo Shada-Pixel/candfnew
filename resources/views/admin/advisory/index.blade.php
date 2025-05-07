@@ -22,6 +22,9 @@
                             <th class="p-3 text-left">Photo</th>
                             <th class="p-3 text-left">Name</th>
                             <th class="p-3 text-left">Designation</th>
+                            <th class="p-3 text-left">Email</th>
+                            <th class="p-3 text-left">Phone</th>
+                            <th class="p-3 text-left">Office</th>
                             <th class="p-3 text-left">Type</th>
                             <th class="p-3 text-left">Order</th>
                             <th class="p-3 text-left">Status</th>
@@ -54,10 +57,18 @@
                                 return `<img src="/images/placeholder.jpg" class="w-12 h-12 rounded-full object-cover"/>`;
                             }
                         },
-                        {data: 'name', name: 'name'},
-                        {data: 'designation', name: 'designation'},
-                        {data: 'type', name: 'type'},
-                        {data: 'order', name: 'order'},
+                        { data: 'name', name: 'name' },
+                        { data: 'designation', name: 'designation' },
+                        { data: 'email', name: 'email' },
+                        { data: 'phone', name: 'phone' },
+                        { 
+                            data: 'officename',
+                            render: function(data, type, row) {
+                                return data + '<br/>' + (row.officeaddress || '');
+                            }
+                        },
+                        { data: 'type', name: 'type' },
+                        { data: 'order', name: 'order' },
                         {
                             data: 'active',
                             name: 'active',

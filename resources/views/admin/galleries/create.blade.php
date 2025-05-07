@@ -5,38 +5,38 @@
     <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
         <div class="card p-6">
             <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h4 class="m-0">Add New Gallery Image</h4>
-                    <a href="{{ route('galleries.index') }}" class="btn btn-secondary">Back to List</a>
+                <div class="flex justify-between items-center mb-6">
+                    <h4 class="text-xl font-semibold text-gray-800">Add New Gallery Image</h4>
+                    <a href="{{ route('galleries.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors">Back to List</a>
                 </div>
             </div>
             <div class="card-body">
                 <form action="{{ route('galleries.store') }}" method="POST" enctype="multipart/form-data" id="createGalleryForm">
                     @csrf
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="title" name="title" required>
+                    <div class="mb-4">
+                        <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                        <input type="text" class="w-full rounded-md border-gray-300 shadow-sm focus:border-violet-300 focus:ring focus:ring-violet-200 focus:ring-opacity-50" id="title" name="title" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Image</label>
-                        <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                    <div class="mb-4">
+                        <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image</label>
+                        <input type="file" class="w-full rounded-md border-gray-300 shadow-sm focus:border-violet-300 focus:ring focus:ring-violet-200 focus:ring-opacity-50" id="image" name="image" accept="image/*" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    <div class="mb-4">
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea class="w-full rounded-md border-gray-300 shadow-sm focus:border-violet-300 focus:ring focus:ring-violet-200 focus:ring-opacity-50" id="description" name="description" rows="3"></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label for="order" class="form-label">Order</label>
-                        <input type="number" class="form-control" id="order" name="order" value="0" min="0">
+                    <div class="mb-4">
+                        <label for="order" class="block text-sm font-medium text-gray-700 mb-1">Order</label>
+                        <input type="number" class="w-full rounded-md border-gray-300 shadow-sm focus:border-violet-300 focus:ring focus:ring-violet-200 focus:ring-opacity-50" id="order" name="order" value="0" min="0">
                     </div>
-                    <div class="mb-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="active" name="active" checked value="1">
-                            <label class="form-check-label" for="active">Active</label>
-                        </div>
+                    <div class="mb-4">
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-violet-600 shadow-sm focus:border-violet-300 focus:ring focus:ring-violet-200 focus:ring-opacity-50" id="active" name="active" checked value="1">
+                            <span class="ml-2 text-sm text-gray-600">Active</span>
+                        </label>
                     </div>
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-primary">Save</button>
+                    <div class="flex items-center justify-end gap-2 mt-4">
+                        <button type="submit" class="px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 text-white rounded-md shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">Save</button>
                     </div>
                 </form>
             </div>

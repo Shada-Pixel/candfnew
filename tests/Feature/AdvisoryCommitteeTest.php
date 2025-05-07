@@ -57,7 +57,13 @@ class AdvisoryCommitteeTest extends TestCase
                 'designation' => 'Senior Advisor',
                 'photo' => $photo,
                 'order' => 2,
-                'active' => true
+                'active' => true,
+                'type' => 'type1',
+                'message' => 'Test message',
+                'email' => 'jane@example.com',
+                'phone' => '1234567890',
+                'officename' => 'Test Office',
+                'officeaddress' => '123 Test St'
             ]);
 
         $response->assertStatus(302); // Redirect after successful creation
@@ -66,7 +72,13 @@ class AdvisoryCommitteeTest extends TestCase
             'name' => 'Jane Doe',
             'designation' => 'Senior Advisor',
             'order' => 2,
-            'active' => true
+            'active' => true,
+            'type' => 'type1',
+            'message' => 'Test message',
+            'email' => 'jane@example.com',
+            'phone' => '1234567890',
+            'officename' => 'Test Office',
+            'officeaddress' => '123 Test St'
         ]);
 
         // Verify photo was stored
@@ -85,7 +97,13 @@ class AdvisoryCommitteeTest extends TestCase
                 'designation' => 'Updated Designation',
                 'photo' => $newPhoto,
                 'order' => 3,
-                'active' => false
+                'active' => false,
+                'type' => 'type2',
+                'message' => 'Updated message',
+                'email' => 'updated@example.com',
+                'phone' => '0987654321',
+                'officename' => 'Updated Office',
+                'officeaddress' => '456 Updated St'
             ]);
 
         $response->assertStatus(302); // Redirect after successful update
@@ -95,7 +113,13 @@ class AdvisoryCommitteeTest extends TestCase
             'name' => 'Updated Name',
             'designation' => 'Updated Designation',
             'order' => 3,
-            'active' => false
+            'active' => false,
+            'type' => 'type2',
+            'message' => 'Updated message',
+            'email' => 'updated@example.com',
+            'phone' => '0987654321',
+            'officename' => 'Updated Office',
+            'officeaddress' => '456 Updated St'
         ]);
     }
 

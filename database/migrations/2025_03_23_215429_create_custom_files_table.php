@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('fees')->nullable();
             $table->string('type')->nullable();
             $table->string('status')->nullable();
+            $table->date('date')->nullable();
             $table->foreignId('agent_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });

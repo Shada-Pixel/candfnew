@@ -1,6 +1,6 @@
 <x-app-layout>
     {{-- Title --}}
-    <x-slot name="title">Create New ITC Report</x-slot>
+    <x-slot name="title">ITC Reports</x-slot>
 
 
     {{-- Header Style --}}
@@ -16,28 +16,29 @@
                     <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">ALL ITC Reports</h2>
                     <form action="{{ route('itc-reports.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <div class="grid lg:grid-cols-2 gap-5">
+                        <div class="flex justify-between items-end gap-5">
+
+                            <div>
+                                <label for="name" class="block mb-2">Name:</label>
+                                <input type="text" name="name" id="name" class="form-input" required>
+                            </div>
+                            <div>
+                                <label for="type" class="block mb-2">Type:</label>
+                                <select class="form-select" name="type" id="type" required>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="yearly">Yearly</option>
+                                </select>
+                                
+                            </div>
+                            <div>
+                                <label for="file" class="block mb-2">Upload PDF:</label>
+                                <input type="file" name="file" id="file" class="form-input" required>
+                            </div>
+                            <div class="lg:col-span-2 mt-3">
+                                <button type="submit"
+                                    class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all font-bold text-lg text-white">Save</button>
+                            </div> <!-- end button -->
                         </div>
-                        <div>
-                            <label for="name" class="block mb-2">Name:</label>
-                            <input type="text" name="name" id="name" class="form-input" required>
-                        </div>
-                        <div>
-                            <label for="type" class="block mb-2">Type:</label>
-                            <select class="form-select" name="type" id="type" required>
-                                <option value="monthly">Monthly</option>
-                                <option value="yearly">Yearly</option>
-                            </select>
-                            
-                        </div>
-                        <div>
-                            <label for="file" class="block mb-2">Upload PDF:</label>
-                            <input type="file" name="file" id="file" class="form-input" required>
-                        </div>
-                        <div class="lg:col-span-2 mt-3">
-                            <button type="submit"
-                                class="font-mont mt-8 px-10 py-4 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 relative after:absolute after:content-['SAVE'] after:flex after:justify-center after:items-center after:text-white after:w-full after:h-full after:z-10 after:top-full after:left-0 after:bg-seagreen overflow-hidden hover:after:top-0 after:transition-all after:duration-300">Save</button>
-                        </div> <!-- end button -->
                     </form>
                 </div>
                 

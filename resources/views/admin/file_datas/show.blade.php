@@ -76,13 +76,13 @@
 }
 </style>
     <div id="invoice">
-        {{-- <div class="toolbar hidden-print">
+        <div class="toolbar hidden-print">
             <div class="text-right">
                 <button onclick="printDiv()" id="printInvoice" class="btn"><i class="fa fa-print"></i> Print</button>
                 <a href="/file_datas" class="btn btn-dark">Back</a>
             </div>
             <hr>
-        </div> --}}
+        </div>
         <div id="printDiv">
             <main>
                 <div class="w100">
@@ -92,7 +92,6 @@
                     <div class="w50 child2" >
                         {{$file_data->lodgement_date}}
                     </div>
-
                 </div>
                 <div class="w100">
                     <div class="child1" >
@@ -109,39 +108,23 @@
                     </div>
                 </div>
             </main>
-            <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
             <div></div>
         </div>
     </div>
-    <script !src="">
+    <script>
         function printDiv() {
-            Popup($('#printDiv').outerHTML);
-
-
-            function Popup(data)
-            {
-                window.print();
-                return true;
-            }
+            window.print();
+            return true;
         }
 
         $(document).ready(function () {
-            Popup($('#printDiv').outerHTML);
-
-            function Popup(data)
-            {
-                window.print();
-                return true;
-            }
-
-            // // After printing, redirect to another route
-            // window.onafterprint = function () {
-            //     window.location.href = "{{ route('file_datas.create') }}"; // Change this to your desired route
-            // };
-            setTimeout(function() {
-                // window.location.href = "{{ route('file_datas.create') }}";
+            // Automatically print when page loads
+            window.print();
+            
+            // After printing dialog closes, redirect back
+            window.onafterprint = function() {
                 window.location.href = "{{ URL::previous() }}";
-            }, 100); // Redirects after 2 seconds
+            };
         });
     </script>
 

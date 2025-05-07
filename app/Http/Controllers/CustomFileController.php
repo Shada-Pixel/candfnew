@@ -61,23 +61,30 @@ class CustomFileController extends Controller
                 // Only process non-empty rows
                 if (!empty(array_filter($row))) {
                     // Set fees based on type (IM/EX)
-                    $type = trim(strtoupper($row[3] ?? '')); // Convert to uppercase and trim
+                    $type = trim(strtoupper($row[5] ?? '')); // Convert to uppercase and trim
                     $fees = $type === 'IM' ? 500 : ($type === 'EX' ? 400 : null);
 
                     // Search for matching agent by name
-                    $agentName = trim($row[1] ?? '');
+                    $agentain = trim($row[2] ?? '');
                     $agent = null;
-                    if ($agentName) {
-                        $agent = Agent::where('name', 'LIKE', '%' . $agentName . '%')
+                    if ($agentain) {
+                        $agent = Agent::where('ain_no', 'LIKE', '%' . $agentain . '%')
                                     ->first();
+                    }
+                    // Setting the date
+                    $date = $row[4] ?? null;
+                    if ($date) {
+                        $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($date);
+                        $date = $date->format('Y-m-d');
                     }
 
                     CustomFile::create([
                         'name' => $row[1] ?? null,
-                        'be_number' => $row[2] ?? null,
+                        'be_number' => $row[3] ?? null,
                         'fees' => $fees, // Use calculated fees
                         'type' => $type,
                         'status' => 'Unpaid',
+                        'date' => $date,
                         'agent_id' => $agent ? $agent->id : null
                     ]);
                 }

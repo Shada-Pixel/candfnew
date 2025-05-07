@@ -12,15 +12,15 @@
     <div class="container-fluid px-4">
         <h1 class="mt-4"></h1>
         <div class="card mb-4 p-6">
-            <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
+            <div class="card-header mb-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center font-bold text-lg">
                         <i class="fas fa-table me-1"></i>
                         Activity Logs
                     </div>
                     <form action="{{ route('activity-logs.clear') }}" method="POST" onsubmit="return confirm('Are you sure you want to clear all activity logs? This action cannot be undone.');">
                         @csrf
-                        <button type="submit" class="btn btn-danger">
+                        <button type="submit" class="text-center px-4 py-2 bg-gradient-to-r from-red-500 to-red-800 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all font-bold text-lg text-white">
                             <i class="fas fa-trash"></i> Clear All Logs
                         </button>
                     </form>
@@ -28,62 +28,37 @@
             </div>
             <div class="card-body">
                 @if(session('success'))
-                    <div class="alert alert-success">
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                         {{ session('success') }}
                     </div>
                 @endif
 
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped" id="LogsTable">
-                        <thead>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200" id="LogsTable">
+                        <thead class="bg-gray-50">
                             <tr>
-                                <th>Date/Time</th>
-                                <th>Type</th>
-                                <th>Action</th>
-                                <th>Description</th>
-                                <th>IP Address</th>
-                                <th>Response Data</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date/Time</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IP Address</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="bg-white divide-y divide-gray-200">
                             @foreach($logs as $log)
-                                <tr>
-                                    <td>{{ $log->created_at }}</td>
-                                    <td>{{ ucfirst($log->log_type) }}</td>
-                                    <td>{{ $log->action }}</td>
-                                    <td>{{ $log->description }}</td>
-                                    <td>{{ $log->ip }}</td>
-                                    <td>
-                                        @if($log->response_data)
-                                            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#responseModal{{ $log->id }}">
-                                                View Data
-                                            </button>
-
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="responseModal{{ $log->id }}" tabindex="-1" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">Response Data</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <pre>{{ json_encode(json_decode($log->response_data), JSON_PRETTY_PRINT) }}</pre>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @else
-                                            <span class="text-muted">No data</span>
-                                        @endif
-                                    </td>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $log->created_at }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ ucfirst($log->log_type) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $log->action }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $log->description }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $log->ip }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
 
-                <div class="d-flex justify-content-center">
+                <div class="flex justify-center mt-4">
                     {{ $logs->links() }}
                 </div>
             </div>
@@ -99,6 +74,14 @@
                 var table = $('#LogsTable').DataTable();
 
             });
+
+            function showModal(id) {
+                document.getElementById(id).classList.remove('hidden');
+            }
+
+            function hideModal(id) {
+                document.getElementById(id).classList.add('hidden');
+            }
         </script>
     </x-slot>
 

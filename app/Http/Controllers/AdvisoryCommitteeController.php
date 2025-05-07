@@ -12,7 +12,11 @@ class AdvisoryCommitteeController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return DataTables::of(AdvisoryCommittee::query())->make(true);
+            $query = AdvisoryCommittee::select([
+                'id', 'name', 'designation', 'photo', 'order', 'active', 'type',
+                'message', 'email', 'phone', 'officename', 'officeaddress'
+            ]);
+            return DataTables::of($query)->make(true);
         }
         return view('admin.advisory.index');
     }
@@ -31,6 +35,11 @@ class AdvisoryCommitteeController extends Controller
             'order' => 'nullable|integer|min:0',
             'active' => 'nullable|boolean',
             'type' => 'nullable',
+            'message' => 'nullable|string',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:255',
+            'officename' => 'nullable|string|max:255',
+            'officeaddress' => 'nullable|string|max:255'
         ]);
 
         $data = $request->except('photo');
@@ -60,6 +69,11 @@ class AdvisoryCommitteeController extends Controller
             'order' => 'nullable|integer|min:0',
             'active' => 'nullable|boolean',
             'type' => 'nullable',
+            'message' => 'nullable|string',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:255',
+            'officename' => 'nullable|string|max:255',
+            'officeaddress' => 'nullable|string|max:255'
         ]);
 
         $data = $request->except('photo');

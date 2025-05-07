@@ -92,6 +92,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/monthly-financial', [ReportController::class, 'financialMonth'])->name('reports.financial.monthly');
         Route::any('/receiver', [ReportController::class, 'receiver_report'])->name('reports.receiver_report');
         Route::any('/deliver', [ReportController::class, 'deliver_report'])->name('reports.deliver_report');
+        Route::any('/operator', [ReportController::class, 'operator_report'])->name('reports.operator_report');
     });
 
     // User management

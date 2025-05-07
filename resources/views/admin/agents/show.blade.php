@@ -156,17 +156,18 @@
                                     </div>
                                 @endif
 
-                                <table class="min-w-full divide-y divide-gray-200">
+                                <table class="min-w-full divide-y divide-gray-200" id="customsfiles">
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Agent Name In Customs File</th>
-                                            <th>B/E No</th>
-                                            <th>Fees</th>
-                                            <th>Agent Name in Chada</th>
-                                            <th>Type</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th class="text-left">Agent Name In Customs File</th>
+                                            <th class="text-left">B/E No</th>
+                                            <th class="text-left">Date</th>
+                                            <th class="text-left">Fees</th>
+                                            <th class="text-left">Agent Name in Chada</th>
+                                            <th class="text-left">Type</th>
+                                            <th class="text-left">Status</th>
+                                            <th class="text-right">Action</th>
                                         </tr>
                                     </thead>
 
@@ -176,15 +177,15 @@
                                             <th>{{ $loop->index+1 }}</th>
                                             <td>{{$file->name}}</td>
                                             <td>{{$file->be_number}}</td>
+                                            <td>{{$file->date ? \Carbon\Carbon::parse($file->date)->format('d-M-Y') : 'N/A'}}</td>
                                             <td>৳{{number_format($file->fees, 2)}}</td>
                                             <td>{{$file->agent ? $file->agent->name : 'Unknown'}}</td>
                                             <td>{{$file->type}}</td>
                                             <td>
-                                                @if ($file->status == 'Unpaid')
-                                                    <span class="text-red-400">Unpaid</span>
-                                                @else
-                                                    <span class="text-green-600">Paid</span>
-                                                @endif
+                                                <button onclick="toggleStatus({{ $file->id }})" class="status-btn cursor-pointer hover:opacity-75 transition-opacity {{ $file->status == 'Unpaid' ? 'text-red-400' : 'text-green-600' }}"
+                                                    data-id="{{ $file->id }}">
+                                                    {{ $file->status }}
+                                                </button>
                                             </td>
 
                                             <td class="flex justify-end items-center gap-2">
@@ -450,6 +451,29 @@
                     $(`#${tabId}`).removeClass('hidden').addClass('active');
                 });
             });
+
+            function toggleStatus(id) {
+                fetch(`/customfiles/${id}/toggle-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const button = document.querySelector(`button[data-id="${id}"]`);
+                        button.textContent = data.status;
+                        button.classList.toggle('text-red-400', data.status === 'Unpaid');
+                        button.classList.toggle('text-green-600', data.status === 'Paid');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error updating status. Please try again.');
+                });
+            }
         </script>
     </x-slot>
 </x-guest-layout>

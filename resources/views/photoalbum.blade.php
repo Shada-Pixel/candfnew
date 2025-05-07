@@ -2,13 +2,13 @@
 
 
     {{-- Title --}}
-    <x-slot name="title">Contact</x-slot>
+    <x-slot name="title">Gallery</x-slot>
 
     <main>
         <section>
             <div class="bg-gradient-to-r from-violet-400 to-purple-300 py-8">
                 <div class="container mx-auto px-4">
-                    <h1 class="text-3xl font-bold text-center text-gray-800">Photo Of Recent Activities</h1>
+                    <h1 class="text-3xl font-bold text-center text-gray-800">Photo Album</h1>
                 </div>
             </div>
         </section>

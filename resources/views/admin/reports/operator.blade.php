@@ -104,6 +104,14 @@
                         processing: true,
                         serverSide: true,
                         destroy: true,
+                        ajax: {
+                            url: '{{ route("reports.operator_report") }}',
+                            data: function(d) {
+                                d.from_date = from_date;
+                                d.to_date = to_date;
+                                d.operator_id = operator_id;
+                            }
+                        },
                         dom: '<"flex justify-between items-center mb-4"lB>rtip',
                         lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
                         buttons: [

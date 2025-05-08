@@ -39,45 +39,7 @@
 
 
 
-            {{-- Agent --}}
-            <li class="menu-item">
-                <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
-                    <span class="menu-icon"><i class="mdi mdi-account-star-outline"></i></span>
-                    <span class="menu-text"> Agents </span>
-                    <span class="menu-arrow"></span>
-                </a>
-
-
-                <ul class="sub-menu hidden">
-                    <li class="menu-item">
-                        <a href="{{route('agents.index')}}" class="menu-link">
-                            <span class="menu-text">All Agents</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="{{route('agents.create')}}" class="menu-link">
-                            <span class="menu-text">New Agents</span>
-                        </a>
-                    </li>
-                    @role('admin')
-                    <li class="menu-item">
-                        <a href="{{route('donations.index')}}" class="menu-link">
-                            <span class="menu-text">Donations</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="{{route('agents.trash')}}" class="menu-link">
-                            <span class="menu-text">Trash</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="{{route('agents.certificate')}}" class="menu-link">
-                            <span class="menu-text">Certificate</span>
-                        </a>
-                    </li>
-                    @endrole
-                </ul>
-            </li>
+            
             {{-- Importer/Exporter --}}
             <li class="menu-item">
                 <a href="{{route('ie_datas.index')}}" class="menu-link">
@@ -158,6 +120,43 @@
             @endrole
 
             @role('admin')
+            {{-- Agent --}}
+            <li class="menu-item">
+                <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
+                    <span class="menu-icon"><i class="mdi mdi-account-star-outline"></i></span>
+                    <span class="menu-text"> Agents </span>
+                    <span class="menu-arrow"></span>
+                </a>
+
+
+                <ul class="sub-menu hidden">
+                    <li class="menu-item">
+                        <a href="{{route('agents.index')}}" class="menu-link">
+                            <span class="menu-text">All Agents</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('agents.create')}}" class="menu-link">
+                            <span class="menu-text">New Agents</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('donations.index')}}" class="menu-link">
+                            <span class="menu-text">Donations</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('agents.trash')}}" class="menu-link">
+                            <span class="menu-text">Trash</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('agents.certificate')}}" class="menu-link">
+                            <span class="menu-text">Certificate</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
             {{-- Activity Log --}}
             <li class="menu-item">

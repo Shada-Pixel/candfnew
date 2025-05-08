@@ -39,7 +39,7 @@
                         </div>
                         {{-- Slide one --}}
                         <div class="carousel-slide">
-                            <img src="https://picsum.photos/1200/600?random=3" alt="Slide 3" class="w-full h-full object-cover">
+                            <img src="{{asset('images/herobg3.jpeg')}}" alt="Slide 3" class="w-full h-full object-cover">
                         </div>
         
                         <!-- Carousel Controls -->
@@ -248,9 +248,7 @@
                                 <div class="absolute inset-0 bg-gray-300 transition-all duration-300 hidden group-hover:block p-6">
                                     {{-- phone --}}
                                     <p class="text-gray-900 font-bold ">{{ $advisory->officename ?? '' }}</p>
-                                    <p class="text-gray-900 ">Phone: {{ $advisory->phone ??'' }}</p>
-                                    {{-- email --}}
-                                    <p class="text-gray-900 ">Email: {{ $advisory->email ?? '' }}</p>
+                                    <p class="text-gray-900 ">Phone: {{ $advisory->phone ??'' }}, Email: {{ $advisory->email ?? '' }}</p>
                                     {{-- address --}}
                                     <p class="text-gray-900 ">Address: {{ $advisory->officeaddress ??'' }}</p>
                                 </div>

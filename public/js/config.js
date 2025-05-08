@@ -1,6 +1,6 @@
 !(function () {
     var t = sessionStorage.getItem("_PIXADMIN_CONFIG_"),
-        i = { direction: "ltr", theme: "light", layout: { width: "default", position: "fixed" }, topbar: { color: "light" }, menu: { color: "light" }, sidenav: { view: "condensed" } };
+        i = { direction: "ltr", theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light', layout: { width: "default", position: "fixed" }, topbar: { color: "light" }, menu: { color: "light" }, sidenav: { view: "condensed" } };
     const o = document.getElementsByTagName("html")[0];
     ((config = Object.assign(JSON.parse(JSON.stringify(i)), {})).direction = o.getAttribute("dir") || i.direction),
         (config.theme = o.getAttribute("data-mode") || i.theme),
@@ -14,6 +14,7 @@
         (window.config = config) &&
             (o.setAttribute("dir", config.direction),
             o.setAttribute("data-mode", config.theme),
+            o.classList.toggle('dark', config.theme === 'dark'),
             o.setAttribute("data-layout-width", config.layout.width),
             o.setAttribute("data-layout-position", config.layout.position),
             o.setAttribute("data-topbar-color", config.topbar.color),

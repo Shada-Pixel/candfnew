@@ -1,16 +1,17 @@
-
 lucide.createIcons();
 class ThemeCustomizer {
     constructor() {
-        (this.html = document.getElementsByTagName("html")[0]),
-            (this.config = {}),
-            (this.defaultConfig = window.config);
+        this.html = document.getElementsByTagName("html")[0];
+        this.config = {};
+        this.defaultConfig = window.config;
     }
+
     initConfig() {
-        (this.defaultConfig = JSON.parse(JSON.stringify(window.defaultConfig))),
-            (this.config = JSON.parse(JSON.stringify(window.config))),
-            this.setSwitchFromConfig();
+        this.defaultConfig = JSON.parse(JSON.stringify(window.defaultConfig));
+        this.config = JSON.parse(JSON.stringify(window.config));
+        this.setSwitchFromConfig();
     }
+
     initSidenav() {
         var e = window.location.href.split(/[?#]/)[0];
         document.querySelectorAll("ul.menu a.menu-link").forEach((n) => {
@@ -77,14 +78,15 @@ class ThemeCustomizer {
         return null;
     }
     changeThemeDirection(e) {
-        (this.config.direction = e),
-            this.html.setAttribute("dir", e),
-            this.setSwitchFromConfig();
+        this.config.direction = e;
+        this.html.setAttribute("dir", e);
+        this.setSwitchFromConfig();
     }
     changeThemeMode(e) {
-        (this.config.theme = e),
-            this.html.setAttribute("data-mode", e),
-            this.setSwitchFromConfig();
+        this.config.theme = e;
+        this.html.setAttribute("data-mode", e);
+        this.html.classList.toggle('dark', e === 'dark');
+        this.setSwitchFromConfig();
     }
     changeLayoutWidth(e, t = !0) {
         this.html.setAttribute("data-layout-width", e),

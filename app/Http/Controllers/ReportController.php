@@ -105,30 +105,27 @@ class ReportController extends Controller
         if ($request->ajax()) {
             $query = File_data::query()
                 ->select([
-                    'operator_id',
+                    'deliverer_id',
                     DB::raw('COUNT(*) as total_files')
                 ])
-                ->whereNotNull('operator_id')
-                ->with(['operator:id,name']);
+                ->whereNotNull('deliverer_id')
+                ->with('deliverer:id,name');
 
             if ($request->filled('from_date') && $request->filled('to_date')) {
-                $query->whereBetween('created_at', [
-                    $request->from_date . ' 00:00:00',
-                    $request->to_date . ' 23:59:59'
+                $query->whereBetween(DB::raw('DATE(created_at)'), [
+                    $request->from_date,
+                    $request->to_date
                 ]);
             }
 
-            if ($request->filled('operator_id')) {
-                $query->where('operator_id', $request->operator_id);
+            if ($request->filled('deliverer_id')) {
+                $query->where('deliverer_id', $request->deliverer_id);
             }
 
-            $query->groupBy('operator_id');
+            $query->groupBy('deliverer_id');
 
             return DataTables::of($query)
                 ->addIndexColumn()
-                ->editColumn('operator.name', function($row) {
-                    return $row->operator ? $row->operator->name : 'N/A';
-                })
                 ->make(true);
         }
 

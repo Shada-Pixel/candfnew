@@ -99,7 +99,7 @@
                 cb(start, end);
 
                 // Initialize DataTable
-                function load_data(from_date = '', to_date = '', operator_id = '') {
+                function load_data(from_date = '', to_date = '', deliverer_id = '') {
                     $('#all_report').DataTable({
                         processing: true,
                         serverSide: true,
@@ -109,7 +109,7 @@
                             data: function(d) {
                                 d.from_date = from_date;
                                 d.to_date = to_date;
-                                d.operator_id = operator_id;
+                                d.deliverer_id = deliverer_id;
                             }
                         },
                         dom: '<"flex justify-between items-center mb-4"lB>rtip',
@@ -161,19 +161,24 @@
                                 className: 'text-center'
                             },
                             { 
-                                data: 'operator.name',
-                                name: 'operator.name',
-                                className: 'whitespace-nowrap'
+                                data: 'deliverer.name',
+                                name: 'deliverer.name',
+                                className: 'whitespace-nowrap px-6 py-4',
+                                defaultContent: 'No Operator Assigned'
                             },
                             { 
                                 data: 'total_files',
                                 name: 'total_files',
-                                className: 'text-center'
+                                className: 'text-center px-6 py-4'
                             }
                         ],
                         order: [[2, 'desc']], // Sort by total files by default
                         createdRow: function(row, data, dataIndex) {
                             $(row).addClass('hover:bg-gray-50 transition-colors duration-150 ease-in-out');
+                        },
+                        language: {
+                            emptyTable: "No files processed in selected date range",
+                            zeroRecords: "No matching records found"
                         }
                     });
                 }
@@ -184,10 +189,10 @@
                 $('#filter').click(function() {
                     var from_date = $('#from_date').val();
                     var to_date = $('#to_date').val();
-                    var operator_id = $('#operator_id').val();
+                    var deliverer_id = $('#deliverer_id').val();
 
                     if (from_date != '' && to_date != '') {
-                        load_data(from_date, to_date, operator_id);
+                        load_data(from_date, to_date, deliverer_id);
                     } else {
                         alert('Both Date is required');
                     }
@@ -197,7 +202,7 @@
                 $('#refresh').click(function() {
                     $('#from_date').val('');
                     $('#to_date').val('');
-                    $('#operator_id').val('');
+                    $('#deliverer_id').val('');
                     load_data();
                 });
             });

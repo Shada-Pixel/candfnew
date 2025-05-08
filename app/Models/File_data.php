@@ -71,4 +71,9 @@ class File_data extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function deliverer()
+    {
+        return $this->belongsTo(User::class, 'deliverer_id');
+    }
 }

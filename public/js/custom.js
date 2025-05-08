@@ -237,4 +237,36 @@ $(document).ready(function() {
 
     // Start marquee animation
     animateMarquee();
+
+    /**
+     * Light/Dark Mode Toggle
+     */
+    const html = document.documentElement;
+    const lightDarkMode = document.getElementById('light-dark-mode');
+    
+    // Check for saved theme preference, otherwise use system preference
+    const theme = localStorage.getItem('theme') || 
+                 (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    
+    // Apply the theme
+    if (theme === 'dark') {
+        html.classList.add('dark');
+        html.setAttribute('data-mode', 'dark');
+    } else {
+        html.classList.remove('dark');
+        html.setAttribute('data-mode', 'light');
+    }
+
+    // Handle theme toggle click
+    lightDarkMode.addEventListener('click', function() {
+        const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        // Toggle theme
+        html.classList.toggle('dark');
+        html.setAttribute('data-mode', newTheme);
+        
+        // Save preference
+        localStorage.setItem('theme', newTheme);
+    });
 });

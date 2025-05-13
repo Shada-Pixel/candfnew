@@ -35,8 +35,7 @@ class ReportController extends Controller
         $agents = Agent::select('id', 'name', 'ain_no')->orderBy('name', 'asc')->get();
         
         if ($request->ajax()) {
-            $file_datas = File_data::where('status', 'Received')
-                ->with('agent')
+            $file_datas = File_data::with('agent')
                 ->with('ie_data');
 
             if (!empty($request->from_date)) {
@@ -67,7 +66,7 @@ class ReportController extends Controller
             $query = File_data::query()
                 ->with(['agent:id,name,ain_no', 'ie_data:id,name'])
                 ->select('file_datas.*')
-                ->where('status', 'Delivered');
+                ->where('status', 'Printed');
 
             if ($request->filled('from_date') && $request->filled('to_date')) {
                 $query->whereBetween('lodgement_date', [
@@ -87,7 +86,7 @@ class ReportController extends Controller
                 })
                 ->editColumn('status', function($row) {
                     return '<span class="px-2 py-1 text-xs font-semibold rounded-full ' . 
-                           ($row->status === 'Delivered' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800') . 
+                           ($row->status === 'Printed' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800') . 
                            '">' . $row->status . '</span>';
                 })
                 ->rawColumns(['status'])

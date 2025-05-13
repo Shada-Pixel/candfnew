@@ -25,11 +25,15 @@
                         <p class="text-gray-600 mb-4">
                             You can send us a message using this form, or contact us by email or phone. We'd love to hear from you!
                         </p>
-                        <ul class="text-gray-600 space-y-3">
-                            <li><i class="mdi mdi-phone text-indigo-500"></i> <strong>Phone:</strong> <a href="tel:+88029667400" class="hover:text-violet-600 transition-colors">+88029667400</a></li>
-                            <li><i class="mdi mdi-email text-indigo-500"></i> <strong>Email:</strong> <a href="mailto:info@benapole.gov.bd" class="hover:text-violet-600 transition-colors">info@benapole.gov.bd</a></li>
-                            <li><i class="mdi mdi-map-marker text-indigo-500"></i> <strong>Address:</strong> Benapole Customs House Benapole-7431, BANGLADESH</li>
-                        </ul>
+                        <div class="p-5">
+                            <div class="text-sm uppercase text-bb font-bold">Contact us</div>
+                            <p class="my-3 block" >Association Road, Infront of Private Stand, Benapole Bazar, Jashore.<br/> Bangladesh.</p>
+                            <p class="my-3 block" ><i class="mdi mdi-phone mr-2"></i> 04228-75778, 76152, 76153</p>
+                            <p class="my-3 block" ><i class="mdi mdi-email-outline mr-2"></i> info@cnfbpl.com</p>
+                            <p class="my-3 block" ><i class="mdi mdi-email-outline mr-2"></i> associationbpl@cnfbpl.com</p>
+                            <p class="my-3 block" ><i class="mdi mdi-email-outline mr-2"></i> associationbpl@gmail.com</p>
+
+                        </div>
                     </div>
 
                     <!-- Contact Form -->

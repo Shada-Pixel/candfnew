@@ -42,6 +42,7 @@ class HomeController extends Controller
         $marquees = Marquee::where('active', true)->orderBy('order')->get();
         // Get all advisories ordered by 'order'
         $advisories = AdvisoryCommittee::where('active', true)->where('type','EC Committee')->orderBy('order')->get();
+        
         // Get active gallery images ordered by order
         $galleries = Gallery::where('active', true)->where('order', 2)->get();
 

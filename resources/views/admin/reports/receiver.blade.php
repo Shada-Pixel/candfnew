@@ -54,6 +54,7 @@
                             <th>No</th>
                             <th>Lodg.No</th>
                             <th>Agent</th>
+                            <th>B/E No</th>
                             <th>M/F No</th>
                             <th>M/F Date</th>
                             <th>Status</th>
@@ -145,6 +146,7 @@
                             },
                             { data: 'lodgement_no', name: 'lodgement_no' },
                             { data: 'agent.name', name: 'agent.name' },
+                            { data: 'be_number', name: 'be_number' },
                             { data: 'manifest_no', name: 'manifest_no' },
                             { data: 'manifest_date', name: 'manifest_date' },
                             { data: 'status', name: 'status' }

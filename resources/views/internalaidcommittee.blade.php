@@ -17,7 +17,7 @@
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-6">
                         @forelse ($advisories as $advisory)
                             {{-- Member --}}
-                            <div class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                            <div class="card p-6 shadow-md flex gap-4 justify-start items-center rounded-lg bg-white transform transition-transform duration-300 hover:scale-105 hover:shadow-lg group relative overflow-hidden">
                                 {{-- image --}}
                                 <div class="w-20 h-20 rounded-full bg-cover bg-no-repeat" style="background-image: url({{ asset($advisory->photo) }})"></div>
                                 <div>
@@ -25,6 +25,15 @@
                                     <h3 class="font-bold text-lg text-gray-900">{{ $advisory->name }}</h3>
                                     {{-- designation --}}
                                     <p class="text-gray-600">{{ $advisory->designation }}</p>
+                                </div>
+                                {{-- Tooltip on hover --}}
+
+                                <div class="absolute inset-0 bg-gray-300 transition-all duration-300 hidden group-hover:block p-6">
+                                    {{-- phone --}}
+                                    <p class="text-gray-900 font-bold ">{{ $advisory->officename ?? '' }}</p>
+                                    <p class="text-gray-900 ">Phone: {{ $advisory->phone ??'' }}, Email: {{ $advisory->email ?? '' }}</p>
+                                    {{-- address --}}
+                                    <p class="text-gray-900 ">Address: {{ $advisory->officeaddress ??'' }}</p>
                                 </div>
                             </div>
                         @empty

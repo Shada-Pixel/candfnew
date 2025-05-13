@@ -41,9 +41,13 @@ class ReportController extends Controller
             if (!empty($request->from_date)) {
                 $startdate = $request->from_date;
                 $enddate = $request->to_date;
-                $query = 'date(lodgement_date) between "' . $startdate . '" AND "' . $enddate . '"';
-                $file_datas->whereRaw($query);
+                $query = 'date(created_at) between "' . $startdate . '" AND "' . $enddate . '"';
+                
+            }else {
+                $query = 'date(created_at) = "' . now()->format('Y-m-d') . '"';
             }
+
+            $file_datas->whereRaw($query);
 
             if (!empty($request->agent_id)) {
                 $file_datas->where('agent_id', $request->agent_id);
@@ -69,10 +73,12 @@ class ReportController extends Controller
                 ->where('status', 'Printed');
 
             if ($request->filled('from_date') && $request->filled('to_date')) {
-                $query->whereBetween('lodgement_date', [
+                $query->whereBetween('created_at', [
                     $request->from_date . ' 00:00:00',
                     $request->to_date . ' 23:59:59'
                 ]);
+            }else {
+                $query->whereDate('created_at', now());
             }
 
             if ($request->filled('agent_id')) {
@@ -115,6 +121,8 @@ class ReportController extends Controller
                     $request->from_date,
                     $request->to_date
                 ]);
+            }else {
+                $query->whereDate('created_at', now());
             }
 
             if ($request->filled('deliverer_id')) {

@@ -70,7 +70,7 @@
         display: none;
     }
     #printDiv{
-        padding-top: 4.3cm !important;
+        padding-top: 4.0cm !important;
         padding-left:5.7cm !important;
     }
 }
@@ -118,13 +118,22 @@
         }
 
         $(document).ready(function () {
-            // Automatically print when page loads
-            window.print();
+            // Set up both beforeprint and afterprint events
+            window.onbeforeprint = function() {
+                // This ensures we catch print cancellation
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        window.location.href = "{{ URL::previous() }}";
+                    }
+                });
+            };
             
-            // After printing dialog closes, redirect back
             window.onafterprint = function() {
                 window.location.href = "{{ URL::previous() }}";
             };
+
+            // Automatically print when page loads
+            window.print();
         });
     </script>
 

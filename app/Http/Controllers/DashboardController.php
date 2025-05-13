@@ -32,12 +32,24 @@ class DashboardController extends Controller implements HasMiddleware
         $deliveredFileDataCount = File_data::where('status', 'Delivered')->count(); // Count entries with status 'Delivered'
         // Dashboard search
         if ($request->search) {
-            $file_datas = File_data::with('agent')
-                ->with('ie_data')
-                ->where($request->stype,$request->search)
-                ->orderBy('id', 'DESC')
-                ->get();
-            return view('admin.dashboard', compact('file_datas', 'todayFileDataCount', 'currentYearFileDataCount', 'printedFileDataCount', 'deliveredFileDataCount'));
+            if ($request->stype == 'ain_no') {
+                $file_datas = File_data::with('agent')
+                    ->with('ie_data')
+                    ->whereHas('agent', function ($query) use ($request) {
+                        $query->where('ain_no', 'like', '%' . $request->search . '%');
+                    })
+                    ->orderBy('id', 'DESC')
+                    ->get();
+                return view('admin.dashboard', compact('file_datas', 'todayFileDataCount', 'currentYearFileDataCount', 'printedFileDataCount', 'deliveredFileDataCount'));
+            }else{
+
+                $file_datas = File_data::with('agent')
+                    ->with('ie_data')
+                    ->where($request->stype,$request->search)
+                    ->orderBy('id', 'DESC')
+                    ->get();
+                return view('admin.dashboard', compact('file_datas', 'todayFileDataCount', 'currentYearFileDataCount', 'printedFileDataCount', 'deliveredFileDataCount'));
+            }
         }
 
         $file_datas = File_data::with('agent')->with('ie_data')->orderBy('id', 'DESC')->limit(1000)->get();

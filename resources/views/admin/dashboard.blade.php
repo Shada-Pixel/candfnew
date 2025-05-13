@@ -82,6 +82,7 @@
                                     <option value="be_number"  @role('extra') selected @endrole>B/E Number</option>
                                     <option value="manifest_no">Manifast Number</option>
                                     <option value="lodgement_no" @role('operator') selected @endrole>Lodgement Number</option>
+                                    <option value="ain_no">AIN Number</option>
                                 </select>
                                 <input type="text" name="search" id="search" class="form-input w-28" placeholder="Search">
                                 <button type="submit" class="font-space cursor-pointer px-4 py-2 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Search</button>

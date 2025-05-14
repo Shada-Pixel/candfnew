@@ -92,7 +92,8 @@
 
                             <div class="">
                                 <label for="manifest_date" class="block mb-2">Manifest Date</label>
-                                <input type="text" class="form-input skipme" id="manifest_date" name="manifest_date" placeholder="Manifest Date" required value="{{ date('d/m/Y') }}">
+                                <input type="text" class="form-input" id="manifest_date" name="manifest_date" placeholder="Manifest Date" required value="{{ date('d/m/Y') }}">
+                                {{-- skipme --}}
 
                             </div> <!-- end -->
 
@@ -109,8 +110,9 @@
                             </div> <!-- end -->
 
                             <div class="">
-                                <label for="be_date" class="block mb-2">B/E Date</label>
-                                <input type="text" class="form-input skipme" id="be_date" name="be_date" placeholder="B/E Date" value="{{ date('d/m/Y') }}" @role('extra') required @endrole>
+                                <label for="be_date" class="block mb-2 dateText">B/E Date</label>
+                                <input type="text" class="form-input" id="be_date" name="be_date" placeholder="B/E Date"  @role('extra') required @endrole>
+                                {{-- value="{{ date('d/m/Y') }}" --}}
                             </div> <!-- end -->
 
 
@@ -211,7 +213,158 @@
                 $('#agentain').focus().select();
                 $('.agentain').select2();
 
+                // BE Date input formatting
+                $('#be_date').on('input', function(e) {
+                    let value = $(this).val().replace(/\D/g, ''); // Remove non-digits
+                    let formattedValue = '';
+                    
+                    if (value.length > 0) {
+                        // Handle day (first 2 digits)
+                        let day = value.substring(0, 2);
+                        if (parseInt(day) > 31) {
+                            day = '31';
+                        }
+                        formattedValue = day;
+                        
+                        if (value.length > 2) {
+                            // Handle month (next 2 digits)
+                            let month = value.substring(2, 4);
+                            if (parseInt(month) > 12) {
+                                month = '12';
+                            }
+                            formattedValue = day + '/' + month;
+                            
+                            if (value.length > 4) {
+                                // Handle year (last 4 digits)
+                                let year = value.substring(4, 8);
+                                formattedValue = day + '/' + month + '/' + year;
+                            }
+                        }
+                    }
+                    
+                    $(this).val(formattedValue);
+                });
 
+                // Prevent non-numeric input except backspace and delete
+                $('#be_date').on('keydown', function(e) {
+                    // Allow: backspace, delete, tab, escape, enter
+                    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 ||
+                        // Allow: Ctrl+A, Ctrl+C, Ctrl+V
+                        (e.keyCode === 65 && e.ctrlKey === true) ||
+                        (e.keyCode === 67 && e.ctrlKey === true) ||
+                        (e.keyCode === 86 && e.ctrlKey === true) ||
+                        // Allow: home, end, left, right
+                        (e.keyCode >= 35 && e.keyCode <= 39)) {
+                        return;
+                    }
+                    // Ensure that it is a number and stop the keypress
+                    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) &&
+                        (e.keyCode < 96 || e.keyCode > 105)) {
+                        e.preventDefault();
+                    }
+                });
+
+                // Manifest Date input formatting
+                $('#manifest_date').on('input', function(e) {
+                    let value = $(this).val().replace(/\D/g, ''); // Remove non-digits
+                    let formattedValue = '';
+                    
+                    if (value.length > 0) {
+                        // Handle day (first 2 digits)
+                        let day = value.substring(0, 2);
+                        if (parseInt(day) > 31) {
+                            day = '31';
+                        }
+                        formattedValue = day;
+                        
+                        if (value.length > 2) {
+                            // Handle month (next 2 digits)
+                            let month = value.substring(2, 4);
+                            if (parseInt(month) > 12) {
+                                month = '12';
+                            }
+                            formattedValue = day + '/' + month;
+                            
+                            if (value.length > 4) {
+                                // Handle year (last 4 digits)
+                                let year = value.substring(4, 8);
+                                formattedValue = day + '/' + month + '/' + year;
+                            }
+                        }
+                    }
+                    
+                    $(this).val(formattedValue);
+                });
+
+                // Prevent non-numeric input for manifest_date
+                $('#manifest_date').on('keydown', function(e) {
+                    // Allow: backspace, delete, tab, escape, enter
+                    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 ||
+                        // Allow: Ctrl+A, Ctrl+C, Ctrl+V
+                        (e.keyCode === 65 && e.ctrlKey === true) ||
+                        (e.keyCode === 67 && e.ctrlKey === true) ||
+                        (e.keyCode === 86 && e.ctrlKey === true) ||
+                        // Allow: home, end, left, right
+                        (e.keyCode >= 35 && e.keyCode <= 39)) {
+                        return;
+                    }
+                    // Ensure that it is a number and stop the keypress
+                    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) &&
+                        (e.keyCode < 96 || e.keyCode > 105)) {
+                        e.preventDefault();
+                    }
+                });
+
+                // Lodgement Date input formatting
+                $('#lodgement_date').on('input', function(e) {
+                    let value = $(this).val().replace(/\D/g, ''); // Remove non-digits
+                    let formattedValue = '';
+                    
+                    if (value.length > 0) {
+                        // Handle day (first 2 digits)
+                        let day = value.substring(0, 2);
+                        if (parseInt(day) > 31) {
+                            day = '31';
+                        }
+                        formattedValue = day;
+                        
+                        if (value.length > 2) {
+                            // Handle month (next 2 digits)
+                            let month = value.substring(2, 4);
+                            if (parseInt(month) > 12) {
+                                month = '12';
+                            }
+                            formattedValue = day + '/' + month;
+                            
+                            if (value.length > 4) {
+                                // Handle year (last 4 digits)
+                                let year = value.substring(4, 8);
+                                formattedValue = day + '/' + month + '/' + year;
+                            }
+                        }
+                    }
+                    
+                    $(this).val(formattedValue);
+                });
+
+                // Prevent non-numeric input for lodgement_date
+                $('#lodgement_date').on('keydown', function(e) {
+                    // Allow: backspace, delete, tab, escape, enter
+                    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 ||
+                        // Allow: Ctrl+A, Ctrl+C, Ctrl+V
+                        (e.keyCode === 65 && e.ctrlKey === true) ||
+                        (e.keyCode === 67 && e.ctrlKey === true) ||
+                        (e.keyCode === 86 && e.ctrlKey === true) ||
+                        // Allow: home, end, left, right
+                        (e.keyCode >= 35 && e.keyCode <= 39)) {
+                        return;
+                    }
+                    // Ensure that it is a number and stop the keypress
+                    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) &&
+                        (e.keyCode < 96 || e.keyCode > 105)) {
+                        e.preventDefault();
+                    }
+                });
 
                 $("#fileReciveForm").on("keydown", function (e) {
                     if (e.key === "Enter") {

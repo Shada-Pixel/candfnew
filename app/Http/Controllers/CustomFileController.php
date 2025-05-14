@@ -16,8 +16,10 @@ class CustomFileController extends Controller
      */
     public function index()
     {
-        // Retrieve all CustomFile records from the database
-        $customFiles = CustomFile::all();
+        // Retrieve all CustomFile records from the database and order by status
+        // and then by created_at in descending order
+        $customFiles = CustomFile::orderBy('status', 'desc')
+            ->get();
 
         // Return a view with the list of CustomFiles
         return view('admin.customfiles.index', compact('customFiles'));

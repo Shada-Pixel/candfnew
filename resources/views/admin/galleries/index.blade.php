@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <div class="relative overflow-x-auto">
                         <table id="galleryTable" class="w-full text-sm text-left text-gray-500">
                             <thead class="text-xs text-white uppercase bg-gradient-to-r from-violet-400 to-purple-300">
                                 <tr>

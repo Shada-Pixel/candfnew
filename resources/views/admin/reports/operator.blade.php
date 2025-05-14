@@ -52,9 +52,14 @@
                             <tr class="bg-gray-50">
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Operator Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Files</th>
+                                <th class="px-6 py-3  text-xs font-medium text-gray-500 uppercase tracking-wider text-right">Total Files</th>
+                            </tr>                        </thead>
+                        <tfoot>
+                            <tr class="bg-gray-50 font-semibold">
+                                <th colspan="2" class="px-6 py-3 text-right"></th>
+                                <th class="px-6 py-3 text-center"></th>
                             </tr>
-                        </thead>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -151,8 +156,7 @@
                                     columns: [0, 1, 2]
                                 }
                             }
-                        ],
-                        columns: [
+                        ],                        columns: [
                             {
                                 title: "No",
                                 render: function(data, type, row, meta) {
@@ -172,6 +176,17 @@
                                 className: 'text-center px-6 py-4'
                             }
                         ],
+                        footerCallback: function (row, data, start, end, display) {
+                            var api = this.api();
+                            
+                            // Calculate total from all rows
+                            var total = api.column(2).data().reduce(function (a, b) {
+                                return parseInt(a) + parseInt(b);
+                            }, 0);
+                            
+                            // Update footer
+                            $(api.column(2).footer()).html('Total Files: ' + total);
+                        },
                         order: [[2, 'desc']], // Sort by total files by default
                         createdRow: function(row, data, dataIndex) {
                             $(row).addClass('hover:bg-gray-50 transition-colors duration-150 ease-in-out');

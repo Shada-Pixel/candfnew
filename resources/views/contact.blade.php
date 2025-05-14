@@ -44,39 +44,34 @@
                                 {{ session('success') }}
                             </div>
                         @endif
-                        <form action="{{ route('contact.store') }}" method="POST" class="grid grid-cols-1 gap-6">
+                        <form id="contactForm" class="grid grid-cols-1 gap-6">
                             @csrf
                             <div>
                                 <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                                <input type="text" name="name" id="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
-                                @error('name') border-red-500 @enderror" value="{{ old('name') }}">
-                                @error('name')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
+                                <input type="text" name="name" id="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <p class="text-red-500 text-xs mt-1 error-message" id="name-error"></p>
                             </div>
                             <div>
                                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                                <input type="email" name="email" id="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
-                                @error('email') border-red-500 @enderror" value="{{ old('email') }}">
-                                @error('email')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
+                                <input type="email" name="email" id="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <p class="text-red-500 text-xs mt-1 error-message" id="email-error"></p>
                             </div>
                             <div>
                                 <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
-                                <textarea name="message" id="message" rows="4" class="mt-1 block
-                                w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
-                                @error('message') border-red-500 @enderror">{{ old('message') }}</textarea>
-                                @error('message')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
+                                <textarea name="message" id="message" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+                                <p class="text-red-500 text-xs mt-1 error-message" id="message-error"></p>
                             </div>
                             <div>
-                                <button type="submit" class="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                <button type="submit" id="submitButton" class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all font-bold text-lg text-white">
                                     Send Message
                                 </button>
                             </div>
                         </form>
+                        
+                        <!-- Success Message Alert (Hidden by default) -->
+                        <div id="successAlert" class="hidden mt-4 p-4 text-sm text-green-700 bg-green-100 rounded-lg">
+                            <span class="success-message"></span>
+                        </div>
                     </div>
                 </div>
                 {{-- Google Map --}}
@@ -89,7 +84,78 @@
     </main>
 
     <x-slot name="script">
-
+        <script>
+            $(document).ready(function() {
+                $('#contactForm').on('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Clear previous errors
+                    $('.error-message').text('');
+                    $('.form-input').removeClass('border-red-500');
+                    
+                    // Disable submit button
+                    $('#submitButton').prop('disabled', true).addClass('opacity-75');
+                    
+                    // Get form data
+                    let formData = {
+                        _token: '{{ csrf_token() }}',
+                        name: $('#name').val(),
+                        email: $('#email').val(),
+                        message: $('#message').val()
+                    };
+                    
+                    // Send AJAX request
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route("contact.store") }}',
+                        data: formData,
+                        success: function(response) {
+                            // Show success message
+                            $('#successAlert').removeClass('hidden');
+                            $('#successAlert .success-message').text(response.message);
+                            
+                            // Clear form
+                            $('#contactForm')[0].reset();
+                            
+                            // Scroll to success message
+                            $('#successAlert')[0].scrollIntoView({ behavior: 'smooth' });
+                            
+                            // Hide success message after 5 seconds
+                            setTimeout(function() {
+                                $('#successAlert').fadeOut('slow');
+                            }, 5000);
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 422) {
+                                let errors = xhr.responseJSON.errors;
+                                // Display validation errors
+                                for (let field in errors) {
+                                    $(`#${field}-error`).text(errors[field][0]);
+                                    $(`#${field}`).addClass('border-red-500');
+                                }
+                            } else {
+                                // Show general error message
+                                $('#successAlert').removeClass('hidden')
+                                    .removeClass('text-green-700 bg-green-100')
+                                    .addClass('text-red-700 bg-red-100');
+                                $('#successAlert .success-message').text('An error occurred. Please try again later.');
+                            }
+                        },
+                        complete: function() {
+                            // Re-enable submit button
+                            $('#submitButton').prop('disabled', false).removeClass('opacity-75');
+                        }
+                    });
+                });
+                
+                // Clear error message when user starts typing
+                $('#contactForm input, #contactForm textarea').on('input', function() {
+                    let field = $(this).attr('name');
+                    $(`#${field}-error`).text('');
+                    $(this).removeClass('border-red-500');
+                });
+            });
+        </script>
     </x-slot>
 
 

@@ -6,7 +6,7 @@
     {{-- Header Style --}}
     <x-slot name="headerstyle">
         {{-- Datatable css --}}
-        <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.css">
     </x-slot>
 
     {{-- Page Content --}}
@@ -18,7 +18,7 @@
                 <form action="{{ route('customfiles.store') }}" method="POST" enctype="multipart/form-data" class="flex items-center gap-4">
                     @csrf
                     <input type="file" name="excel_file" accept=".xlsx,.xls" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required>
-                    <button type="submit" class="px-4 py-2 bg-green-600 text-white font-semibold text-sm rounded-md hover:bg-green-700 transition duration-150 ease-in-out">
+                    <button type="submit" class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all font-bold text-lg text-white">
                         Import
                     </button>
                 </form>
@@ -38,6 +38,11 @@
         {{-- Table --}}
         <div class="card w-full">
             <div class="p-6">
+                <div class="flex justify-start items-center mb-4">
+                    <a href="{{ route('customfiles.create') }}" class="block text-center px-4 py-2 bg-gradient-to-r from-red-400 to-orange-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all font-bold text-lg text-white">
+                        <i class="mdi mdi-delete"></i> All Paid
+                    </a>
+                </div>
                 {{-- Table start here --}}
                 <table id="customsfiles" class="table is-narrow">
                     <thead>
@@ -97,11 +102,27 @@
 
     <x-slot name="script">
         <!-- Datatable script-->
-        <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/2.3.0/js/dataTables.js"></script>
         <script>
-            $('#customsfiles').DataTable({
-                "pageLength": 100
+            // $('#customsfiles').DataTable({
+            //     "pageLength": 100,
+            //     layout: {
+            //         topStart: 'info',
+            //         bottom: 'paging',
+            //         bottomStart: null,
+            //         bottomEnd: null
+            //     }
+            // });
+
+            new DataTable('#customsfiles', {
+                layout: {
+                    topStart: 'info',
+                    bottom: 'paging',
+                    bottomStart: null,
+                    bottomEnd: null
+                }
             });
+
 
             function toggleStatus(id) {
                 fetch(`/customfiles/${id}/toggle-status`, {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Mail\QueryMail;
 use App\Mail\ContactFormSubmitted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -11,20 +12,36 @@ class ContactController extends Controller
 {
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'message' => 'required|string'
-        ]);
+        try {
+            $contact = Contact::create($request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'message' => 'required|string'
+            ]) + ['is_read' => false]);
 
-        $contact = Contact::create($validated);
-
-        // Send email to user
-        Mail::to($contact->email)->send(new ContactFormSubmitted($contact));
-
-        return response()->json([
-            'message' => 'Thank you for contacting us. We will get back to you soon.'
-        ]);
+            try {
+                // Send both emails
+                Mail::to($contact->email)->send(new ContactFormSubmitted($contact));
+                Mail::to('associationbpl@gmail.com')->send(new QueryMail($contact));
+                
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Thank you for contacting us. We will get back to you soon.'
+                ]);
+            } catch (\Exception $e) {
+                
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Your message has been received. However, there might be a delay in our response.'
+                ]);
+            }
+        } catch (\Exception $e) {
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while processing your request. Please try again later.'
+            ], 500);
+        }
     }
 
     public function index()

@@ -20,7 +20,7 @@
                         <p class="py-0.5 font-medium text-xl">{{$bankAccount->account_holder_name ?? 'Unknown'}}</p>
                         <p class="py-0.5 font-medium mb-10">{{$bankAccount->account_number}}</p>
                         <a href="{{route('baccounts.edit', $bankAccount->id)}}" class="">
-                            <button type="button" class="btn bg-seagreen text-white">Edit</button>
+                            <button type="button" class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white">Edit</button>
                         </a>
                     </div>
 

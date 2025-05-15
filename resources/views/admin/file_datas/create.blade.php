@@ -111,7 +111,7 @@
 
                             <div class="">
                                 <label for="be_date" class="block mb-2 dateText">B/E Date</label>
-                                <input type="text" class="form-input" id="be_date" name="be_date" placeholder="B/E Date"  @role('extra') required @endrole>
+                                <input type="text" class="form-input" id="be_date" name="be_date" placeholder="B/E Date"  @role('extra') value="{{ date('d/m/Y') }}" required @endrole>
                                 {{-- value="{{ date('d/m/Y') }}" --}}
                             </div> <!-- end -->
 

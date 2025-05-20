@@ -23,8 +23,11 @@
 
                         <div class="">
                             <div>
-                                <a href="/">
-                                    <x-application-logo class="w-20 h-20 fill-current text-gray-500 dark:text-gray-100" />
+                                <a href="/" >
+                                    <div class="flex flex-col items-center gap-2 ">
+                                        <img src="{{asset('bcnf.png')}}" alt="" srcset="" class="h-[50px]">
+                                        <p class="text:nblue text-2xl font-bold leading-none text-center">Benapole Customs<br/>C&F Agents Association</p>
+                                    </div>
                                 </a>
                             </div>
                             <div class="w-full sm:w-7xl mt-6 px-6 py-4 overflow-hidden sm:rounded-lg">
@@ -74,11 +77,11 @@
                                     </div>
 
                                     <div class="flex items-center justify-end mt-4">
-                                        @if (Route::has('password.request'))
+                                        {{-- @if (Route::has('password.request'))
                                             <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
                                                 {{ __('Forgot your password?') }}
                                             </a>
-                                        @endif
+                                        @endif --}}
 
                                         <x-primary-button class="ms-3">
                                             {{ __('Log in') }}

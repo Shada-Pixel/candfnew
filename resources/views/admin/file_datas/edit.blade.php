@@ -90,7 +90,6 @@
                             <div class="col-span-2">
                                 <label for="impexp" class="block mb-2">Importer/Exporter</label>
                                 <input type="text" class="form-input" id="impexp" name="impexp" placeholder="Importer/Exporter"  @role('operator') required autofocus @endrole value="{{ $file_data->ie_data->name ?? '' }}">
-
                             </div> <!-- end -->
 
 

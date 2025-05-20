@@ -120,7 +120,7 @@
                                 <li class="mr-2" role="presentation">
                                     <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 tablinks active" id="custom-files-tab" data-tab="custom-files">
                                         Custom Files
-                                        @if($unpaidCount > 0)
+                                        @if($unpaidCount && $unpaidCount > 0)
                                             <span class="ml-1 px-2 py-1 text-xs text-red-600 bg-red-100 rounded-full">{{ $unpaidCount }} unpaid</span>
                                         @endif
                                     </button>
@@ -139,7 +139,7 @@
                         <div class="tab-content mt-6">
                             <!-- Custom Files Tab -->
                             <div id="custom-files" class="tabcontent active">
-                                @if($unpaidCount > 0)
+                                @if($unpaidCount && $unpaidCount > 0)
                                     <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0">
@@ -301,6 +301,19 @@
                                                 <span class="text-gray-600">Paid Till:</span>
                                                 <span class="font-medium">{{ $agent->member_fee_paid_till_date ? $agent->member_fee_paid_till_date->format('d M, Y') : 'Not paid yet' }}</span>
                                             </div>
+                                            <div class="flex justify-between text-sm">
+                                                <span class="text-gray-600">Due:</span>
+                                                {{-- Calculate the due --}}
+                                                @php
+                                                    $due = 0;
+                                                    if ($agent->member_fee_paid_till_date) {
+                                                        $due = now()->diffInMonths($agent->member_fee_paid_till_date);
+                                                        $due = $due * $agent->member_fee_amount;
+                                                    }
+                                                @endphp
+                                                <span class="font-medium text-red-500">৳{{ number_format($due, 2) }}</span>
+                                            </div>
+
                                         </div>
                                     </div>
 

@@ -64,7 +64,8 @@
                 $('#unpaidTable').DataTable({
                     processing: true,
                     serverSide: true,
-                    dom: 'Bfrtip',
+                    paging: false,
+                    dom: 'Bfrti',
                     buttons: [
                         {
                             extend: 'pdf',
@@ -73,11 +74,6 @@
                         },
                         {
                             extend: 'excel',
-                            title: 'Unpaid Customs Files Report',
-                            footer: true
-                        },
-                        {
-                            extend: 'print',
                             title: 'Unpaid Customs Files Report',
                             footer: true
                         }

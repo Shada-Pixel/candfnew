@@ -39,7 +39,7 @@
 
 
 
-            
+
             {{-- Importer/Exporter --}}
             <li class="menu-item">
                 <a href="{{route('ie_datas.index')}}" class="menu-link">
@@ -261,6 +261,11 @@
                     <li class="menu-item">
                         <a href="{{route('reports.financial.monthly')}}" class="menu-link">
                             <span class="menu-text">Financial Report</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('reports.unpaid')}}" class="menu-link">
+                            <span class="menu-text">Unpaid Files Report</span>
                         </a>
                     </li>
                 </ul>

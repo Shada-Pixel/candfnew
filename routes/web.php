@@ -93,6 +93,7 @@ Route::middleware(['auth'])->group(function () {
         Route::any('/receiver', [ReportController::class, 'receiver_report'])->name('reports.receiver_report');
         Route::any('/deliver', [ReportController::class, 'deliver_report'])->name('reports.deliver_report');
         Route::any('/operator', [ReportController::class, 'operator_report'])->name('reports.operator_report');
+        Route::any('/unpaid', [ReportController::class, 'unpaid_report'])->name('reports.unpaid');
     });
 
     // User management
@@ -121,7 +122,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/assignrole', [UserController::class, 'assignrole'])->name('assignrole');
         Route::post('/unassignrole', [UserController::class, 'unassignrole'])->name('unassignrole');
     });
-    
+
     Route::get('/createagentuser', [UserController::class, 'createAgentUser'])->name('createagentuser');
     Route::post('/storeagentuser', [UserController::class, 'storeAgentUser'])->name('storeagentuser');
 
@@ -141,7 +142,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Agent management
-    
+
     Route::prefix('agents')->group(function () {
         Route::get('/trash', [AgentController::class, 'trash'])->name('agents.trash');
         Route::patch('/restore/{transaction}', [AgentController::class, 'restore'])->name('agents.restore');
@@ -165,7 +166,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/send-bulk', [SmsController::class, 'sendBulkSms']);
         Route::post('/send-dynamic', [SmsController::class, 'sendDynamicSms']);
     });
-    
+
     // Notices
     Route::prefix('notices')->group(function () {
         Route::get('create', [NoticeController::class, 'create'])->name('notices.create');

@@ -25,12 +25,12 @@
                     {{-- Hero section --}}
                     <!-- Carousel Container -->
                     <div class="carousel-container rounded-md">
-        
+
                         {{-- Slide one --}}
                         <div class="carousel-slide active">
                             <img src="{{asset('images/herobg1.jpg')}}" alt="Slide 1" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center text-center px-6">
-                                
+
                             </div>
                         </div>
                         {{-- Slide one --}}
@@ -41,11 +41,11 @@
                         <div class="carousel-slide">
                             <img src="{{asset('images/herobg3.jpeg')}}" alt="Slide 3" class="w-full h-full object-cover">
                         </div>
-        
+
                         <!-- Carousel Controls -->
                         <div class="carousel-btn prev-btn">❮</div>
                         <div class="carousel-btn next-btn">❯</div>
-        
+
                         <div class="carousel-bullets">
                             <div class="bullet active" data-slide="0"></div>
                             <div class="bullet" data-slide="1"></div>
@@ -64,7 +64,7 @@
                             President
                         </div>
                     </div>
-                        
+
                     @endif
 
                     @if ($generalSecretary)
@@ -191,18 +191,21 @@
                 {{-- Aside Menu --}}
                 <div class="card px-2 w-60 flex gap-2 flex-col flex-grow">
                     <h4 class="text-lg font-bold">NBR Information</h4>
-                    
-                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="">SROs</a>
-                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="">First Schedule</a>
-                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="">Custom Tariff</a>
-                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="">Fainance Bill</a>
-                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="">Budget at a glance</a>
-                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="">Customs related Instruction</a>
+
+                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="https://customs.gov.bd/files/All-SRO-2024-2025-Tracing-29-05-2024-SROs.pdf" target="_blank">SROs</a>
+                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="https://customs.gov.bd/files/BCT-2024-2025Final.pdf" target="_blank">First Schedule</a>
+                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="https://customs.gov.bd/files/TRF_2024_2025_06062024.pdf" target="_blank">Custom Tariff</a>
+                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="https://customs.gov.bd/files/Finance-BILL-2024-2025.pdf" target="_blank">Fainance Bill</a>
+                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="https://customs.gov.bd/files/Budget_Speech_2024_2025_B.pdf" target="_blank">Budget at a glance</a>
+                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="https://customs.gov.bd/portal/services/tariff/index.jsf" target="_blank">Customs related Instruction</a>
                     <h4 class="text-lg font-bold">Customs Information</h4>
-                
-                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="">Documentation</a>
+                    <h2 class="text-md font-bold">Documentation</h2>
+
+                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="https://benapolecustoms.portal.gov.bd/site/law/daf0d542-cde5-4c39-b700-c2f3234e43be/-" target="_blank">রপ্তানি নীতি</a>
+                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="https://benapolecustoms.portal.gov.bd/site/law/3dffd1ef-34d3-4bf8-9be8-929e09bdf5f8/-" target="_blank">আমদানি নীতি আদেশ</a>
+                    <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="https://nbr.gov.bd/uploads/acts/Customs_act-2023.pdf" target="_blank">কাস্টমস আইন, ২০২৩</a>
                     <a class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" href="https://benapole.blpa.gov.bd/" target="_blank">Port Tariff</a>
-                
+
                     <!-- Currency Converter Script - EXCHANGERATEWIDGET.COM -->
                     <div class="border border-violet-400 rounded-md overflow-hidden">
                         <div class="bg-gradient-to-r from-violet-400 to-purple-300 py-4 text-center font-bold" style="">
@@ -211,15 +214,15 @@
                         <script type="text/javascript" src="//www.exchangeratewidget.com/converter.php?l=en&f=USD&t=BDT&a=1&d=F0F0F0&n=FFFFFF&o=000000&v=1"></script>
                     </div>
                     <!-- End of Currency Converter Script -->
-                
-                
+
+
                     <div class="border border-violet-400 rounded-md overflow-hidden">
                         <a class="weatherwidget-io" href="https://forecast7.com/en/23d1889d18/jessore/" data-label_1="JESSORE" data-label_2="WEATHER" data-theme="sky" >JESSORE WEATHER</a>
                         <script>
                         !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
                         </script>
                     </div>
-                </div>                
+                </div>
             </div>
         </section>
 

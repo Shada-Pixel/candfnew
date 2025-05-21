@@ -8,6 +8,7 @@ use App\Models\BankTransaction;
 use App\Models\Agent;
 use App\Models\File_data;
 use App\Models\User;
+use App\Models\CustomFile;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 
@@ -137,5 +138,41 @@ class ReportController extends Controller
         }
 
         return view('admin.reports.operator', ['users' => $users]);
+    }
+
+    // Unpaid Customs File Report
+    public function unpaid_report(Request $request)
+    {
+        // Get overall statistics
+        $statistics = [
+            'total_unpaid' => CustomFile::where('status', 'Unpaid')->count(),
+            'total_unpaid_im' => CustomFile::where('status', 'Unpaid')->where('type', 'IM')->count(),
+            'total_unpaid_ex' => CustomFile::where('status', 'Unpaid')->where('type', 'EX')->count(),
+        ];
+
+        if ($request->ajax()) {
+            $query = Agent::with(['custom_files' => function($query) {
+                    $query->where('status', 'Unpaid');
+                }])
+                ->whereHas('custom_files', function($query) {
+                    $query->where('status', 'Unpaid');
+                })
+                ->select([
+                    'agents.*',
+                    DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "IM") as unpaid_im_count'),
+                    DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "EX") as unpaid_ex_count'),
+                    DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") as total_unpaid_count'),
+                    DB::raw('(SELECT SUM(fees) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") as total_unpaid_amount')
+                ]);
+
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->editColumn('total_unpaid_amount', function($row) {
+                    return '৳' . number_format($row->total_unpaid_amount, 2);
+                })
+                ->make(true);
+        }
+
+        return view('admin.reports.unpaid', compact('statistics'));
     }
 }

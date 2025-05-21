@@ -75,7 +75,10 @@
                         @unlessrole('agent')
                         <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Chada</a>
                         @endunlessrole
+
+                        @role('admin')
                         <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Profile</a>
+                        @endrole
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" onclick="event.preventDefault(); this.closest('form').submit();" class="block px-4 py-2 text-gray-800 hover:bg-blue-50 w-full">Logout</button>

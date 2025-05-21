@@ -1,6 +1,13 @@
 <x-app-layout>
     <x-slot name="title">Unpaid Customs Files Report</x-slot>
 
+    {{-- Header Style --}}
+    <x-slot name="headerstyle">
+        {{-- Datatable CSS --}}
+        <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    </x-slot>
+
     <div class="container mx-auto px-4 py-6">
         {{-- Statistics Cards --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -46,11 +53,35 @@
 
     {{-- Datatable Script --}}
     <x-slot name="script">
+        <!-- Datatable Scripts -->
+        <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
         <script>
             $(document).ready(function() {
                 $('#unpaidTable').DataTable({
                     processing: true,
                     serverSide: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'pdf',
+                            title: 'Unpaid Customs Files Report',
+                            footer: true
+                        },
+                        {
+                            extend: 'excel',
+                            title: 'Unpaid Customs Files Report',
+                            footer: true
+                        },
+                        {
+                            extend: 'print',
+                            title: 'Unpaid Customs Files Report',
+                            footer: true
+                        }
+                    ],
                     ajax: "{{ route('reports.unpaid') }}",
                     columns: [
                         { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
@@ -60,7 +91,10 @@
                         { data: 'total_unpaid_count', name: 'total_unpaid_count' },
                         { data: 'total_unpaid_amount', name: 'total_unpaid_amount' }
                     ],
-                    order: [[1, 'asc']]
+                    order: [[1, 'asc']],
+                    createdRow: function(row, data, dataIndex) {
+                        $(row).addClass('hover:bg-gray-50 transition-colors duration-150 ease-in-out');
+                    }
                 });
             });
         </script>

@@ -151,24 +151,25 @@ class ReportController extends Controller
         ];
 
         if ($request->ajax()) {
-            $query = Agent::with(['custom_files' => function($query) {
-                    $query->where('status', 'Unpaid');
-                }])
-                ->whereHas('custom_files', function($query) {
-                    $query->where('status', 'Unpaid');
-                })
+            $query = Agent::query()
                 ->select([
                     'agents.*',
                     DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "IM") as unpaid_im_count'),
                     DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "EX") as unpaid_ex_count'),
                     DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") as total_unpaid_count'),
                     DB::raw('(SELECT SUM(fees) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") as total_unpaid_amount')
-                ]);
+                ])
+                ->whereExists(function ($query) {
+                    $query->select(DB::raw(1))
+                        ->from('custom_files')
+                        ->whereColumn('custom_files.agent_id', 'agents.id')
+                        ->where('status', 'Unpaid');
+                });
 
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->editColumn('total_unpaid_amount', function($row) {
-                    return '৳' . number_format($row->total_unpaid_amount, 2);
+                    return '৳' . number_format($row->total_unpaid_amount ?? 0, 2);
                 })
                 ->make(true);
         }

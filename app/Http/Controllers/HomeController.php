@@ -42,14 +42,14 @@ class HomeController extends Controller
         $marquees = Marquee::where('active', true)->orderBy('order')->get();
         // Get all advisories ordered by 'order'
         $advisories = AdvisoryCommittee::where('active', true)->where('type','EC Committee')->orderBy('order')->get();
-        
+
         // Get active gallery images ordered by order
         $galleries = Gallery::where('active', true)->where('order', 2)->get();
 
         $president = AdvisoryCommittee::where('active', true)->where('designation','সভাপতি')->first();
         $generalSecretary = AdvisoryCommittee::where('active', true)->where('designation','সাধারণ সম্পাদক')->first();
 
-        
+
 
         return view('welcome', [
             'notices' => $notices,
@@ -87,20 +87,46 @@ class HomeController extends Controller
     // Displaying my agency page
     public function myagency(Request $request): View
     {
-        $agent = Agent::with('donations')->find(auth()->user()->agency->id);
+        // $agent = Agent::with('donations')->find(auth()->user()->agency->id);
 
-        if (!$agent) {
-            abort(404, 'Agency not found');
-        }
+        // if (!$agent) {
+        //     abort(404, 'Agency not found');
+        // }
 
-        // Information completion percentage
-        $attributes = $agent->getAttributes();
-        $filledColumns = collect($attributes)->filter(fn($value) => !is_null($value) && $value !== '')->count();
-        $completionPercentage = ($filledColumns / count($attributes)) * 100;
+        // // Information completion percentage
+        // $attributes = $agent->getAttributes();
+        // $filledColumns = collect($attributes)->filter(fn($value) => !is_null($value) && $value !== '')->count();
+        // $completionPercentage = ($filledColumns / count($attributes)) * 100;
 
-        return view('myagency', [
+        // return view('myagency', [
+        //     'agent' => $agent,
+        //     'completionPercentage' => round($completionPercentage) // Round to the nearest whole number
+        // ]);
+        // ---------------------------------------
+        $agent = Agent::with(['donations', 'custom_files' => function($query) {
+            $query->orderBy('status', 'desc'); // This will show Unpaid first (alphabetically)
+        }])->find(auth()->user()->agency->id);
+
+        // Get unpaid files info
+        $unpaidFiles = $agent->custom_files->where('status', 'Unpaid');
+        $unpaidCount = $unpaidFiles->count();
+        $unpaidTotal = $unpaidFiles->sum('fees');
+
+
+
+        // Information completions percentage
+        $attributes = $agent->toArray();
+        $totalColumns = count($attributes);
+        $filledColumns = collect($attributes)->filter(function ($value) {
+            return !is_null($value) && $value !== '';
+        })->count();
+        $completionPercentage = ($filledColumns / $totalColumns) * 100;
+
+        return view('admin.agents.show', [
             'agent' => $agent,
-            'completionPercentage' => round($completionPercentage) // Round to the nearest whole number
+            'completionPercentage' => round($completionPercentage, 2),
+            'unpaidCount' => $unpaidCount,
+            'unpaidTotal' => $unpaidTotal,
         ]);
     }
 

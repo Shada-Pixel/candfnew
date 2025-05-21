@@ -1,5 +1,5 @@
 <footer class="">
-    <div class="bg-gray-100 pt-24">
+    <div class="bg-gray-100 pt-24 print:hidden">
         <div class="container px-4 text-nblue sm:grid md:grid-cols-4 sm:grid-cols-2 mx-auto">
             <div class="p-5">
                 <div class="py-2.5 flex flex-col gap-4">

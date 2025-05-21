@@ -39,7 +39,7 @@
         <div class="max-w-7xl mx-auto flex flex-col gap-6">
 
             <div class="card p-6">
-                <div class="flex justify-between items-center gap-6 mb-6">
+                <div class="flex justify-between items-center gap-6 mb-6 print:hidden">
 
                     <div class="flex justify-between items-center gap-2 flex-grow">
 
@@ -302,6 +302,17 @@
                                                 <span class="text-gray-600">Paid Till:</span>
                                                 <span class="font-medium">{{ $agent->member_fee_paid_till_date ? $agent->member_fee_paid_till_date->format('d M, Y') : 'Not paid yet' }}</span>
                                             </div>
+                                            {{-- Calculate the due amount --}}
+                                            @php
+                                                $dueAmount = 0;
+                                                if ($agent->member_fee_paid_till_date && $agent->member_fee_paid_till_date->isPast()) {
+                                                    $dueAmount = $agent->member_fee_amount * (now()->diffInMonths($agent->member_fee_paid_till_date) + 1);
+                                                }
+                                            @endphp
+                                            <div class="flex justify-between text-sm">
+                                                <span class="text-gray-600">Due Amount:</span>
+                                                <span class="font-medium text-red-500">৳{{ number_format($dueAmount, 2) }}</span>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -319,6 +330,17 @@
                                             <div class="flex justify-between text-sm">
                                                 <span class="text-gray-600">Paid Till:</span>
                                                 <span class="font-medium">{{ $agent->welfare_fund_paid_till_date ? $agent->welfare_fund_paid_till_date->format('d M, Y') : 'Not paid yet' }}</span>
+                                            </div>
+                                            {{-- Calculate the due amount --}}
+                                            @php
+                                                $dueAmount = 0;
+                                                if ($agent->welfare_fund_paid_till_date && $agent->welfare_fund_paid_till_date->isPast()) {
+                                                    $dueAmount = $agent->welfare_fund_amount * (now()->diffInMonths($agent->welfare_fund_paid_till_date) + 1);
+                                                }
+                                            @endphp
+                                            <div class="flex justify-between text-sm">
+                                                <span class="text-gray-600">Due Amount:</span>
+                                                <span class="font-medium text-red-500">৳{{ number_format($dueAmount, 2) }}</span>
                                             </div>
                                         </div>
                                     </div>

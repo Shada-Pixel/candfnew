@@ -39,7 +39,7 @@
         <div class="max-w-7xl mx-auto flex flex-col gap-6">
 
             <div class="card p-6">
-                <div class="flex justify-between items-center gap-6 mb-6">
+                <div class="flex justify-between items-center gap-6 mb-6 print:hidden">
 
                     <div class="flex justify-between items-center gap-2 flex-grow">
 
@@ -120,7 +120,7 @@
                                 <li class="mr-2" role="presentation">
                                     <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 tablinks active" id="custom-files-tab" data-tab="custom-files">
                                         Custom Files
-                                        @if($unpaidCount && $unpaidCount > 0)
+                                        @if($unpaidCount > 0)
                                             <span class="ml-1 px-2 py-1 text-xs text-red-600 bg-red-100 rounded-full">{{ $unpaidCount }} unpaid</span>
                                         @endif
                                     </button>
@@ -139,7 +139,7 @@
                         <div class="tab-content mt-6">
                             <!-- Custom Files Tab -->
                             <div id="custom-files" class="tabcontent active">
-                                @if($unpaidCount && $unpaidCount > 0)
+                                @if($unpaidCount > 0)
                                     <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0">
@@ -156,17 +156,18 @@
                                     </div>
                                 @endif
 
-                                <table class="min-w-full divide-y divide-gray-200">
+                                <table class="min-w-full divide-y divide-gray-200" id="customsfiles">
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Agent Name In Customs File</th>
-                                            <th>B/E No</th>
-                                            <th>Fees</th>
-                                            <th>Agent Name in Chada</th>
-                                            <th>Type</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th class="text-left">Agent Name In Customs File</th>
+                                            <th class="text-left">B/E No</th>
+                                            <th class="text-left">Date</th>
+                                            <th class="text-left">Fees</th>
+                                            <th class="text-left">Agent Name in Chada</th>
+                                            <th class="text-left">Type</th>
+                                            <th class="text-left">Status</th>
+                                            <th class="text-right">Action</th>
                                         </tr>
                                     </thead>
 
@@ -176,15 +177,15 @@
                                             <th>{{ $loop->index+1 }}</th>
                                             <td>{{$file->name}}</td>
                                             <td>{{$file->be_number}}</td>
+                                            <td>{{$file->date ? \Carbon\Carbon::parse($file->date)->format('d-M-Y') : 'N/A'}}</td>
                                             <td>৳{{number_format($file->fees, 2)}}</td>
                                             <td>{{$file->agent ? $file->agent->name : 'Unknown'}}</td>
                                             <td>{{$file->type}}</td>
                                             <td>
-                                                @if ($file->status == 'Unpaid')
-                                                    <span class="text-red-400">Unpaid</span>
-                                                @else
-                                                    <span class="text-green-600">Paid</span>
-                                                @endif
+                                                <button onclick="toggleStatus({{ $file->id }})" class="status-btn cursor-pointer hover:opacity-75 transition-opacity {{ $file->status == 'Unpaid' ? 'text-red-400' : 'text-green-600' }}"
+                                                    data-id="{{ $file->id }}">
+                                                    {{ $file->status }}
+                                                </button>
                                             </td>
 
                                             <td class="flex justify-end items-center gap-2">
@@ -301,19 +302,17 @@
                                                 <span class="text-gray-600">Paid Till:</span>
                                                 <span class="font-medium">{{ $agent->member_fee_paid_till_date ? $agent->member_fee_paid_till_date->format('d M, Y') : 'Not paid yet' }}</span>
                                             </div>
+                                            {{-- Calculate the due amount --}}
+                                            @php
+                                                $dueAmount = 0;
+                                                if ($agent->member_fee_paid_till_date && $agent->member_fee_paid_till_date->isPast()) {
+                                                    $dueAmount = $agent->member_fee_amount * (now()->diffInMonths($agent->member_fee_paid_till_date) + 1);
+                                                }
+                                            @endphp
                                             <div class="flex justify-between text-sm">
-                                                <span class="text-gray-600">Due:</span>
-                                                {{-- Calculate the due --}}
-                                                @php
-                                                    $due = 0;
-                                                    if ($agent->member_fee_paid_till_date) {
-                                                        $due = now()->diffInMonths($agent->member_fee_paid_till_date);
-                                                        $due = $due * $agent->member_fee_amount;
-                                                    }
-                                                @endphp
-                                                <span class="font-medium text-red-500">৳{{ number_format($due, 2) }}</span>
+                                                <span class="text-gray-600">Due Amount:</span>
+                                                <span class="font-medium text-red-500">৳{{ number_format($dueAmount, 2) }}</span>
                                             </div>
-
                                         </div>
                                     </div>
 
@@ -331,6 +330,17 @@
                                             <div class="flex justify-between text-sm">
                                                 <span class="text-gray-600">Paid Till:</span>
                                                 <span class="font-medium">{{ $agent->welfare_fund_paid_till_date ? $agent->welfare_fund_paid_till_date->format('d M, Y') : 'Not paid yet' }}</span>
+                                            </div>
+                                            {{-- Calculate the due amount --}}
+                                            @php
+                                                $dueAmount = 0;
+                                                if ($agent->welfare_fund_paid_till_date && $agent->welfare_fund_paid_till_date->isPast()) {
+                                                    $dueAmount = $agent->welfare_fund_amount * (now()->diffInMonths($agent->welfare_fund_paid_till_date) + 1);
+                                                }
+                                            @endphp
+                                            <div class="flex justify-between text-sm">
+                                                <span class="text-gray-600">Due Amount:</span>
+                                                <span class="font-medium text-red-500">৳{{ number_format($dueAmount, 2) }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -422,7 +432,7 @@
 
 
                                             <div class="mt-6 flex justify-end">
-                                                <button type="submit" class="bg-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600">
+                                                <button type="submit" class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white">
                                                     Record Payment
                                                 </button>
                                             </div>
@@ -463,6 +473,29 @@
                     $(`#${tabId}`).removeClass('hidden').addClass('active');
                 });
             });
+
+            function toggleStatus(id) {
+                fetch(`/customfiles/${id}/toggle-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const button = document.querySelector(`button[data-id="${id}"]`);
+                        button.textContent = data.status;
+                        button.classList.toggle('text-red-400', data.status === 'Unpaid');
+                        button.classList.toggle('text-green-600', data.status === 'Paid');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error updating status. Please try again.');
+                });
+            }
         </script>
     </x-slot>
 </x-guest-layout>

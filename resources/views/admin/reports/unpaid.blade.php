@@ -23,20 +23,26 @@
                 <div class="flex justify-center items-center gap-6 mb-6">
                     <!-- Total Unpaid Files -->
                     <div class="flex justify-between items-center gap-4">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Total Unpaid Files</h3>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Unpaid Files</h3>
                         <p class="text-lg font-bold text-red-600">{{ $statistics['total_unpaid'] }}</p>
                     </div>
 
                     <!-- Total Unpaid IM Files -->
                     <div class="flex justify-between items-center gap-4">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Total Unpaid IM Files</h3>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Unpaid IM Files</h3>
                         <p class="text-lg font-bold text-orange-600">{{ $statistics['total_unpaid_im'] }}</p>
                     </div>
 
                     <!-- Total Unpaid EX Files -->
                     <div class="flex justify-between items-center gap-4">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Total Unpaid EX Files</h3>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Unpaid EX Files</h3>
                         <p class="text-lg font-bold text-yellow-600">{{ $statistics['total_unpaid_ex'] }}</p>
+                    </div>
+
+                    <!-- Total Unpaid EX Files -->
+                    <div class="flex justify-between items-center gap-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Total </h3>
+                        <p class="text-lg font-bold text-yellow-600">{{ '৳ '.$statistics['total_due'] }}</p>
                     </div>
 
                 </div>

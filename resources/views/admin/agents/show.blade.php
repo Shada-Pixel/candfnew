@@ -39,6 +39,7 @@
         <div class="max-w-7xl mx-auto flex flex-col gap-6">
 
             <div class="card p-6">
+                @role('admin')
                 <div class="flex justify-between items-center gap-6 mb-6 print:hidden">
 
                     <div class="flex justify-between items-center gap-2 flex-grow">
@@ -53,6 +54,7 @@
                         <button class="font-mont px-4 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">Edit</button>
                     </a>
                 </div>
+                @endrole
 
 
                 <div class="">
@@ -68,6 +70,10 @@
                                 <div class="flex items-center gap-2">
                                     <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-numeric"></i></span>
                                     <p class="text-gray-700"><strong>License No:</strong> <span>{{ $agent->license_no ?? 'N/A' }}</span></p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-numeric"></i></span>
+                                    <p class="text-gray-700"><strong>License Issue Date:</strong> <span>{{ $agent->license_issue_date ? \Carbon\Carbon::parse($agent->license_issue_date)->format('d-M-Y') : 'N/A' }}</span></p>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-numeric"></i></span>
@@ -273,10 +279,17 @@
                                     <tfoot>
                                         <tr>
                                             <td colspan="4" class="text-right font-bold">Total Approved Amount:</td>
-                                            <td colspan="2" class="font-bold">
+                                            <td class="font-bold">
                                                 {{ $agent->donations->where('status', 'Approved')->sum('amount') }} Taka
                                             </td>
-                                            <td></td>
+                                            <td>
+                                                {{-- Empty cell for Status --}}
+                                            </td>
+                                            @role('admin')
+                                            <td>
+                                                {{-- Empty cell for Action --}}
+                                            </td>
+                                            @endrole
                                         </tr>
                                     </tfoot>
                                 </table>

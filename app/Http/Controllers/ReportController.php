@@ -148,12 +148,14 @@ class ReportController extends Controller
             'total_unpaid' => CustomFile::where('status', 'Unpaid')->count(),
             'total_unpaid_im' => CustomFile::where('status', 'Unpaid')->where('type', 'IM')->count(),
             'total_unpaid_ex' => CustomFile::where('status', 'Unpaid')->where('type', 'EX')->count(),
+            'total_due' => CustomFile::where('status', 'Unpaid')->sum('fees'),
         ];
 
         if ($request->ajax()) {
             $query = Agent::query()
                 ->select([
-                    'agents.*',
+                    'agents.id',
+                    'agents.name',
                     DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "IM") as unpaid_im_count'),
                     DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "EX") as unpaid_ex_count'),
                     DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") as total_unpaid_count'),
@@ -167,9 +169,33 @@ class ReportController extends Controller
                 });
 
             return DataTables::of($query)
+                ->filterColumn('name', function($query, $keyword) {
+                    $query->where('agents.name', 'like', "%{$keyword}%");
+                })
+                ->filterColumn('unpaid_im_count', function($query, $keyword) {
+                    $query->whereRaw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "IM") like ?', ["%{$keyword}%"]);
+                })
+                ->filterColumn('unpaid_ex_count', function($query, $keyword) {
+                    $query->whereRaw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "EX") like ?', ["%{$keyword}%"]);
+                })
+                ->filterColumn('total_unpaid_count', function($query, $keyword) {
+                    $query->whereRaw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") like ?', ["%{$keyword}%"]);
+                })
+                ->filterColumn('total_unpaid_amount', function($query, $keyword) {
+                    $query->whereRaw('(SELECT SUM(fees) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") like ?', ["%{$keyword}%"]);
+                })
                 ->addIndexColumn()
                 ->editColumn('total_unpaid_amount', function($row) {
                     return '৳' . number_format($row->total_unpaid_amount ?? 0, 2);
+                })
+                ->editColumn('unpaid_im_count', function($row) {
+                    return $row->unpaid_im_count ?? 0;
+                })
+                ->editColumn('unpaid_ex_count', function($row) {
+                    return $row->unpaid_ex_count ?? 0;
+                })
+                ->editColumn('total_unpaid_count', function($row) {
+                    return $row->total_unpaid_count ?? 0;
                 })
                 ->make(true);
         }

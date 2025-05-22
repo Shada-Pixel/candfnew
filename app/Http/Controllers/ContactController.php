@@ -23,20 +23,20 @@ class ContactController extends Controller
                 // Send both emails
                 Mail::to($contact->email)->send(new ContactFormSubmitted($contact));
                 Mail::to('associationbpl@gmail.com')->send(new QueryMail($contact));
-                
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Thank you for contacting us. We will get back to you soon.'
                 ]);
             } catch (\Exception $e) {
-                
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Your message has been received. However, there might be a delay in our response.'
                 ]);
             }
         } catch (\Exception $e) {
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred while processing your request. Please try again later.'

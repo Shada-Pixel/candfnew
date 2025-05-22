@@ -39,6 +39,7 @@
         <div class="max-w-7xl mx-auto flex flex-col gap-6">
 
             <div class="card p-6">
+                @role('admin')
                 <div class="flex justify-between items-center gap-6 mb-6 print:hidden">
 
                     <div class="flex justify-between items-center gap-2 flex-grow">
@@ -53,6 +54,7 @@
                         <button class="font-mont px-4 py-2 bg-black text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 " id="">Edit</button>
                     </a>
                 </div>
+                @endrole
 
 
                 <div class="">
@@ -68,6 +70,10 @@
                                 <div class="flex items-center gap-2">
                                     <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-numeric"></i></span>
                                     <p class="text-gray-700"><strong>License No:</strong> <span>{{ $agent->license_no ?? 'N/A' }}</span></p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-numeric"></i></span>
+                                    <p class="text-gray-700"><strong>License Issue Date:</strong> <span>{{ $agent->license_issue_date  ?? 'N/A' }}</span></p>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <span class="text-gray-500" aria-hidden="true"><i class="mdi mdi-numeric"></i></span>
@@ -236,9 +242,6 @@
                                             <th>Purpose</th>
                                             <th>Amount</th>
                                             <th>Status</th>
-                                            @role('admin')
-                                            <th class="text-right">Action</th>
-                                            @endrole
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -250,23 +253,6 @@
                                             <td>{{$donation->purpose}}</td>
                                             <td>{{$donation->amount}} Taka</td>
                                             <td>{{$donation->status}}</td>
-                                            @role('admin')
-                                            <td>
-                                                <div class="flex flex-col sm:flex-row gap-5 justify-end items-center">
-                                                    <a href="{{route('donations.edit',$donation->id)}}" class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-xl" >
-                                                        <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
-                                                    </a>
-
-                                                    <form action="{{ route('donations.destroy',$donation->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"  class="text-red-500/70 hover:text-red  hover:scale-105 transition duration-150 ease-in-out text-xl">
-                                                            <span class="menu-icon"><i class="mdi mdi-delete"></i></span>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                            @endrole
                                         </tr>
                                         @endforeach
                                     </tbody>

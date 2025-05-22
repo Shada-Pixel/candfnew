@@ -34,7 +34,7 @@ class ReportController extends Controller
     {
         // Get all agents for the dropdown
         $agents = Agent::select('id', 'name', 'ain_no')->orderBy('name', 'asc')->get();
-        
+
         if ($request->ajax()) {
             $file_datas = File_data::with('agent')
                 ->with('ie_data');
@@ -43,7 +43,7 @@ class ReportController extends Controller
                 $startdate = $request->from_date;
                 $enddate = $request->to_date;
                 $query = 'date(created_at) between "' . $startdate . '" AND "' . $enddate . '"';
-                
+
             }else {
                 $query = 'date(created_at) = "' . now()->format('Y-m-d') . '"';
             }
@@ -92,8 +92,8 @@ class ReportController extends Controller
                     return $row->lodgement_date ? date('d M Y', strtotime($row->lodgement_date)) : '';
                 })
                 ->editColumn('status', function($row) {
-                    return '<span class="px-2 py-1 text-xs font-semibold rounded-full ' . 
-                           ($row->status === 'Printed' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800') . 
+                    return '<span class="px-2 py-1 text-xs font-semibold rounded-full ' .
+                           ($row->status === 'Printed' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800') .
                            '">' . $row->status . '</span>';
                 })
                 ->rawColumns(['status'])
@@ -107,7 +107,7 @@ class ReportController extends Controller
     public function operator_report(Request $request)
     {
         $users = User::role('operator')->get();
-        
+
         if ($request->ajax()) {
             $query = File_data::query()
                 ->select([

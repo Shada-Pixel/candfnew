@@ -9,31 +9,37 @@
     </x-slot>
 
     <div class="container mx-auto px-4 py-6">
-        {{-- Statistics Cards --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <!-- Total Unpaid Files -->
-            <div class="bg-white rounded-lg shadow-md p-6 flex justify-between items-center">
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">Total Unpaid Files</h3>
-                <p class="text-3xl font-bold text-red-600">{{ $statistics['total_unpaid'] }}</p>
-            </div>
 
-            <!-- Total Unpaid IM Files -->
-            <div class="bg-white rounded-lg shadow-md p-6 flex justify-between items-center">
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">Total Unpaid IM Files</h3>
-                <p class="text-3xl font-bold text-orange-600">{{ $statistics['total_unpaid_im'] }}</p>
-            </div>
-
-            <!-- Total Unpaid EX Files -->
-            <div class="bg-white rounded-lg shadow-md p-6 flex justify-between items-center">
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">Total Unpaid EX Files</h3>
-                <p class="text-3xl font-bold text-yellow-600">{{ $statistics['total_unpaid_ex'] }}</p>
-            </div>
-        </div>
 
         {{-- Agents Table --}}
-        <div class="bg-white rounded-lg shadow-md">
+        <div class="bg-white rounded-lg shadow-md printdiv">
             <div class="p-6">
-                <h2 class="text-2xl font-bold mb-6">Agents with Unpaid Files</h2>
+                <div class="flex justify-between items-center mb-4 print:hidden">
+                    <h2 class="text-2xl font-bold mb-6">Agents with Unpaid Files</h2>
+                    <button class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all font-bold text-lg text-white" id="printbutton">Print</button>
+                </div>
+                <h2 class="text-2xl font-bold mb-6 text-center hidden print:block">Unpaid Customs Files Report </h2>
+                {{-- Statistics Cards --}}
+                <div class="flex justify-center items-center gap-6 mb-6">
+                    <!-- Total Unpaid Files -->
+                    <div class="flex justify-between items-center gap-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Total Unpaid Files</h3>
+                        <p class="text-lg font-bold text-red-600">{{ $statistics['total_unpaid'] }}</p>
+                    </div>
+
+                    <!-- Total Unpaid IM Files -->
+                    <div class="flex justify-between items-center gap-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Total Unpaid IM Files</h3>
+                        <p class="text-lg font-bold text-orange-600">{{ $statistics['total_unpaid_im'] }}</p>
+                    </div>
+
+                    <!-- Total Unpaid EX Files -->
+                    <div class="flex justify-between items-center gap-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Total Unpaid EX Files</h3>
+                        <p class="text-lg font-bold text-yellow-600">{{ $statistics['total_unpaid_ex'] }}</p>
+                    </div>
+
+                </div>
 
                 <table id="unpaidTable" class="min-w-full divide-y divide-gray-200">
                     <thead>
@@ -60,6 +66,39 @@
         <script src="//cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
         <script>
+            // Print Function
+            function printDiv() {
+                var printContents = document.querySelector('.printdiv').innerHTML;
+                var originalContents = document.body.innerHTML;
+
+                document.body.innerHTML = `
+                    <div class="p-4">
+                        <style>
+                            @media print {
+                                table { width: 100%; }
+                                th, td { padding: 8px; text-align: left; }
+                                th { background-color: #f3f4f6 !important; }
+                                .buttons-pdf, .buttons-excel, #unpaidTable_filter { display: none; }
+                                thead { display: table-header-group; }
+                                tfoot { display: table-footer-group; }
+                                @page { size: landscape; }
+                            }
+                        </style>
+                        ${printContents}
+                    </div>
+                `;
+
+                window.print();
+                document.body.innerHTML = originalContents;
+                // Reinitialize DataTable after printing
+                $('#unpaidTable').DataTable({
+                    // ... same options will be reinitialized by the code below
+                });
+            }
+
+            // Attach print function to button
+            document.getElementById('printbutton').addEventListener('click', printDiv);
+
             $(document).ready(function() {
                 $('#unpaidTable').DataTable({
                     processing: true,

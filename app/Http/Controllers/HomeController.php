@@ -82,6 +82,11 @@ class HomeController extends Controller
     {
         return view('contact');
     }
+    // Displaying documentation page
+    public function documentation(Request $request): View
+    {
+        return view('documentation');
+    }
 
 
     // Displaying my agency page

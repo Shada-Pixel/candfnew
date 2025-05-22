@@ -46,12 +46,12 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/members_protfolio/{member}', 'memberProtfolio')->name('memberProtfolio');
     Route::get('/general-member', 'generalMember')->name('general-member');
     Route::get('/agency', 'myagency')->name('myagency');
-
     Route::get('/expresidents', 'expresidents')->name('expresidents');
     Route::get('/exgsecratary', 'exgsecratary')->name('exgsecratary');
     Route::get('/electioncommittee', 'electioncommittee')->name('electioncommittee');
     Route::get('/internalaidcommittee', 'internalaidcommittee')->name('internalaidcommittee');
     Route::get('/photoalbum', 'photoalbum')->name('photoalbum');
+    Route::get('/documentation', 'documentation')->name('documentation');
 
 });
 Route::get('/weblinks', function(){

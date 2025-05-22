@@ -14,8 +14,7 @@
             </div>
             <div class="bg-white py-8">
                 <div class="max-w-6xl mx-auto px-4">
-                    <h2 class="text-2xl font-bold mb-6">Important Government Links</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="">
                         @php
                             $links = [
                                 ['Dhaka Customs Agents Association','www.dcaadhaka.org'],
@@ -45,7 +44,7 @@
                         {{-- Individual links --}}
                         @foreach($links as $link)
                         <a href="{{ Str::startsWith($link[1], 'http') ? $link[1] : 'https://' . $link[1] }}"
-                            class="block p-4 border rounded hover:bg-gray-50 hover:scale-105 transition"
+                            class="hover:scale-105 transition block mb-2 hover:text-violet-400"
                             target="_blank">
                             <h3 class="text-lg font-semibold">{{ $link[0] }}</h3>
                         </a>

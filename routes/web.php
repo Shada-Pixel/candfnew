@@ -144,19 +144,23 @@ Route::middleware(['auth'])->group(function () {
     // Agent management
 
     Route::prefix('agents')->group(function () {
+        // Agent management routes
         Route::get('/trash', [AgentController::class, 'trash'])->name('agents.trash');
         Route::patch('/restore/{transaction}', [AgentController::class, 'restore'])->name('agents.restore');
         Route::delete('/forcedelete/{transaction}', [AgentController::class, 'forcedelete'])->name('agents.forcedelete');
+
+        // Agent Fee Management Routes
+        Route::get('/{agent}/fees/create', [AgentFeeController::class, 'create'])->name('agents.fees.create');
+        Route::post('/{agent}/fees', [AgentFeeController::class, 'store'])->name('agents.fees.store');
+        Route::get('/{agent}/fees/{fee}/edit', [AgentFeeController::class, 'edit'])->name('agents.fees.edit');
+        Route::put('/{agent}/fees/{fee}', [AgentFeeController::class, 'update'])->name('agents.fees.update');
+        Route::delete('/{agent}/fees/{fee}', [AgentFeeController::class, 'destroy'])->name('agents.fees.destroy');
     });
 
-    // Agent Fee Management Routes
-    Route::get('/agents/{agent}/fees/create', [AgentFeeController::class, 'create'])->name('agents.fees.create');
-    Route::post('/agents/{agent}/fees', [AgentFeeController::class, 'store'])->name('agents.fees.store');
-    Route::get('/agents/{agent}/fees/{fee}/edit', [AgentFeeController::class, 'edit'])->name('agents.fees.edit');
-    Route::put('/agents/{agent}/fees/{fee}', [AgentFeeController::class, 'update'])->name('agents.fees.update');
-    Route::delete('/agents/{agent}/fees/{fee}', [AgentFeeController::class, 'destroy'])->name('agents.fees.destroy');
-
     // File Data
+    Route::prefix('file_datas')->group(function () {
+        Route::get('/createin', [FileDataController::class, 'createin'])->name('file_datas.createin');
+    });
     Route::resource('file_datas', FileDataController::class);
 
     // SMS routes

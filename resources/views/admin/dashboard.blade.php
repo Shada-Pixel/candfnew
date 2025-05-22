@@ -95,15 +95,20 @@
                     <div class="">
                         @role('extra')
                         <a href="{{route('file_datas.create')}}">
-                            <button type="submit" class="font-space px-2 py-2 bg-red-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Receive File</button>
+                            <button type="submit" class="font-space px-2 py-2 bg-red-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Receive Out</button>
+                        </a>
+                        <a href="{{route('file_datas.createin')}}">
+                            <button type="submit" class="font-space px-2 py-2 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Receive In</button>
                         </a>
                         @endrole
                         <a href="{{route('ie_datas.index')}}">
                             <button type="submit" class="font-space px-2 py-2 bg-cyan-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">+ Imp/Exp</button>
                         </a>
+                        @role('admin')
                         <a href="{{route('agents.index')}}">
                             <button type="submit" class="font-space px-2 py-2 bg-indigo-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">+ Agents</button>
                         </a>
+                        @endrole
                     </div>
                 </div>
                 {{-- Table start here --}}
@@ -179,12 +184,10 @@
                                     <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('file_datas.edit', $file_data->id)}}"><span class="menu-icon"><i class="mdi mdi-key"></i></span></a>
                                 @endrole
 
-                                @role('extra')
-                                    <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('file_datas.edit', $file_data->id)}}">
-                                        <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
-                                    </a>
+                                {{-- @role('extra')
+
                                     <a class="text-red-400 hover:text-red-600  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('file_datas.show', $file_data->id)}}"><span class="menu-icon"><i class="mdi mdi-printer"></i></span></a>
-                                @endrole
+                                @endrole --}}
                             </td>
                         </tr>
                     @endforeach

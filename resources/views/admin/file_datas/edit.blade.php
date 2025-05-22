@@ -64,26 +64,26 @@
 
                             <div class="">
                                 <label for="lodgement_date" class="block mb-2">Lodgement Date</label>
-                                <input type="text" class="form-input skipme" id="lodgement_date" name="lodgement_date" placeholder="Lodgement Date" required value="{{ $file_data->lodgement_date ?? date('d/m/Y') }}">
+                                <input type="text" class="form-input skipme" id="lodgement_date" name="lodgement_date" placeholder="Lodgement Date" required value="{{ $file_data->lodgement_date ?? date('d/m/Y') }}" @role('operator') readonly @endrole>
                             </div> <!-- end -->
 
 
 
                             <div class="col-span-2">
                                 <label for="agentain" class="block mb-2">Agent AIN</label>
-                                <input type="text" class="form-input" id="agentain" name="agentain" required @role('extra') autofocus @endrole value="{{ $file_data->agent->name ?? '' }}">
+                                <input type="text" class="form-input" id="agentain" name="agentain" required @role('extra') autofocus @endrole value="{{ $file_data->agent->name ?? '' }}" @role('operator') readonly @endrole>
                             </div> <!-- end -->
 
 
                             <div class="">
                                 <label for="manifest_no" class="block mb-2">Manifest No</label>
-                                <input type="text" class="form-input" id="manifest_no" name="manifest_no" placeholder="Manifest No" required value="{{ $file_data->manifest_no ?? '' }}">
+                                <input type="text" class="form-input" id="manifest_no" name="manifest_no" placeholder="Manifest No" required value="{{ $file_data->manifest_no ?? '' }}" @role('operator') readonly @endrole>
 
                             </div> <!-- end -->
 
                             <div class="">
                                 <label for="manifest_date" class="block mb-2">Manifest Date</label>
-                                <input type="text" class="form-input skipme" id="manifest_date" name="manifest_date" placeholder="Manifest Date" required value="{{$file_data->manifest_date ??  date('d/m/Y')}}">
+                                <input type="text" class="form-input skipme" id="manifest_date" name="manifest_date" placeholder="Manifest Date" required value="{{$file_data->manifest_date ??  date('d/m/Y')}}" @role('operator') readonly @endrole>
                             </div> <!-- end -->
 
 

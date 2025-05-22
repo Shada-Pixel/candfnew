@@ -1,6 +1,6 @@
 <x-app-layout>
     {{-- Title --}}
-    <x-slot name="title">Receive External File</x-slot>
+    <x-slot name="title">Receive File Inhouse</x-slot>
 
 
     {{-- Header Style --}}
@@ -33,10 +33,10 @@
 
                 <div class="flex justify-between items-center mb-4">
 
-                    <h2 class="text-xl">Receive External File</h2>
+                    <h2 class="text-xl">Receive Inhouse File</h2>
                     <div class="">
-                        <a href="{{route('file_datas.createin')}}">
-                            <button class="font-mont px-2 py-2 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">In</button>
+                        <a href="{{route('file_datas.create')}}">
+                            <button class="font-mont px-2 py-2 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Out</button>
                         </a>
                         <a href="{{route('dashboard')}}">
                             <button class="font-mont px-2 py-2 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Dashboard</button>
@@ -95,26 +95,26 @@
 
                             <div class="">
                                 <label for="manifest_date" class="block mb-2">Manifest Date</label>
-                                <input type="text" class="form-input" id="manifest_date" name="manifest_date" placeholder="Manifest Date" required value="{{ date('d/m/Y') }}">
+                                <input type="text" class="form-input" id="manifest_date" name="manifest_date" placeholder="Manifest Date" required >
                                 {{-- skipme --}}
 
                             </div> <!-- end -->
 
-                            <div class="col-span-2">
+                            <div class="col-span-2 hidden">
                                 <label for="impexp" class="block mb-2">Importer/Exporter</label>
-                                <input type="text" class="form-input" id="impexp" name="impexp" placeholder="Importer/Exporter" @role('operator') autofocus @endrole required>
+                                <input type="text" class="form-input" id="impexp" name="impexp" placeholder="Importer/Exporter" @role('operator') autofocus @endrole>
 
                             </div> <!-- end -->
 
 
-                            <div class="">
+                            <div class="hidden">
                                 <label for="be_number" class="block mb-2">B/E Number</label>
-                                <input type="text" class="form-input" id="be_number" name="be_number" placeholder="B/E Number" required>
+                                <input type="text" class="form-input" id="be_number" name="be_number" placeholder="B/E Number" >
                             </div> <!-- end -->
 
-                            <div class="">
+                            <div class="hidden">
                                 <label for="be_date" class="block mb-2 dateText">B/E Date</label>
-                                <input type="text" class="form-input" id="be_date" name="be_date" placeholder="B/E Date"  @role('extra') required @endrole>
+                                <input type="text" class="form-input" id="be_date" name="be_date" placeholder="B/E Date"  @role('extra') value="{{ date('d/m/Y') }}" required @endrole>
                                 {{-- value="{{ date('d/m/Y') }}" --}}
                             </div> <!-- end -->
 
@@ -215,11 +215,6 @@
                 // Focus and select the input field
                 $('#agentain').focus().select();
                 $('.agentain').select2();
-
-                // Select manifest_date value on focus
-                $('#manifest_date').on('focus', function() {
-                    $(this).select();
-                });
 
                 // BE Date input formatting
                 $('#be_date').on('input', function(e) {

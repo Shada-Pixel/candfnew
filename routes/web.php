@@ -94,6 +94,8 @@ Route::middleware(['auth'])->group(function () {
         Route::any('/deliver', [ReportController::class, 'deliver_report'])->name('reports.deliver_report');
         Route::any('/operator', [ReportController::class, 'operator_report'])->name('reports.operator_report');
         Route::any('/unpaid', [ReportController::class, 'unpaid_report'])->name('reports.unpaid');
+        Route::any('/paid', [ReportController::class, 'paid_report'])->name('reports.paid');
+        Route::any('/paid', [ReportController::class, 'paid_report'])->name('reports.paid');
     });
 
     // User management

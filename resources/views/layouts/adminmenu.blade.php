@@ -59,7 +59,12 @@
                     @role('extra')
                     <li class="menu-item">
                         <a href="{{route('file_datas.create')}}" class="menu-link">
-                            <span class="menu-text">Receive File</span>
+                            <span class="menu-text">Receive Out</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('file_datas.createin')}}" class="menu-link">
+                            <span class="menu-text">Receive In</span>
                         </a>
                     </li>
                     @endrole
@@ -68,19 +73,14 @@
                             <span class="menu-text">Operated File</span>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    {{-- <li class="menu-item">
                         <a href="{{route('transactions.index')}}" class="menu-link">
                             <span class="menu-text">Transactions</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="menu-item">
                         <a href="{{route('customfiles.index')}}" class="menu-link">
                             <span class="menu-text">Customs Files</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="{{route('reports.financial.monthly')}}" class="menu-link">
-                            <span class="menu-text">Monthly Report</span>
                         </a>
                     </li>
                 </ul>
@@ -266,6 +266,11 @@
                     <li class="menu-item">
                         <a href="{{route('reports.unpaid')}}" class="menu-link">
                             <span class="menu-text">Unpaid Files Report</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('reports.paid')}}" class="menu-link">
+                            <span class="menu-text">Daily Paid Report</span>
                         </a>
                     </li>
                 </ul>

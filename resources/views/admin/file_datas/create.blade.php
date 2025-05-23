@@ -36,7 +36,7 @@
                     <h2 class="text-xl">Receive External File</h2>
                     <div class="">
                         <a href="{{route('file_datas.createin')}}">
-                            <button class="font-mont px-2 py-2 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">In</button>
+                            <button class="font-mont px-2 py-2 bg-red-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">In</button>
                         </a>
                         <a href="{{route('dashboard')}}">
                             <button class="font-mont px-2 py-2 bg-green-600 text-white font-semibold text-xs uppercase tracking-widest transition ease-in-out duration-150 hover:scale-110" id="">Dashboard</button>

@@ -202,4 +202,61 @@ class ReportController extends Controller
 
         return view('admin.reports.unpaid', compact('statistics'));
     }
+
+
+    // Daily Paid Customs File Report
+    public function paid_report(Request $request)
+    {
+        // Get the target date (today by default)
+        $targetDate = $request->date ? date('Y-m-d', strtotime($request->date)) : date('Y-m-d');
+
+        // Calculate statistics for the specified date
+        $statistics = [
+            'total_paid_im' => CustomFile::where('status', 'Paid')
+                ->where('type', 'IM')
+                ->whereDate('updated_at', $targetDate)
+                ->sum('fees'),
+            'total_paid_ex' => CustomFile::where('status', 'Paid')
+                ->where('type', 'EX')
+                ->whereDate('updated_at', $targetDate)
+                ->sum('fees'),
+            'total_paid_files' => CustomFile::where('status', 'Paid')
+                ->whereDate('updated_at', $targetDate)
+                ->count(),
+            'total_paid_amount' => CustomFile::where('status', 'Paid')
+                ->whereDate('updated_at', $targetDate)
+                ->sum('fees')
+        ];
+
+        if ($request->ajax()) {
+            $query = CustomFile::query()
+                ->with('agent:id,name,ain_no')
+                ->where('status', 'Paid')
+                ->whereDate('updated_at', $targetDate);
+
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->addColumn('agent_name', function($row) {
+                    return $row->agent ? $row->agent->name : 'N/A';
+                })
+                ->addColumn('agent_ain', function($row) {
+                    return $row->agent ? $row->agent->ain_no : 'N/A';
+                })
+                ->editColumn('date', function($row) {
+                    return $row->date ? date('d-M-Y', strtotime($row->date)) : 'N/A';
+                })
+                ->editColumn('fees', function($row) {
+                    return '৳' . number_format($row->fees, 2);
+                })
+                ->editColumn('type', function($row) {
+                    return '<span class="px-2 py-1 text-xs font-semibold rounded-full ' .
+                        ($row->type === 'IM' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800') .
+                        '">' . $row->type . '</span>';
+                })
+                ->rawColumns(['type'])
+                ->make(true);
+        }
+
+        return view('admin.reports.paid', compact('statistics', 'targetDate'));
+    }
 }

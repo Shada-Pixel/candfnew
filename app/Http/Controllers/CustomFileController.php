@@ -163,18 +163,55 @@ class CustomFileController extends Controller
     public function toggleStatus($id)
     {
         try {
-            $customFile = CustomFile::findOrFail($id);
-            $customFile->status = $customFile->status === 'Paid' ? 'Unpaid' : 'Paid';
+            $customFile = CustomFile::with('agent')->findOrFail($id);
+
+            // Only allow changing from Unpaid to Paid
+            if ($customFile->status === 'Paid') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Cannot change status from Paid to Unpaid'
+                ]);
+            }
+
+            $customFile->status = 'Paid';
             $customFile->save();
-            
+
             return response()->json([
                 'success' => true,
                 'status' => $customFile->status,
+                'agent_id' => $customFile->agent ? $customFile->agent->id : null,
+                'agent_name' => $customFile->agent ? $customFile->agent->name : null,
+                'type' => $customFile->type,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error updating status: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Delete all paid custom files older than 2 years
+     */
+    public function clearOld()
+    {
+        try {
+            $twoYearsAgo = now()->subYears(2);
+
+            // Find and delete old paid records
+            $deletedCount = CustomFile::where('status', 'Paid')
+                ->where('updated_at', '<', $twoYearsAgo)
+                ->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => $deletedCount . ' old paid records have been deleted successfully.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting old records: ' . $e->getMessage()
             ], 500);
         }
     }

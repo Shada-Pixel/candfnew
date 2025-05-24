@@ -40,6 +40,8 @@
 
 
 
+            {{-- Dashboard --}}
+            @role('admin|extra|operator')
             {{-- Importer/Exporter --}}
             <li class="menu-item">
                 <a href="{{route('ie_datas.index')}}" class="menu-link">
@@ -47,6 +49,7 @@
                     <span class="menu-text"> Importer/Exporter </span>
                 </a>
             </li>
+            @endrole
             {{-- File Datas --}}
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
@@ -68,21 +71,25 @@
                         </a>
                     </li>
                     @endrole
+                    @role('operator')
                     <li class="menu-item">
                         <a href="{{route('baccounts.index')}}" class="menu-link">
                             <span class="menu-text">Operated File</span>
                         </a>
                     </li>
+                    @endrole
                     {{-- <li class="menu-item">
                         <a href="{{route('transactions.index')}}" class="menu-link">
                             <span class="menu-text">Transactions</span>
                         </a>
                     </li> --}}
+                    @role('admin|accountant')
                     <li class="menu-item">
                         <a href="{{route('customfiles.index')}}" class="menu-link">
                             <span class="menu-text">Customs Files</span>
                         </a>
                     </li>
+                    @endrole
                 </ul>
             </li>
 
@@ -119,7 +126,7 @@
 
             @endrole
 
-            @role('admin')
+            @role('admin|accountant')
             {{-- Agent --}}
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
@@ -145,11 +152,11 @@
                             <span class="menu-text">Donations</span>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    {{-- <li class="menu-item">
                         <a href="{{route('agents.trash')}}" class="menu-link">
                             <span class="menu-text">Trash</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="menu-item">
                         <a href="{{route('agents.certificate')}}" class="menu-link">
                             <span class="menu-text">Certificate</span>
@@ -157,6 +164,8 @@
                     </li>
                 </ul>
             </li>
+            @endrole
+            @role('admin')
 
             {{-- Activity Log --}}
             <li class="menu-item">
@@ -384,7 +393,7 @@
             @endrole
 
 
-            @role('developer|admin')
+            @role('developer')
             <hr>
             {{-- Development --}}
             <li class="menu-item">

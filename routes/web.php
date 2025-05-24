@@ -116,8 +116,9 @@ Route::middleware(['auth'])->group(function () {
         'agents'=> AgentController::class,
     ]);
 
-    // Custom Files Status Toggle
+    // Custom Files Status Toggle and Clear Old
     Route::post('/customfiles/{id}/toggle-status', [CustomFileController::class, 'toggleStatus'])->name('customfiles.toggle-status');
+    Route::post('/customfiles/clear-old', [CustomFileController::class, 'clearOld'])->name('customfiles.clearOld');
 
     Route::prefix('users')->group(function () {
         Route::get('/showuserrole/{user}', [UserController::class, 'showUserRoles'])->name('get.userrole');

@@ -6,6 +6,14 @@
         {{-- Datatable CSS --}}
         <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
         <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+        <style>
+            @media print {
+                table td {
+                    border: 1px solid #000 !important;
+                }
+
+            }
+        </style>
     </x-slot>
 
     <div class="container mx-auto px-4 py-6">
@@ -107,8 +115,8 @@
 
             $(document).ready(function() {
                 $('#unpaidTable').DataTable({
-                    processing: true,
-                    serverSide: true,
+                    processing: false,
+                    serverSide: false,
                     paging: false,
                     dom: 'Bfrti',
                     buttons: [

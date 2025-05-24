@@ -184,10 +184,10 @@
                                     <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('file_datas.edit', $file_data->id)}}"><span class="menu-icon"><i class="mdi mdi-key"></i></span></a>
                                 @endrole
 
-                                {{-- @role('extra')
+                                @role('extra')
 
                                     <a class="text-red-400 hover:text-red-600  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('file_datas.show', $file_data->id)}}"><span class="menu-icon"><i class="mdi mdi-printer"></i></span></a>
-                                @endrole --}}
+                                @endrole
                             </td>
                         </tr>
                     @endforeach

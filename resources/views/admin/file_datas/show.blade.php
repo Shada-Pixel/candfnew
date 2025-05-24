@@ -104,7 +104,7 @@
                         {{$file_data->be_number}}
                     </div>
                     <div class="w50 child2" >
-                        {{$file_data->manifest_date}}
+                        {{$file_data->be_date}}
                     </div>
                 </div>
             </main>
@@ -127,7 +127,7 @@
                     }
                 });
             };
-            
+
             window.onafterprint = function() {
                 window.location.href = "{{ URL::previous() }}";
             };

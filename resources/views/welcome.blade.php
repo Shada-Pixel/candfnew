@@ -194,7 +194,7 @@
 
                     <a class="hover:scale-105 duration-150 transition-all w-full font-bold text-md text-violet-400" href="https://customs.gov.bd/files/All-SRO-2024-2025-Tracing-29-05-2024-SROs.pdf" target="_blank">SROs</a>
                     <a class="hover:scale-105 duration-150 transition-all w-full font-bold text-md text-violet-400" href="https://customs.gov.bd/files/BCT-2024-2025Final.pdf" target="_blank">First Schedule</a>
-                    <a class="hover:scale-105 duration-150 transition-all w-full font-bold text-md text-violet-400" href="https://customs.gov.bd/files/TRF_2024_2025_06062024.pdf" target="_blank">Custom Tariff</a>
+                    <a class="hover:scale-105 duration-150 transition-all w-full font-bold text-md text-violet-400" href="https://customs.gov.bd/files/Tariff-2025-2026(02-06-2025).pdf" target="_blank">Custom Tariff</a>
                     <a class="hover:scale-105 duration-150 transition-all w-full font-bold text-md text-violet-400" href="https://customs.gov.bd/files/Finance-BILL-2024-2025.pdf" target="_blank">Fainance Bill</a>
                     <a class="hover:scale-105 duration-150 transition-all w-full font-bold text-md text-violet-400" href="https://customs.gov.bd/files/Budget_Speech_2024_2025_B.pdf" target="_blank">Budget at a glance</a>
                     <a class="hover:scale-105 duration-150 transition-all w-full font-bold text-md text-violet-400" href="https://customs.gov.bd/portal/services/tariff/index.jsf" target="_blank">Customs related Instruction</a>

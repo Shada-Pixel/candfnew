@@ -40,11 +40,11 @@
                 {{-- Add social media icon and links here --}}
                 <div class="flex gap-4 mt-5">
                     <a href="https://www.facebook.com/p/Benapole-Customs-CF-Agents-Association-100050643082015/" target="_blank"><i class="mdi mdi-facebook text-2xl"></i></a>
-                    <a href="https://www.linkedin.com/company/benapole-customs-c-f-association/" target="_blank"><i class="mdi mdi-linkedin text-2xl"></i></a>
-                    <a href="https://www.instagram.com/benapole_customs_c_f_association/" target="_blank"><i class="mdi mdi-instagram text-2xl"></i></a>
-                    <a href="https://www.youtube.com/@benapolecustoms" target="_blank"><i class="mdi mdi-youtube text-2xl"></i></a>
-                    <a href="https://twitter.com/benapolecustoms" target="_blank"><i class="mdi mdi-twitter text-2xl"></i></a>
-                    <a href="https://www.tiktok.com/@benapole_customs_c_f_association" target="_blank"><i class="mdi mdi-tiktok text-2xl"></i></a>
+                    <a href="https://www.linkedin.com/in/benapole-customs-agents-association-042366369/" target="_blank"><i class="mdi mdi-linkedin text-2xl"></i></a>
+                    <a href="https://www.instagram.com/itsector.bpl/" target="_blank"><i class="mdi mdi-instagram text-2xl"></i></a>
+                    <a href="https://www.youtube.com/@Benapole_Association" target="_blank"><i class="mdi mdi-youtube text-2xl"></i></a>
+                    <a href="https://x.com/BPLAssociation" target="_blank"><i class="mdi mdi-twitter text-2xl"></i></a>
+                    {{-- <a href="https://www.tiktok.com/@benapole_customs_c_f_association" target="_blank"><i class="mdi mdi-tiktok text-2xl"></i></a> --}}
             </div>
         </div>
     </div>

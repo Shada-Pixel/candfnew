@@ -12,7 +12,7 @@
     {{-- Page Content --}}
     <div class="flex gap-6">
 
-        
+
         {{-- Table --}}
         <div class="card w-full">
             <div class="p-6">
@@ -28,7 +28,7 @@
                     <thead>
                         <tr>
                             <th>Sl</th>
-                            <th>Ain No</th>
+                            <th>AIN No</th>
                             <th>Agent Name</th>
                             <th>Owner Name</th>
                             <th>Phone</th>

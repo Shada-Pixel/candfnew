@@ -128,12 +128,13 @@
                 });
             };
 
+            // Automatically print when page loads
+            window.print();
+            
             window.onafterprint = function() {
                 window.location.href = "{{ URL::previous() }}";
             };
 
-            // Automatically print when page loads
-            window.print();
         });
     </script>
 

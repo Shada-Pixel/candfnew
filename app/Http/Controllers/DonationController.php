@@ -39,7 +39,17 @@ class DonationController extends Controller
             'type' => 'nullable|string|max:255',
             'status' => 'nullable|string|max:255',
         ]);
-    
+        
+        // Create a new Donation record
+        if ($request->has('agentain')) {
+            $agent = Agent::where('name', $request->input('agentain'))->first();
+            if ($agent) {
+                $request->merge(['agent_id' => $agent->id]);
+            } else {
+                return redirect()->back()->with('error', 'Agent not found.');
+            }
+        }
+
         Donation::create($request->all());
         return redirect()->route('donations.index')->with('success', 'Donation created successfully.');
     }
@@ -49,7 +59,7 @@ class DonationController extends Controller
      */
     public function show(Donation $donation)
     {
-        
+
     }
 
     /**
@@ -74,7 +84,7 @@ class DonationController extends Controller
             'type' => 'nullable|string|max:255',
             'status' => 'nullable|string|max:255',
         ]);
-    
+
         $donation->update($request->all());
         return redirect()->route('donations.index')->with('success', 'Donation updated successfully.');
     }

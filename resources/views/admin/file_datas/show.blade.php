@@ -79,7 +79,7 @@
         <div class="toolbar hidden-print">
             <div class="text-right">
                 <button onclick="printDiv()" id="printInvoice" class="btn"><i class="fa fa-print"></i> Print</button>
-                <a href="/file_datas" class="btn btn-dark">Back</a>
+                <a href="{{ URL::previous() }}" class="btn btn-dark">Back</a>
             </div>
             <hr>
         </div>

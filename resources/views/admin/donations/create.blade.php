@@ -7,6 +7,7 @@
     <x-slot name="headerstyle">
         {{-- Datatable css --}}
         <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     </x-slot>
 
     {{-- Page Content --}}
@@ -23,17 +24,11 @@
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label for="agent_id" class="block mb-2">Select Agent</label>
-                            <select class="form-select" name="agent_id" id="agent_id" required>
-                                <option value="">Select One</option>
-                                @forelse ($agents as $agent)
-                                    <option value="{{ $agent->id }}">{{ $agent->name }}</option>            
-                                    
-                                @empty
-                                    <option value="">No Agent Found</option>
-                                @endforelse
-                            </select>
+                            <label for="agentain" class="block mb-2">Agent Name</label>
+                            <input type="text" class="form-input" id="agentain" name="agentain" required @role('extra') autofocus @endrole value="{{$lastagent ?? ''}}">
                         </div> <!-- end -->
+
+
                         <div>
                             <label for="type" class="block mb-2">Select Type</label>
                             <select class="form-select" name="type" id="type" required>
@@ -60,7 +55,7 @@
                             <input type="date" class="form-input" id="date" name="date">
                             <input type="hidden" class="form-input" id="" name="status" value="Pending">
                         </div> <!-- end -->
-                        
+
 
                         <div class=" ">
                             <button type="submit"
@@ -75,5 +70,24 @@
 
 
     <x-slot name="script">
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Autocomplete for Agent
+                $('#agentain').autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: '/ainautocomplete',
+                            data: { query: request.term },
+                            success: function (data) {
+                                response(data);
+                            }
+                        });
+                    },
+                    minLength: 2, // Start searching after 2 characters
+                    autoFocus: true, // Highlight the first suggestion
+                });
+            });
+        </script>
     </x-slot>
 </x-app-layout>

@@ -30,7 +30,7 @@ class AgentController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
-        $agents = Agent::orderBy('created_at', 'DESC');
+        $agents = Agent::orderBy('name', 'ASC');
 
         if ($request->ajax()) {
             return Datatables::of($agents)->make(true);

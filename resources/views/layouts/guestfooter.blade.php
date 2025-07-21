@@ -9,7 +9,7 @@
                             <p class="text:nblue text-2xl font-bold leading-none text-center">Benapole Customs<br/>C&F Agents Association</p>
                         </div>
                     </a>
-                    <p class="text-justify">Benapole customs C&F agents association is the bigest organization in benapole area. It is head office of all C&F agent office in benapole area. Which reg no: 842 by GDL Khulna</p>
+                    <p class="text-justify">Benapole customs C&F agents association is the bigest organization in benapole area. It is head office of all C&F agent office in benapole area. Which reg no: 842 by GDL Khulna. Since 18 February, 1989</p>
 
                     <p class="mt-4">Benapole land port is the bigest land port in south asia.</p>
                     <a class="text-center capitalize px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-110 duration-150 transition-all  font-bold text-lg text-white" href="{{route('contact')}}">Get A Free Query</a>

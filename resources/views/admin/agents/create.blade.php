@@ -98,7 +98,7 @@
                             <label for="owners_designation" class="block mb-2">Owner Designation</label>
                             <select name="owners_designation" id="owners_designation" class="form-select text-gray-900">
                                 <option value="" >Selece One . .</option>
-                                <option value="Propitor">Propitor</option>
+                                <option value="Proprietor">Proprietor</option>
                                 <option value="Managing Director">Managing Director</option>
                                 <option value="Managing Partner">Managing Partner</option>
                                 <option value="Chairman">Chairman</option>

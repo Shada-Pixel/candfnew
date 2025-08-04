@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
-use App\Models\Ie_data;
-use App\Models\Agent;
+use App\Models\{Ie_data,Agent};
 use App\Http\Controllers\{
     HomeController,
     RoleController,
@@ -52,8 +51,13 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/internalaidcommittee', 'internalaidcommittee')->name('internalaidcommittee');
     Route::get('/photoalbum', 'photoalbum')->name('photoalbum');
     Route::get('/documentation', 'documentation')->name('documentation');
-
+    // Route::get('/application_sample', 'application_sample')->name('application_sample');
+    Route::get('/sample_application', 'sample_application')->name('sample_application');
 });
+Route::get('/forms',  [HomeController::class, 'forms'])->name('forms');
+
+
+
 Route::get('/weblinks', function(){
     return view('weblinks');
 })->name('weblinks');

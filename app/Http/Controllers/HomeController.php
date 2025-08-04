@@ -5,13 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Category;
-use App\Models\Project;
-use App\Models\Member;
-use App\Models\Notice;
-use App\Models\Agent;
-use App\Models\AdvisoryCommittee;
-use App\Models\Marquee;
-use App\Models\Gallery;
+use App\Models\{Project,Member,Notice,Agent,AdvisoryCommittee,Marquee,Gallery};
 
 
 
@@ -60,6 +54,7 @@ class HomeController extends Controller
             'generalSecretary' => $generalSecretary
         ]);
     }
+
     public function photoalbum(): View
     {
         $galleries = Gallery::where('active', true)->where('order', 1)->get();
@@ -158,6 +153,81 @@ class HomeController extends Controller
         $advisories = AdvisoryCommittee::where('active', true)->where('type','Internal Audit Committee')->orderBy('order')->get();
         return view('internalaidcommittee', ['advisories' => $advisories]);
     }
+
+
+    /**
+     * Display list of sample application files
+     */
+    public function sample_application(): View
+    {
+        $path = public_path('application_sample');
+
+        // Check if directory exists
+        if (!is_dir($path)) {
+            return view('application_sample', [
+                'files' => [],
+                'error' => 'Sample application directory not found'
+            ]);
+        }
+
+        // Get all files from the directory
+        $files = collect(scandir($path))
+            ->reject(function ($file) {
+                // Remove . and .. directory entries and hidden files
+                return in_array($file, ['.', '..']) || substr($file, 0, 1) === '.';
+            })
+            ->map(function ($file) {
+                return [
+                    'name' => pathinfo($file, PATHINFO_FILENAME),
+                    'extension' => pathinfo($file, PATHINFO_EXTENSION),
+                    'size' => filesize(public_path("application_sample/$file")),
+                    'last_modified' => filemtime(public_path("application_sample/$file")),
+                    'path' => asset("application_sample/$file")
+                ];
+            })
+            ->values();
+
+        return view('application_sample', [
+            'files' => $files
+        ]);
+    }
+    /**
+     * Display list of application_form files
+     */
+    public function forms(): View
+    {
+        $path = public_path('application_form');
+
+        // Check if directory exists
+        if (!is_dir($path)) {
+            return view('application_form', [
+                'files' => [],
+                'error' => 'Sample application directory not found'
+            ]);
+        }
+
+        // Get all files from the directory
+        $files = collect(scandir($path))
+            ->reject(function ($file) {
+                // Remove . and .. directory entries and hidden files
+                return in_array($file, ['.', '..']) || substr($file, 0, 1) === '.';
+            })
+            ->map(function ($file) {
+                return [
+                    'name' => pathinfo($file, PATHINFO_FILENAME),
+                    'extension' => pathinfo($file, PATHINFO_EXTENSION),
+                    'size' => filesize(public_path("application_form/$file")),
+                    'last_modified' => filemtime(public_path("application_form/$file")),
+                    'path' => asset("application_form/$file")
+                ];
+            })
+            ->values();
+
+        return view('application_form', [
+            'files' => $files
+        ]);
+    }
+
 
 
 

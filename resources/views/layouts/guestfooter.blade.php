@@ -24,8 +24,8 @@
             </div>
             <div class="p-5">
                 <div class="text-sm uppercase text-bb font-bold">Support</div>
-                <a class="my-3 block" href="/ID Card (Woner) Application symbol.pdf" target="_blank">Application Sample</a>
-                <a class="my-3 block" href="/ID Card Application From.pdf" target="_blank">Application Form</a>
+                <a class="my-3 block" href="{{route('sample_application')}}" target="_blank">Application Sample</a>
+                <a class="my-3 block" href="{{route('forms')}}" target="_blank">Application Form</a>
                 <a class="my-3 block" href="/#" target="_blank">Book a seat</a>
                 <a class="my-3 block" href="/#">Online Application </a>
             </div>

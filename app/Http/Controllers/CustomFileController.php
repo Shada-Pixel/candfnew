@@ -37,7 +37,7 @@ class CustomFileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCustomFileRequest $request)
+      public function store(StoreCustomFileRequest $request)
     {
         try {
             $file = $request->file('excel_file');
@@ -97,7 +97,7 @@ class CustomFileController extends Controller
             return redirect()->back()->with('error', 'Error importing file: ' . $e->getMessage());
         }
     }
-
+    
     /**
      * Display the specified resource.
      */

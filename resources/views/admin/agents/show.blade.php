@@ -280,7 +280,7 @@
                                         <tr>
                                             <td colspan="4" class="text-right font-bold">Total Approved Amount:</td>
                                             <td class="font-bold">
-                                                {{ $agent->donations->where('status', 'Approved')->sum('amount') }} Taka
+                                                {{ number_format($agent->donations->where('status', 'Approved')->sum('amount'), 2) }} Taka
                                             </td>
                                             <td>
                                                 {{-- Empty cell for Status --}}
@@ -315,14 +315,27 @@
                                                 <span class="text-gray-600">Paid Till:</span>
                                                 <span class="font-medium">{{ $agent->member_fee_paid_till_date ? $agent->member_fee_paid_till_date->format('d M, Y') : 'Not paid yet' }}</span>
                                             </div>
-                                            {{-- Calculate the due amount --}}
-                                            @php
-                                                $dueAmount = 0;
-                                                if ($agent->member_fee_paid_till_date && $agent->member_fee_paid_till_date->isPast()) {
-                                                    $dueAmount = $agent->member_fee_amount * (now()->diffInMonths($agent->member_fee_paid_till_date) + 1);
-                                                }
-                                            @endphp
-                                            <div class="flex justify-between text-sm">
+                                                {{-- Member Fee Card due amount calculation --}}
+                                                @php
+                                                    $dueAmount = 0;
+                                                    if ($agent->member_fee_paid_till_date) {
+                                                        // If paid_till_date exists and is in the past
+                                                        if ($agent->member_fee_paid_till_date->isPast()) {
+                                                            // Get the first day of next month after paid_till_date
+                                                            $startDate = $agent->member_fee_paid_till_date->addMonth()->startOfMonth();
+                                                            // Calculate months between start date and today
+                                                            $monthsDue = $startDate->diffInMonths(now()->startOfMonth());
+                                                            // Calculate due amount and round it
+                                                            $dueAmount = round($agent->member_fee_amount * $monthsDue);
+                                                        }
+                                                    } else {
+                                                        // If never paid, calculate from join date or a default date
+                                                        $startDate = $agent->join_date ?? $agent->created_at ?? now()->subYear();
+                                                        $monthsDue = $startDate->diffInMonths(now()->startOfMonth());
+                                                        $dueAmount = round($agent->member_fee_amount * $monthsDue);
+                                                    }
+                                                @endphp
+                                                                                            <div class="flex justify-between text-sm">
                                                 <span class="text-gray-600">Due Amount:</span>
                                                 <span class="font-medium text-red-500">৳{{ number_format($dueAmount, 2) }}</span>
                                             </div>
@@ -344,11 +357,24 @@
                                                 <span class="text-gray-600">Paid Till:</span>
                                                 <span class="font-medium">{{ $agent->welfare_fund_paid_till_date ? $agent->welfare_fund_paid_till_date->format('d M, Y') : 'Not paid yet' }}</span>
                                             </div>
-                                            {{-- Calculate the due amount --}}
+                                            {{-- Welfare Fund Card due amount calculation --}}
                                             @php
                                                 $dueAmount = 0;
-                                                if ($agent->welfare_fund_paid_till_date && $agent->welfare_fund_paid_till_date->isPast()) {
-                                                    $dueAmount = $agent->welfare_fund_amount * (now()->diffInMonths($agent->welfare_fund_paid_till_date) + 1);
+                                                if ($agent->welfare_fund_paid_till_date) {
+                                                    // If paid_till_date exists and is in the past
+                                                    if ($agent->welfare_fund_paid_till_date->isPast()) {
+                                                        // Get the first day of next month after paid_till_date
+                                                        $startDate = $agent->welfare_fund_paid_till_date->addMonth()->startOfMonth();
+                                                        // Calculate months between start date and today
+                                                        $monthsDue = $startDate->diffInMonths(now()->startOfMonth());
+                                                        // Calculate due amount and round it
+                                                        $dueAmount = round($agent->welfare_fund_amount * $monthsDue);
+                                                    }
+                                                } else {
+                                                    // If never paid, calculate from join date or a default date
+                                                    $startDate = $agent->join_date ?? $agent->created_at ?? now()->subYear();
+                                                    $monthsDue = $startDate->diffInMonths(now()->startOfMonth());
+                                                    $dueAmount = round($agent->welfare_fund_amount * $monthsDue);
                                                 }
                                             @endphp
                                             <div class="flex justify-between text-sm">

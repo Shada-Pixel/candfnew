@@ -58,7 +58,6 @@
                             <th>Agent Name In Customs File</th>
                             <th>B/E No</th>
                             <th>Fees</th>
-                            <th>Agent Name in Chada</th>
                             <th>Type</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -72,7 +71,6 @@
                             <td>{{$file->name}}</td>
                             <td>{{$file->be_number}}</td>
                             <td>{{$file->fees}}</td>
-                            <td>{{$file->agent ? $file->agent->name : 'Unknown'}}</td>
                             <td>{{$file->type}}</td>
                             <td>
                                 <button

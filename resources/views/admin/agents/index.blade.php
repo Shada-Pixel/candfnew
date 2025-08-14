@@ -19,9 +19,11 @@
                 <div class="flex justify-between items-center mb-4">
 
                     <h2 class="text-xl">All Agent</h2>
+                    @role('admin')
                     <a href="{{route('agents.create')}}">
                         <button type="submit" class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all w-full font-bold text-lg text-white" id="">Add</button>
                     </a>
+                    @endrole
                 </div>
 
                 <table id="agentsTable" class="display stripe text-xs sm:text-base" style="width:100%">

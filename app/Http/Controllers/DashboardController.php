@@ -25,6 +25,12 @@ class DashboardController extends Controller implements HasMiddleware
     // Displaying dashboard work page
     public function dashboard(Request $request)//: View
     {
+        //If auth user have checker or payunpay role then redirect him to custom file page
+        if (auth()->user()->hasRole('checker') || auth()->user()->hasRole('payunpay')) {
+            return redirect()->route('customfiles.index');
+        }
+
+
         // Today's file data count
         $todayFileDataCount = File_data::whereDate('created_at', Carbon::today())->count();
         $currentYearFileDataCount = File_data::whereYear('created_at', Carbon::now()->year)->count(); // Count entries for this year

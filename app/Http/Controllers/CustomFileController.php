@@ -64,7 +64,7 @@ class CustomFileController extends Controller
                 if (!empty(array_filter($row))) {
                     // Set fees based on type (IM/EX)
                     $type = trim(strtoupper($row[5] ?? '')); // Convert to uppercase and trim
-                    $fees = $type === 'IM' ? 500 : ($type === 'EX' ? 400 : null);
+                    $fees = $type === 'IM' ? 600 : ($type === 'EX' ? 500 : null);
 
                     // Search for matching agent by name
                     $agentain = trim($row[2] ?? '');
@@ -97,7 +97,7 @@ class CustomFileController extends Controller
             return redirect()->back()->with('error', 'Error importing file: ' . $e->getMessage());
         }
     }
-    
+
     /**
      * Display the specified resource.
      */
@@ -127,7 +127,7 @@ class CustomFileController extends Controller
             // Set fees based on type if it's changed
             if ($request->type !== $customFile->type) {
                 $request->merge([
-                    'fees' => $request->type === 'IM' ? 500 : 400
+                    'fees' => $request->type === 'IM' ? 600 : 500
                 ]);
             }
 

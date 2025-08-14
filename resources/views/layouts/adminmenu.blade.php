@@ -50,6 +50,8 @@
                 </a>
             </li>
             @endrole
+
+            @role('admin|extra|operator|accountant|checker')
             {{-- File Datas --}}
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
@@ -83,7 +85,7 @@
                             <span class="menu-text">Transactions</span>
                         </a>
                     </li> --}}
-                    @role('admin|accountant')
+                    @role('admin|accountant|checker')
                     <li class="menu-item">
                         <a href="{{route('customfiles.index')}}" class="menu-link">
                             <span class="menu-text">Customs Files</span>
@@ -92,6 +94,7 @@
                     @endrole
                 </ul>
             </li>
+            @endrole
 
             @role('admin|accountant')
 
@@ -126,7 +129,7 @@
 
             @endrole
 
-            @role('admin|accountant')
+            @role('admin|accountant|checker')
             {{-- Agent --}}
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
@@ -142,6 +145,7 @@
                             <span class="menu-text">All Agents</span>
                         </a>
                     </li>
+                    @role('admin|accountant')
                     <li class="menu-item">
                         <a href="{{route('agents.create')}}" class="menu-link">
                             <span class="menu-text">New Agents</span>
@@ -152,16 +156,12 @@
                             <span class="menu-text">Donations</span>
                         </a>
                     </li>
-                    {{-- <li class="menu-item">
-                        <a href="{{route('agents.trash')}}" class="menu-link">
-                            <span class="menu-text">Trash</span>
-                        </a>
-                    </li> --}}
                     <li class="menu-item">
                         <a href="{{route('agents.certificate')}}" class="menu-link">
                             <span class="menu-text">Certificate</span>
                         </a>
                     </li>
+                    @endrole
                 </ul>
             </li>
             @endrole
@@ -386,10 +386,6 @@
                     <span class="menu-text"> ITC Reports </span>
                 </a>
             </li>
-
-
-
-
             @endrole
 
 

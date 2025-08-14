@@ -11,7 +11,8 @@
 
     {{-- Page Content --}}
     <div class="flex flex-col gap-4">
-
+        {{-- This content shouldnt be shown to checker role --}}
+        @unlessrole('checker')
         {{-- Import Form --}}
         <div class="card w-full print:hidden">
             <div class="p-6">
@@ -34,10 +35,12 @@
                 @endif
             </div>
         </div>
+        @endunlessrole
 
         {{-- Table --}}
         <div class="card w-full print:hidden">
             <div class="p-6">
+                @unlessrole('checker')
                 <div class="flex justify-start items-center mb-4 gap-4">
                     <button id="oldClearButton" class="block text-center px-2 py-1 bg-gradient-to-r from-red-400 to-red-600 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all font-bold text-md text-white">
                         <i class="mdi mdi-delete"></i> Clear 2 year old  Paid
@@ -50,6 +53,7 @@
                         <i class="mdi mdi-printer"></i> Print Memo
                     </button>
                 </div>
+                @endunlessrole
                 {{-- Table start here --}}
                 <table id="customsfiles" class="table is-narrow">
                     <thead>
@@ -157,14 +161,14 @@
                         <tr>
                             <td>Import Files</td>
                             <td class="im_count">0</td>
-                            <td class="imfees">500</td>
+                            <td class="imfees">600</td>
                             <td class="im_imfees">0</td>
                             <td class="totalfees" rowspan="2">0</td>
                         </tr>
                         <tr>
                             <td>Export Files</td>
                             <td class="ex_count">0</td>
-                            <td class="exfees">400</td>
+                            <td class="exfees">500</td>
                             <td class="ex_exfees">0</td>
                         </tr>
                     </tbody>

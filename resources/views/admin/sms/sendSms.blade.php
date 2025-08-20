@@ -15,7 +15,7 @@
                 <!-- Tabs for switching between SMS types -->
                 <div class="flex justify-center space-x-4 mb-4">
                     <button class="tab-btn active bg-blue-500 text-white px-4 py-2 rounded-md" data-tab="single">Single SMS</button>
-                    {{-- <button class="tab-btn bg-gray-300 px-4 py-2 rounded-md" data-tab="bulk">Bulk SMS</button> --}}
+                    <button class="tab-btn bg-gray-300 px-4 py-2 rounded-md" data-tab="bulk">Bulk SMS</button>
                     {{-- <button class="tab-btn bg-gray-300 px-4 py-2 rounded-md" data-tab="dynamic">Dynamic SMS</button> --}}
                 </div>
 

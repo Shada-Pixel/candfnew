@@ -12,7 +12,7 @@
     {{-- Page Content --}}
     <div class="flex flex-col gap-4">
         {{-- This content shouldnt be shown to checker role --}}
-        @unlessrole('checker')
+        @unlessrole('checker|payunpay')
         {{-- Import Form --}}
         <div class="card w-full print:hidden">
             <div class="p-6">
@@ -40,7 +40,7 @@
         {{-- Table --}}
         <div class="card w-full print:hidden">
             <div class="p-6">
-                @unlessrole('checker')
+                @unlessrole('checker|payunpay')
                 <div class="flex justify-start items-center mb-4 gap-4">
                     <button id="oldClearButton" class="block text-center px-2 py-1 bg-gradient-to-r from-red-400 to-red-600 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all font-bold text-md text-white">
                         <i class="mdi mdi-delete"></i> Clear 2 year old  Paid
@@ -63,8 +63,12 @@
                             <th>B/E No</th>
                             <th>Fees</th>
                             <th>Type</th>
+                            @unlessrole('checker')
                             <th>Status</th>
+                            @unlessrole('payunpay')
                             <th>Action</th>
+                            @endunlessrole
+                            @endunlessrole
                         </tr>
                     </thead>
 
@@ -76,6 +80,7 @@
                             <td>{{$file->be_number}}</td>
                             <td>{{$file->fees}}</td>
                             <td>{{$file->type}}</td>
+                            @unlessrole('checker')
                             <td>
                                 <button
                                     onclick="toggleStatus({{ $file->id }})"
@@ -85,7 +90,7 @@
                                     {{ $file->status }}
                                 </button>
                             </td>
-
+                            @unlessrole('payunpay')
                             <td class="flex justify-end items-center gap-2">
                                 <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('customfiles.edit', $file->id)}}">
                                     <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
@@ -100,6 +105,8 @@
                                     @csrf
                                 </form>
                             </td>
+                            @endunlessrole
+                            @endunlessrole
                         </tr>
                     @endforeach
                     </tbody>
@@ -267,8 +274,8 @@
                 }
 
                 // Calculate fees
-                const imFees = imCount * 500; // 500 per import file
-                const exFees = exCount * 400; // 400 per export file
+                const imFees = imCount * 600; // 600 per import file
+                const exFees = exCount * 500; // 500 per export file
                 const totalFees = imFees + exFees;
 
                 // Update print template values

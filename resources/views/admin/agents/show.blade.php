@@ -385,7 +385,7 @@
                                     </div>
                                 </div>
 
-                                @role('admin')
+                                @role('admin|accountant')
                                 <!-- Payment Form -->
                                 <div class="bg-white rounded-lg shadow-md mt-6">
                                     <div class="p-6">

@@ -30,12 +30,14 @@
     <!--- Menu -->
     <div data-simplebar="">
         <ul class="menu" data-fc-type="accordion">
+            @unlessrole('checker')
             <li class="menu-item">
                 <a href="{{route('home')}}" class="menu-link">
                     <span class="menu-icon"><i class="mdi mdi-eye"></i></span>
                     <span class="menu-text"> Site </span>
                 </a>
             </li>
+            @endunlessrole
 
 
 
@@ -51,7 +53,7 @@
             </li>
             @endrole
 
-            @role('admin|extra|operator|accountant|checker')
+            @role('admin|extra|operator')
             {{-- File Datas --}}
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
@@ -129,7 +131,7 @@
 
             @endrole
 
-            @role('admin|accountant|checker')
+            @role('admin|accountant')
             {{-- Agent --}}
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
@@ -137,7 +139,6 @@
                     <span class="menu-text"> Agents </span>
                     <span class="menu-arrow"></span>
                 </a>
-
 
                 <ul class="sub-menu hidden">
                     <li class="menu-item">

@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
         }
         // Check if the authenticated user has the 'agent' role
         if (auth()->user()->hasRole('accountant')) {
-            return redirect()->intended(route('customfiles.index', absolute: false));
+            return redirect()->intended(route('baccounts.index', absolute: false));
         }
 
 

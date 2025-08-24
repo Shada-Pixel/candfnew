@@ -30,14 +30,13 @@
     <!--- Menu -->
     <div data-simplebar="">
         <ul class="menu" data-fc-type="accordion">
-            @unlessrole('checker')
+            
             <li class="menu-item">
                 <a href="{{route('home')}}" class="menu-link">
                     <span class="menu-icon"><i class="mdi mdi-eye"></i></span>
                     <span class="menu-text"> Site </span>
                 </a>
             </li>
-            @endunlessrole
 
 
 

@@ -30,6 +30,10 @@ class DashboardController extends Controller implements HasMiddleware
             return redirect()->route('customfiles.index');
         }
 
+        if (auth()->user()->hasRole('accountant') ) {
+            return redirect()->route('baccounts.index');
+        }
+
 
         // Today's file data count
         $todayFileDataCount = File_data::whereDate('created_at', Carbon::today())->count();

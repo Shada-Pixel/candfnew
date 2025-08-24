@@ -40,7 +40,7 @@
         {{-- Table --}}
         <div class="card w-full print:hidden">
             <div class="p-6">
-                @unlessrole('checker|payunpay')
+                @role('payunpay')
                 <div class="flex justify-start items-center mb-4 gap-4">
                     <button id="oldClearButton" class="block text-center px-2 py-1 bg-gradient-to-r from-red-400 to-red-600 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all font-bold text-md text-white">
                         <i class="mdi mdi-delete"></i> Clear 2 year old  Paid
@@ -53,7 +53,7 @@
                         <i class="mdi mdi-printer"></i> Print Memo
                     </button>
                 </div>
-                @endunlessrole
+                @endrole
                 {{-- Table start here --}}
                 <table id="customsfiles" class="table is-narrow">
                     <thead>
@@ -115,7 +115,7 @@
             </div>
         </div>
 
-
+        @role('payunpay')
         {{-- Print Template --}}
         <div class="printWraper  print:block card p-6" >
             <style>
@@ -183,6 +183,7 @@
             </div>
         </div>
         {{-- Print Template --}}
+        @endrole
     </div> <!-- flex-end -->
 
     <x-slot name="script">

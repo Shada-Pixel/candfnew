@@ -38,6 +38,7 @@
                                 ['Benapole Immigration port fee','https://passenger.blpa.gov.bd/'],
                                 ['বাংলাদেশ কাস্টমস অনলাইন নিলাম','http://103.48.18.166/'],
                                 ['ওয়্যারহাউস কোড অনুসন্ধান','https://www.dnbc.gov.bd/'],
+                                ['এ চালান','https://www.achallan.gov.bd/acs/v2/general/home?ReturnUrl=%2Facs%2F'],
                             ];
                         @endphp
 

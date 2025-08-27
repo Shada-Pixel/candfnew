@@ -24,33 +24,57 @@ class SmsService
     public function sendSingleSms($to, $message)
     {
         $url = $this->baseUrl;
+        $data = null;
+        $status = 'FAILED';
+        $statusCode = 'Unknown';
+        $statusMessage = 'No error message';
 
-        $response = Http::post($url, [
-            'api_token' => $this->apiToken,
-            'sid' => $this->sid,
-            'msisdn' => $to,
-            'sms' => $message,
-            'csms_id' => bin2hex(random_bytes(10)),
-        ]);
+        try {
+            $response = Http::post($url, [
+                'api_token' => $this->apiToken,
+                'sid' => $this->sid,
+                'msisdn' => $to,
+                'sms' => $message,
+                'csms_id' => bin2hex(random_bytes(10)),
+            ]);
 
-        $data = $response->json();
+            $data = $response->json();
 
-        // Extract status for logging
-        $status = $data['status'] ?? 'FAILED';
-        $statusCode = $data['status_code'] ?? 'Unknown';
-        $statusMessage = $data['error_message'] ?? 'No error message';
+            // Extract status for logging
+            $status = $data['status'] ?? 'FAILED';
+            $statusCode = $data['status_code'] ?? 'Unknown';
+            $statusMessage = $data['error_message'] ?? 'No error message';
 
-        // Log the SMS response
-        LogHelper::log(
-            action: "SMS Sent to $agent_phone",
-            description: "Type: Single, Status: $status, Message: $message",
-            log_type: 'sms',
-            responseData: $data
-        );
+        } catch (\Exception $e) {
+            $status = 'FAILED';
+            $statusCode = 'HTTP_ERROR';
+            $statusMessage = 'HTTP request failed: ' . $e->getMessage();
+
+            $data = [
+                'status' => $status,
+                'status_code' => $statusCode,
+                'error_message' => $statusMessage
+            ];
+        }
+
+        // Log the SMS response with try-catch
+        try {
+            LogHelper::log(
+                action: "SMS Sent to $to", // Fixed: using $to instead of undefined $agent_phone
+                description: "Type: Single, Status: $status, Message: $message",
+                log_type: 'sms',
+                responseData: $data
+            );
+        } catch (\Exception $e) {
+            // Log the logging failure (you might want to use a different logging mechanism here)
+            error_log("Failed to log SMS activity: " . $e->getMessage());
+        }
 
         return [
-            'success' => $data['status_code'] === 200,
-            'message' => $data['status_code'] === 200 ? 'SMS sent successfully' : ($data['error_message'] ?? 'An error occurred'),
+            'success' => ($data['status_code'] ?? null) === 200,
+            'message' => ($data['status_code'] ?? null) === 200
+                ? 'SMS sent successfully'
+                : ($data['error_message'] ?? 'An error occurred'),
             'response' => $data
         ];
     }

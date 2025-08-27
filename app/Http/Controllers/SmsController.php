@@ -45,12 +45,6 @@ class SmsController extends Controller
             'message' => 'required|string|max:480',
         ]);
 
-        // Convert phone numbers by adding 88 prefix
-        // $phones = array_map(function($phone) {
-        //     $phone = trim($phone);
-        //     return $phone;
-        // }, explode(',', $request->phones));
-
         $response = $this->smsService->sendBulkSms($phones, $request->message);
         return response()->json($response);
     }

@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\SmsService;
+use App\Models\Agent;
 
 class SmsController extends Controller
 {
@@ -15,7 +16,8 @@ class SmsController extends Controller
 
     public function sendSms()
     {
-        return view('admin.sms.sendSms');
+        $agentCount = Agent::count();
+        return view('admin.sms.sendSms',['agentCount'=>$agentCount]);
     }
 
     /**
@@ -41,9 +43,10 @@ class SmsController extends Controller
     public function sendBulkSms(Request $request)
     {
         $request->validate([
-            'phones' => 'required|string',
             'message' => 'required|string|max:480',
         ]);
+        // Extract phone number of all agents in an array
+        $phones =
 
         $response = $this->smsService->sendBulkSms($phones, $request->message);
         return response()->json($response);

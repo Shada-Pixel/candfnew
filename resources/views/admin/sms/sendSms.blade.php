@@ -43,10 +43,10 @@
                 <form id="bulkSmsForm" class="sms-form hidden">
                     @csrf
                     <div class="mb-4">
-                        <label class="block font-semibold">Phone Numbers (comma-separated):</label>
+                        {{-- <label class="block font-semibold">Phone Numbers (comma-separated):</label>
                         <textarea name="phones" class="w-full border p-2 rounded mt-1" placeholder="01XXXXXXXXX, 01YYYYYYYYY" required rows="3"></textarea>
-                        <p class="error-message text-red-500 text-sm mt-1 hidden"></p>
-                        <p class="text-gray-500 text-sm mt-1">Format: 01XXXXXXXXX, 01YYYYYYYYY (comma-separated)</p>
+                        <p class="error-message text-red-500 text-sm mt-1 hidden"></p> --}}
+                        <p class="text-gray-500 text-sm mt-1">This will be sent to all {{$agentCount}} agents.</p>
                     </div>
 
                     <div class="mb-4">

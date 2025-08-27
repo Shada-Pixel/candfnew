@@ -173,7 +173,9 @@
                                             <th class="text-left">Agent Name in Chada</th>
                                             <th class="text-left">Type</th>
                                             <th class="text-left">Status</th>
+                                            @unlessrole('agent')
                                             <th class="text-right">Action</th>
+                                            @endunlessrole
                                         </tr>
                                     </thead>
 
@@ -193,7 +195,7 @@
                                                     {{ $file->status }}
                                                 </button>
                                             </td>
-
+                                            @unlessrole('agent')
                                             <td class="flex justify-end items-center gap-2">
                                                 @role('admin')
                                                 <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('customfiles.edit', $file->id)}}">
@@ -216,6 +218,7 @@
                                                 </a>
                                                 @endrole
                                             </td>
+                                            @endunlessrole
                                         </tr>
                                     @endforeach
                                     </tbody>

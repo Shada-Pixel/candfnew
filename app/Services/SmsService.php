@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use App\Helpers\LogHelper;
 
 class SmsService
 {
@@ -33,7 +34,20 @@ class SmsService
         ]);
 
         $data = $response->json();
-        
+
+        // Extract status for logging
+        $status = $data['status'] ?? 'FAILED';
+        $statusCode = $data['status_code'] ?? 'Unknown';
+        $statusMessage = $data['error_message'] ?? 'No error message';
+
+        // Log the SMS response
+        LogHelper::log(
+            action: "SMS Sent to $agent_phone",
+            description: "Type: Single, Status: $status, Message: $message",
+            log_type: 'sms',
+            responseData: $data
+        );
+
         return [
             'success' => $data['status_code'] === 200,
             'message' => $data['status_code'] === 200 ? 'SMS sent successfully' : ($data['error_message'] ?? 'An error occurred'),
@@ -61,7 +75,7 @@ class SmsService
         ]);
 
         $data = $response->json();
-        
+
         return [
             'success' => $data['status_code'] === 200,
             'message' => $data['status_code'] === 200 ? 'Bulk SMS sent successfully' : ($data['error_message'] ?? 'An error occurred'),
@@ -92,7 +106,7 @@ class SmsService
         ]);
 
         $data = $response->json();
-        
+
         return [
             'success' => $data['status_code'] === 200,
             'message' => $data['status_code'] === 200 ? 'Dynamic SMS sent successfully' : ($data['error_message'] ?? 'An error occurred'),

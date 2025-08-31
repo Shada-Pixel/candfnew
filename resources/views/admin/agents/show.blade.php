@@ -190,7 +190,7 @@
                                             <td>{{$file->agent ? $file->agent->name : 'Unknown'}}</td>
                                             <td>{{$file->type}}</td>
                                             <td>
-                                                <button onclick="toggleStatus({{ $file->id }})" class="status-btn cursor-pointer hover:opacity-75 transition-opacity {{ $file->status == 'Unpaid' ? 'text-red-400' : 'text-green-600' }}"
+                                                <button @role('payunpay') onclick="toggleStatus({{ $file->id }})" @endrole class="status-btn cursor-pointer hover:opacity-75 transition-opacity {{ $file->status == 'Unpaid' ? 'text-red-400' : 'text-green-600' }}"
                                                     data-id="{{ $file->id }}">
                                                     {{ $file->status }}
                                                 </button>

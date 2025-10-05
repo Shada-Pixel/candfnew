@@ -22,7 +22,8 @@ class ContactController extends Controller
             try {
                 // Send both emails
                 Mail::to($contact->email)->send(new ContactFormSubmitted($contact));
-                Mail::to('associationbpl@gmail.com')->send(new QueryMail($contact));
+                // Mail::to('associationbpl@gmail.com')->send(new QueryMail($contact));
+                Mail::to('info.associationbpl@gmail.com')->send(new QueryMail($contact));
 
                 return response()->json([
                     'success' => true,

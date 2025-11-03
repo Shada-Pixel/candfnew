@@ -1,6 +1,13 @@
 !(function () {
     var t = sessionStorage.getItem("_PIXADMIN_CONFIG_"),
-        i = { direction: "ltr", theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light', layout: { width: "default", position: "fixed" }, topbar: { color: "light" }, menu: { color: "light" }, sidenav: { view: "condensed" } };
+        i = {
+            direction: "ltr",
+            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
+            layout: { width: "default", position: "fixed" },
+            topbar: { color: "light" },
+            menu: { color: "light" },
+            sidenav: { view: "condensed" }
+        };
     const o = document.getElementsByTagName("html")[0];
     ((config = Object.assign(JSON.parse(JSON.stringify(i)), {})).direction = o.getAttribute("dir") || i.direction),
         (config.theme = o.getAttribute("data-mode") || i.theme),

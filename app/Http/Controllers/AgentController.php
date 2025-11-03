@@ -278,6 +278,7 @@ class AgentController extends Controller implements HasMiddleware
             'license_number' => 'required|string',
             'issue_date' => 'required|string',
             'expire_date' => 'required|string',
+            'print_date' => 'required|string',
         ]);
 
         // Redirect to a dedicated certificate view with the form data
@@ -286,6 +287,7 @@ class AgentController extends Controller implements HasMiddleware
             'license_number' => $request->license_number,
             'issue_date' => $request->issue_date,
             'expire_date' => $request->expire_date,
+            'print_date' => $request->print_date,
         ]);
     }
 }

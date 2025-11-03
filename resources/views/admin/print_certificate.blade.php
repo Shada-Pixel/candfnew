@@ -25,29 +25,34 @@
 
         .agentname{
             position: absolute;
-            top: 515px;
+            top: calc(515px - 20px);
             left: 50%;
         }
         .aentlocation{
             position: absolute;
-            top: 590px;
+            top: calc(590px - 20px);
             left: 50%;
             transform: translate(-50%, -50%);
         }
         .agentlicensenumber{
             position: absolute;
-            top: 650px;
+            top: calc(650px - 20px);
             left: 72%;
         }
         .issuedate{
             position: absolute;
-            top: 715px;
+            top: calc(715px - 20px);
             left: 22%;
         }
         .expiredate{
             position: absolute;
-            top: 715px;
+            top: calc(715px - 20px);
             left: 50%;
+        }
+        .printdate {
+            position: absolute;
+            top: 808px;
+            left: 45%;
         }
 
         @media print {
@@ -72,6 +77,7 @@
             <h2 class="agentlicensenumber">{{ $license_number }}</h2>
             <h2 class="issuedate"><strong>{{ $issue_date }}</strong></h2>
             <h2 class="expiredate"><strong>{{ $expire_date }}</strong></h2>
+            <h2 class="printdate"><strong>{{ $print_date }}</strong></h2>
         </div>
 
     </div>

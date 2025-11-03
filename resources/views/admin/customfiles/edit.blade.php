@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="title">Operate File</x-slot>
+    <x-slot name="title">Edit Customs File</x-slot>
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -24,29 +24,28 @@
         </style>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
+    <div class="flex flex-col gap-6">
+        <div class="card max-w-7xl mx-auto p-6">
                 <form method="POST" action="{{ route('customfiles.update', $customFile->id) }}" class="space-y-6">
                     @csrf
                     @method('PUT')
 
                     <!-- Name -->
                     <div>
-                        <label for="name" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Name') }}</label>
-                        <input id="name" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="text" name="name" value="{{ old('name', $customFile->name) }}" required autofocus />
+                        <label for="name" class="block font-medium text-sm">{{ __('Name') }}</label>
+                        <input id="name" class="form-input" type="text" name="name" value="{{ old('name', $customFile->name) }}" required autofocus />
                     </div>
 
                     <!-- BE Number -->
                     <div>
-                        <label for="be_number" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('BE Number') }}</label>
-                        <input id="be_number" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="text" name="be_number" value="{{ old('be_number', $customFile->be_number) }}" required />
+                        <label for="be_number" class="block font-medium text-sm">{{ __('BE Number') }}</label>
+                        <input id="be_number" class="form-input" type="text" name="be_number" value="{{ old('be_number', $customFile->be_number) }}" required />
                     </div>
 
                     <!-- Type -->
                     <div>
-                        <label for="type" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Type') }}</label>
-                        <select id="type" name="type" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                        <label for="type" class="block font-medium text-sm">{{ __('Type') }}</label>
+                        <select id="type" name="type" class="form-select" required>
                             <option value="IM" {{ old('type', $customFile->type) === 'IM' ? 'selected' : '' }}>Import</option>
                             <option value="EX" {{ old('type', $customFile->type) === 'EX' ? 'selected' : '' }}>Export</option>
                         </select>
@@ -54,8 +53,8 @@
 
                     <!-- Status -->
                     <div>
-                        <label for="status" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Status') }}</label>
-                        <select id="status" name="status" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                        <label for="status" class="block font-medium text-sm">{{ __('Status') }}</label>
+                        <select id="status" name="status" class="form-select" required>
                             <option value="Unpaid" {{ old('status', $customFile->status) === 'Unpaid' ? 'selected' : '' }}>Unpaid</option>
                             <option value="Paid" {{ old('status', $customFile->status) === 'Paid' ? 'selected' : '' }}>Paid</option>
                         </select>
@@ -63,15 +62,15 @@
 
                     <!-- Fees -->
                     <div>
-                        <label for="fees" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Fees') }}</label>
-                        <input id="fees" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="number" name="fees" value="{{ old('fees', $customFile->fees) }}" required />
+                        <label for="fees" class="block font-medium text-sm">{{ __('Fees') }}</label>
+                        <input id="fees" class="form-input" type="number" name="fees" value="{{ old('fees', $customFile->fees) }}" required />
 
                     </div>
 
                     <!-- Agent -->
                     <div>
-                        <label for="agent_id" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Agent') }}</label>
-                        <select id="agent_id" name="agent_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <label for="agent_id" class="block font-medium text-sm">{{ __('Agent') }}</label>
+                        <select id="agent_id" name="agent_id" class="form-select">
                             <option value="">Select Agent</option>
                             @foreach($agents as $agent)
                                 <option value="{{ $agent->id }}" {{ old('agent_id', $customFile->agent_id) == $agent->id ? 'selected' : '' }}>
@@ -87,7 +86,6 @@
                         </button>
                     </div>
                 </form>
-            </div>
         </div>
     </div>
 

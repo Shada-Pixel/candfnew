@@ -3,8 +3,9 @@
 
     <x-slot name="headerstyle">
         {{-- Datatable css --}}
-        <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.6/css/buttons.dataTables.css">
     </x-slot>
 
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -85,8 +86,11 @@
 
     <x-slot name="script">
         {{-- Datatable js --}}
-        <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/2.3.0/js/dataTables.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.6/js/dataTables.buttons.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.6/js/buttons.dataTables.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.6/js/buttons.print.min.js"></script>
         <script>
             $(document).ready(function() {
                 // Initialize date picker
@@ -102,6 +106,15 @@
                 $('#paidFilesTable').DataTable({
                     processing: true,
                     serverSide: true,
+                    layout: {
+                        topStart: {
+                            buttons: ['print']
+                        },
+                        // topStart: 'info',
+                        bottom: 'paging',
+                        bottomStart: 'info',
+                        bottomEnd: null,
+                    },
                     ajax: {
                         url: "{{ route('reports.paid') }}",
                         data: function(d) {
@@ -120,6 +133,27 @@
                     order: [[4, 'desc']]
                 });
             });
+
+            function printStats() {
+                // Update print template with current values
+                document.getElementById('print-date').textContent = document.getElementById('date').value;
+                document.getElementById('print-im').textContent = '{{ number_format($statistics['total_paid_im'], 2) }}';
+                document.getElementById('print-ex').textContent = '{{ number_format($statistics['total_paid_ex'], 2) }}';
+                document.getElementById('print-files').textContent = '{{ number_format($statistics['total_paid_files']) }}';
+                document.getElementById('print-total').textContent = '{{ number_format($statistics['total_paid_amount'], 2) }}';
+
+                // Show the print section
+                document.querySelector('.print-section').style.display = 'block';
+
+                // Print after a small delay to ensure content is visible
+                setTimeout(function() {
+                    window.print();
+                    // Hide the print section again after printing
+                    setTimeout(function() {
+                        document.querySelector('.print-section').style.display = 'none';
+                    }, 1000);
+                }, 100);
+            }
         </script>
     </x-slot>
 
@@ -173,26 +207,5 @@
         }
     </style>
 
-    <script>
-        function printStats() {
-            // Update print template with current values
-            document.getElementById('print-date').textContent = document.getElementById('date').value;
-            document.getElementById('print-im').textContent = '{{ number_format($statistics['total_paid_im'], 2) }}';
-            document.getElementById('print-ex').textContent = '{{ number_format($statistics['total_paid_ex'], 2) }}';
-            document.getElementById('print-files').textContent = '{{ number_format($statistics['total_paid_files']) }}';
-            document.getElementById('print-total').textContent = '{{ number_format($statistics['total_paid_amount'], 2) }}';
 
-            // Show the print section
-            document.querySelector('.print-section').style.display = 'block';
-
-            // Print after a small delay to ensure content is visible
-            setTimeout(function() {
-                window.print();
-                // Hide the print section again after printing
-                setTimeout(function() {
-                    document.querySelector('.print-section').style.display = 'none';
-                }, 1000);
-            }, 100);
-        }
-    </script>
 </x-app-layout>

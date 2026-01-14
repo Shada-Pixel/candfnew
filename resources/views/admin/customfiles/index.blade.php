@@ -7,6 +7,7 @@
     <x-slot name="headerstyle">
         {{-- Datatable css --}}
         <link rel="stylesheet" href="https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.6/css/buttons.dataTables.css">
     </x-slot>
 
     {{-- Page Content --}}
@@ -189,15 +190,21 @@
     <x-slot name="script">
         <!-- Datatable script-->
         <script src="https://cdn.datatables.net/2.3.0/js/dataTables.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.6/js/dataTables.buttons.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.6/js/buttons.dataTables.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.2.6/js/buttons.print.min.js"></script>
         <script>
             // Initialize DataTable
             new DataTable('#customsfiles', {
                 // paginate: false,
                 pageLength: 100,
                 layout: {
-                    topStart: 'info',
+                    topStart: {
+                        buttons: ['print']
+                    },
+                    // topStart: 'info',
                     bottom: 'paging',
-                    bottomStart: null,
+                    bottomStart: 'info',
                     bottomEnd: null,
                 }
             });

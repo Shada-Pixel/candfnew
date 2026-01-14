@@ -193,7 +193,7 @@
             // Initialize DataTable
             new DataTable('#customsfiles', {
                 // paginate: false,
-                // pageLength: 100,
+                pageLength: 100,
                 layout: {
                     topStart: 'info',
                     bottom: 'paging',

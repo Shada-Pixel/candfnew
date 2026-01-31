@@ -91,6 +91,9 @@
                         <a href="{{route('customfiles.index')}}" class="menu-link">
                             <span class="menu-text">Customs Files</span>
                         </a>
+                        <a href="{{route('customfiles.create')}}" class="menu-link">
+                            <span class="menu-text">Due CF {{ date('Y') - 1 }}</span>
+                        </a>
                     </li>
                     @endrole
                 </ul>

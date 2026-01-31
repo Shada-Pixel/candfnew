@@ -23,11 +23,17 @@ class StoreCustomFileRequest extends FormRequest
     {
         return [
             'excel_file' => [
-                'required',
+                'nullable',
                 'file',
                 'mimes:xlsx,xls',
-                'max:5120', // 5MB max file size
+                'max:5120',
             ],
+            'name' => 'string|nullable',
+            'be_number' => 'required_without:excel_file|string|nullable',
+            'type' => 'required_without:excel_file|in:IM,EX|nullable',
+            'date' => 'required_without:excel_file|date_format:d/m/Y|nullable',
+            'agentain' => 'nullable|string',
+            'year' => 'nullable|string',
         ];
     }
 

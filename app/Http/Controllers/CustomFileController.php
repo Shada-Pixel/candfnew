@@ -36,71 +36,104 @@ class CustomFileController extends Controller
      */
     public function create()
     {
+        $customFiles = CustomFile::where('year', date('Y') - 1)
+            ->orderBy('status', 'desc')
+            ->get();
+
+        //If auth user have checker or payunpay role then redirect him to custom file page
+        if (auth()->user()->hasRole('payunpay')|| auth()->user()->hasRole('checker')) {
+            $customFiles = CustomFile::where('year', date('Y') - 1)
+            ->where('status', 'Unpaid')
+            ->get();
+        }
         // Return a view to display the form for creating a new CustomFile
-        return view('admin.customfiles.create');
+        return view('admin.customfiles.create', compact('customFiles'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-      public function store(StoreCustomFileRequest $request)
+    public function store(StoreCustomFileRequest $request)
     {
         try {
-            $file = $request->file('excel_file');
+            if ($request->hasFile('excel_file')) {
+                $file = $request->file('excel_file');
 
-            if (!$file) {
-                return redirect()->back()->with('error', 'No file was uploaded.');
-            }
+                // Use Laravel Excel to import the file
+                $data = Excel::toArray([], $file);
 
-            // Validate file extension
-            $extension = $file->getClientOriginalExtension();
-            if (!in_array($extension, ['xlsx', 'xls'])) {
-                return redirect()->back()->with('error', 'Please upload a valid Excel file.');
-            }
+                // Process each row from the first sheet
+                foreach ($data[0] as $index => $row) {
+                    // Skip header row
+                    if ($index === 0) continue;
 
-            // Use Laravel Excel to import the file
-            $data = Excel::toArray([], $file);
+                    // Only process non-empty rows
+                    if (!empty(array_filter($row))) {
+                        // Set fees based on type (IM/EX)
+                        $type = trim(strtoupper($row[5] ?? '')); // Convert to uppercase and trim
+                        $fees = $type === 'IM' ? 600 : ($type === 'EX' ? 500 : null);
 
-            // Process each row from the first sheet
-            foreach ($data[0] as $index => $row) {
-                // Skip header row
-                if ($index === 0) continue;
+                        // Search for matching agent by name
+                        $agentain = trim($row[2] ?? '');
+                        $agent = null;
+                        if ($agentain) {
+                            $agent = Agent::where('ain_no', 'LIKE', '%' . $agentain . '%')
+                                        ->first();
+                        }
+                        // Setting the date
+                        $date = $row[4] ?? null;
+                        if ($date) {
+                            $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($date);
+                            $date = $date->format('Y-m-d');
+                        }
 
-                // Only process non-empty rows
-                if (!empty(array_filter($row))) {
-                    // Set fees based on type (IM/EX)
-                    $type = trim(strtoupper($row[5] ?? '')); // Convert to uppercase and trim
-                    $fees = $type === 'IM' ? 600 : ($type === 'EX' ? 500 : null);
-
-                    // Search for matching agent by name
-                    $agentain = trim($row[2] ?? '');
-                    $agent = null;
-                    if ($agentain) {
-                        $agent = Agent::where('ain_no', 'LIKE', '%' . $agentain . '%')
-                                    ->first();
+                        CustomFile::create([
+                            'name' => $row[1] ?? null,
+                            'be_number' => $row[3] ?? null,
+                            'fees' => $fees, // Use calculated fees
+                            'type' => $type,
+                            'status' => 'Unpaid',
+                            'date' => $date,
+                            'agent_id' => $agent ? $agent->id : null,
+                            'year' => date('Y')
+                        ]);
                     }
-                    // Setting the date
-                    $date = $row[4] ?? null;
-                    if ($date) {
-                        $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($date);
-                        $date = $date->format('Y-m-d');
-                    }
-
-                    CustomFile::create([
-                        'name' => $row[1] ?? null,
-                        'be_number' => $row[3] ?? null,
-                        'fees' => $fees, // Use calculated fees
-                        'type' => $type,
-                        'status' => 'Unpaid',
-                        'date' => $date,
-                        'agent_id' => $agent ? $agent->id : null
-                    ]);
                 }
-            }
+                return redirect()->route('customfiles.index')->with('success', 'Data imported successfully.');
+            } else {
+                // Manual Entry
+                $type = $request->type;
+                $fees = $type === 'IM' ? 600 : ($type === 'EX' ? 500 : null);
 
-            return redirect()->route('customfiles.index')->with('success', 'Data imported successfully.');
+                $agent = null;
+                if ($request->agentain) {
+                    $agent = Agent::where('name', $request->agentain)->first();
+                }
+
+                $date = $request->date;
+                if ($date) {
+                    $date = \Carbon\Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+                }
+
+                CustomFile::create([
+                    'name' => $agent->name,
+                    'be_number' => $request->be_number,
+                    'fees' => $fees,
+                    'type' => $type,
+                    'status' => 'Unpaid',
+                    'date' => $date,
+                    'year' => $request->year ?? date('Y'),
+                    'agent_id' => $agent ? $agent->id : null
+                ]);
+
+                if($request->year){
+                    return redirect()->route('customfiles.create')->with('success', 'Custom file created successfully.');
+                }
+
+                return redirect()->route('customfiles.index')->with('success', 'Custom file created successfully.');
+            }
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error importing file: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error processing request: ' . $e->getMessage());
         }
     }
 
@@ -138,6 +171,10 @@ class CustomFileController extends Controller
             }
 
             $customFile->update($request->validated());
+
+            if($request->year){
+                return redirect()->route('customfiles.create')->with('success', 'Custom file updated successfully.');
+            }
 
             return redirect()->route('customfiles.index')
                 ->with('success', 'Custom file updated successfully.');

@@ -10,6 +10,32 @@ class File_data extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'lodgement_no',
+        'lodgement_date',
+        'manifest_no',
+        'manifest_date',
+        'group',
+        'ie_type',
+        'ie_group',
+        'goods_name',
+        'goods_type',
+        'be_number',
+        'be_date',
+        'year',
+        'fees',
+        'page',
+        'no_of_items',
+        'status',
+        'ie_data_id',
+        'agent_id',
+        'reciver_id',
+        'operator_id',
+        'deliverer_id',
+        'sms_sent',
+        'delivered_at',
+    ];
+
     protected $casts = [
         'created_at' => 'datetime:H:i',
         'updated_at' => 'datetime:H:i',

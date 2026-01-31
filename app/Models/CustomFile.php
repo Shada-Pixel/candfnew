@@ -15,7 +15,8 @@ class CustomFile extends Model
         'type',
         'status',
         'agent_id',
-        'date'
+        'date',
+        'year'
     ];
 
     public function agent()

@@ -80,6 +80,19 @@
                         </select>
                     </div>
 
+                    <!-- Date -->
+                    <div>
+                        <label for="date" class="block font-medium text-sm">{{ __('Date') }}</label>
+                        <input id="date" class="form-input" type="date" name="date" value="{{ old('date', $customFile->date) }}" />
+                    </div>
+                    @if($customFile->year)
+                    <!-- Year -->
+                    <div>
+                        <label for="year" class="block font-medium text-sm">{{ __('Year') }}</label>
+                        <input id="year" class="form-input" type="text" name="year" value="{{ old('year', $customFile->year) }}" />
+                    </div>
+                    @endif
+
                     <div class="flex items-center justify-end mt-4">
                         <button type="submit" class="block text-center px-4 py-2 bg-gradient-to-r from-violet-400 to-purple-300 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all font-bold text-lg text-white">
                             {{ __('Update') }}

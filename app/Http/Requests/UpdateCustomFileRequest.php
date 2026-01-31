@@ -27,7 +27,9 @@ class UpdateCustomFileRequest extends FormRequest
             'type' => 'required|in:IM,EX',
             'status' => 'required|in:Paid,Unpaid',
             'fees' => 'required|numeric|min:0',
-            'agent_id' => 'nullable|exists:agents,id'
+            'agent_id' => 'nullable|exists:agents,id',
+            'year' => 'nullable|string',
+            'date' => 'nullable|date'
         ];
     }
 }

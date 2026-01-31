@@ -67,8 +67,8 @@
                             @unlessrole('checker')
                             <th>Status</th>
                             @unlessrole('payunpay')
+                            <th>Year</th>
                             <th>Action</th>
-                            @endunlessrole
                             @endunlessrole
                         </tr>
                     </thead>
@@ -81,6 +81,7 @@
                             <td>{{$file->be_number}}</td>
                             <td>{{$file->fees}}</td>
                             <td>{{$file->type}}</td>
+                            
                             @unlessrole('checker')
                             <td>
                                 <button
@@ -91,6 +92,7 @@
                                     {{ $file->status }}
                                 </button>
                             </td>
+                            <td>{{$file->year}}</td>
                             @unlessrole('payunpay')
                             <td class="flex justify-end items-center gap-2">
                                 <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('customfiles.edit', $file->id)}}">

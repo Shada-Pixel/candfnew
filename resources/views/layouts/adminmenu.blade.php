@@ -91,9 +91,7 @@
                         <a href="{{route('customfiles.index')}}" class="menu-link">
                             <span class="menu-text">Customs Files</span>
                         </a>
-                        <a href="{{route('customfiles.create')}}" class="menu-link">
-                            <span class="menu-text">Due CF {{ date('Y') - 1 }}</span>
-                        </a>
+                        
                     </li>
                     @endrole
                 </ul>
@@ -432,9 +430,12 @@
             </li>
 
             @endrole
-
-
-
+            <li class="menu-item">
+                <a href="{{route('customfiles.create')}}" class="menu-link">
+                    <span class="menu-icon"><i class="mdi mdi-archive-eye-outline"></i></span>
+                    <span class="menu-text"> Due CF {{ date('Y') - 1 }} </span>
+                </a>
+            </li>
         </ul>
     </div>
 </div>

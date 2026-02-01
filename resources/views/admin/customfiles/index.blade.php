@@ -43,9 +43,9 @@
             <div class="p-6">
                 @role('payunpay')
                 <div class="flex justify-start items-center mb-4 gap-4">
-                    <button id="oldClearButton" class="block text-center px-2 py-1 bg-gradient-to-r from-red-400 to-red-600 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all font-bold text-md text-white">
+                    <!-- <button id="oldClearButton" class="block text-center px-2 py-1 bg-gradient-to-r from-red-400 to-red-600 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all font-bold text-md text-white">
                         <i class="mdi mdi-delete"></i> Clear 2 year old  Paid
-                    </button>
+                    </button> -->
                     <button id="clearMemoSession" class="block text-center px-2 py-1 bg-gradient-to-r from-blue-400 to-blue-600 rounded-md shadow-md hover:shadow-lg hover:scale-105 duration-150 transition-all font-bold text-md text-white">
                         <i class="mdi mdi-delete"></i> Clear Memo Session
                     </button>

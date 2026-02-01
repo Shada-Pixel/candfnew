@@ -66,9 +66,10 @@
                             <th>Type</th>
                             @unlessrole('checker')
                             <th>Status</th>
-                            @unlessrole('payunpay')
                             <th>Year</th>
+                            @unlessrole('payunpay')
                             <th>Action</th>
+                            @endunlessrole
                             @endunlessrole
                         </tr>
                     </thead>

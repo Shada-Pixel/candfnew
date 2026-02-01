@@ -26,7 +26,7 @@
 
     {{-- Page Content --}}
     <div class="flex flex-col gap-6">
-
+        @role('admin')
         {{-- Form --}}
         <div class="card mx-auto">
             <div class="p-6">
@@ -74,6 +74,9 @@
                 </form>
             </div>
         </div>
+        @endrole
+            
+        
 
         {{-- Custom Files List --}}
         <div class="card">

@@ -430,12 +430,14 @@
             </li>
 
             @endrole
+            @role('admin|payunpay')
             <li class="menu-item">
                 <a href="{{route('customfiles.create')}}" class="menu-link">
                     <span class="menu-icon"><i class="mdi mdi-archive-eye-outline"></i></span>
                     <span class="menu-text"> Due CF {{ date('Y') - 1 }} </span>
                 </a>
             </li>
+            @endrole
         </ul>
     </div>
 </div>

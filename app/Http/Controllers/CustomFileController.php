@@ -46,8 +46,29 @@ class CustomFileController extends Controller
             ->where('status', 'Unpaid')
             ->get();
         }
+        $totalUnpaidFiles = CustomFile::where('year', date('Y') - 1)
+        ->where('status', 'Unpaid')
+        ->count();
+        $totalPaidFiles = CustomFile::where('year', date('Y') - 1)
+        ->where('status', 'Paid')
+        ->count();
+        $totalUnpaidAmount = CustomFile::where('year', date('Y') - 1)
+        ->where('status', 'Unpaid')
+        ->sum('fees');
+        $totalPaidAmount = CustomFile::where('year', date('Y') - 1)
+        ->where('status', 'Paid')
+        ->sum('fees');
+        $totalFiles = CustomFile::where('year', date('Y') - 1)
+        ->count();
         // Return a view to display the form for creating a new CustomFile
-        return view('admin.customfiles.create', compact('customFiles'));
+        return view('admin.customfiles.create', compact(
+            'customFiles', 
+            'totalUnpaidFiles', 
+            'totalPaidFiles', 
+            'totalUnpaidAmount', 
+            'totalPaidAmount',
+            'totalFiles'
+        ));
     }
 
     /**
@@ -103,7 +124,11 @@ class CustomFileController extends Controller
             } else {
                 // Manual Entry
                 $type = $request->type;
-                $fees = $type === 'IM' ? 600 : ($type === 'EX' ? 500 : null);
+                if($request->fees){
+                    $fees = $request->fees;
+                }else{
+                    $fees = $type === 'IM' ? 600 : ($type === 'EX' ? 500 : null);
+                }
 
                 $agent = null;
                 if ($request->agentain) {

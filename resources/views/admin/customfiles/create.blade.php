@@ -30,6 +30,12 @@
         {{-- Form --}}
         <div class="card mx-auto">
             <div class="p-6">
+                <div class="flex justify-center items-center mb-4 gap-4 font-bold">
+                    <span>Total Unpaid File: {{ $totalUnpaidFiles }}</span>
+                    <span>Total Paid File: {{ $totalPaidFiles }}</span>
+                    <span>Total Unpaid Amount: {{ $totalUnpaidAmount }}</span>
+                    <span>Total Paid Amount: {{ $totalPaidAmount }}</span>
+                </div>
 
                 <div class="flex justify-between items-center mb-4">
 
@@ -47,6 +53,10 @@
                             <label for="be_number" class="block mb-2">B/E Number</label>
                             <input type="text" class="form-input" id="be_number" name="be_number" placeholder="B/E Number" required>
                         </div> <!-- end -->
+                        <div>
+                            <label for="fees" class="block mb-2">Fees</label>
+                            <input type="number" class="form-input" id="fees" name="fees" placeholder="Fees" required min="400" max="600" value="400">
+                        </div> <!-- end -->
 
                         <div>
                             <label for="type" class="block mb-2">Type</label>
@@ -58,7 +68,7 @@
 
                         <div>
                             <label for="date" class="block mb-2">Date</label>
-                            <input type="text" class="form-input skipme" id="date" name="date" placeholder="DD/MM/YYYY" required value="{{ date('d/m/Y') }}">
+                            <input type="text" class="form-input skipme" id="date" name="date" placeholder="DD/MM/YYYY" required value="{{ date('d/m/Y', strtotime('-1 year')) }}">
                         </div> <!-- end -->
 
                         <div>
@@ -90,6 +100,7 @@
                             <th>B/E No</th>
                             <th>Fees</th>
                             <th>Type</th>
+                            <th>Date</th>
                             @unlessrole('checker')
                             <th>Status</th>
                             @unlessrole('payunpay')
@@ -108,6 +119,7 @@
                             <td>{{$file->be_number}}</td>
                             <td>{{$file->fees}}</td>
                             <td>{{$file->type}}</td>
+                            <td>{{date('d/m/Y', strtotime($file->date))}}</td>
                             @unlessrole('checker')
                             <td>
                                 <button

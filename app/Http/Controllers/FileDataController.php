@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
-use App\Http\Requests\StoreFile_dataRequest;
+use Illuminate\Validation\Rule;
 use App\Http\Requests\UpdateFile_dataRequest;
 
 class FileDataController extends Controller
@@ -87,9 +87,14 @@ class FileDataController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request, including checking for unique `be_number`
+        // Validate the request: `be_number` must be unique among rows whose created_at is in the current calendar year
         $request->validate([
-            'be_number' => 'nullable|unique:file_datas,be_number',
+            'be_number' => [
+                'nullable',
+                Rule::unique('file_datas', 'be_number')->where(function ($query) {
+                    $query->whereYear('created_at', Carbon::now()->year);
+                }),
+            ],
             'manifest_no' => 'required|string',
             'page' => 'nullable|integer',
             'agentain' => 'nullable|string',

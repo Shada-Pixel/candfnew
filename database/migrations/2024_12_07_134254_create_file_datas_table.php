@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string('ie_group')->nullable();
             $table->string('goods_name')->nullable();
             $table->string('goods_type')->nullable();
-            $table->string('be_number')->nullable()->unique();
+            // $table->string('be_number')->nullable()->unique();
+            $table->string('be_number')->nullable();
             $table->date('be_date')->nullable();
             $table->string('fees')->nullable();
             $table->string('page')->nullable();

@@ -8,28 +8,161 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreCustomFileRequest;
 use App\Http\Requests\UpdateCustomFileRequest;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class CustomFileController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Retrieve all CustomFile records from the database and order by status
-        // and then by created_at in descending order
-        $customFiles = CustomFile::orderBy('status', 'desc')
-            ->get();
+        if ($request->ajax()) {
 
-        //If auth user have checker or payunpay role then redirect him to custom file page
-        if (auth()->user()->hasRole('payunpay')|| auth()->user()->hasRole('checker')) {
-            $customFiles = CustomFile::where('status', 'Unpaid')
-            ->get();
+            $user = auth()->user();
+
+            $query = CustomFile::query()
+                ->select([
+                    'id',
+                    'name',
+                    'be_number',
+                    'fees',
+                    'type',
+                    'status',
+                    'year',
+                    'created_at',
+                ]);
+
+            /*
+            |--------------------------------------------------------------------------
+            | Role Control
+            |--------------------------------------------------------------------------
+            |
+            | payunpay + checker can only see Unpaid files.
+            |
+            */
+            if (
+                $user->hasRole('payunpay') ||
+                $user->hasRole('checker')
+            ) {
+                $query->where('status', 'Unpaid');
+            }
+
+            return DataTables::eloquent($query)
+                ->addIndexColumn()
+
+                /*
+                |--------------------------------------------------------------------------
+                | Status
+                |--------------------------------------------------------------------------
+                */
+                ->addColumn('status_column', function ($row) use ($user) {
+
+                    // Checker should never receive/display status
+                    if ($user->hasRole('checker')) {
+                        return '';
+                    }
+
+                    $class = $row->status === 'Unpaid'
+                        ? 'text-red-400'
+                        : 'text-green-600';
+
+                    return '
+                        <button
+                            type="button"
+                            onclick="toggleStatus(' . $row->id . ')"
+                            class="status-btn cursor-pointer hover:opacity-75 transition-opacity ' . $class . '"
+                            data-id="' . $row->id . '"
+                        >
+                            ' . e($row->status) . '
+                        </button>
+                    ';
+                })
+
+                /*
+                |--------------------------------------------------------------------------
+                | Action
+                |--------------------------------------------------------------------------
+                |
+                | payunpay + checker should not receive action column.
+                |
+                */
+                ->addColumn('action', function ($row) use ($user) {
+
+                    if (
+                        $user->hasRole('payunpay') ||
+                        $user->hasRole('checker')
+                    ) {
+                        return '';
+                    }
+
+                    return '
+                        <div class="flex justify-end items-center gap-2">
+
+                            <a
+                                class="text-seagreen/70 hover:text-seagreen hover:scale-105 transition duration-150 ease-in-out text-2xl"
+                                href="' . route('customfiles.edit', $row->id) . '"
+                            >
+                                <span class="menu-icon">
+                                    <i class="mdi mdi-table-edit"></i>
+                                </span>
+                            </a>
+
+                            <a
+                                href="' . route('customfiles.destroy', $row->id) . '"
+                                class="text-red-500/70 hover:text-red hover:scale-105 transition duration-150 ease-in-out text-2xl"
+                                onclick="event.preventDefault(); document.getElementById(\'delete-form-' . $row->id . '\').submit();"
+                            >
+                                <span class="menu-icon">
+                                    <i class="mdi mdi-delete"></i>
+                                </span>
+                            </a>
+
+                            <form
+                                id="delete-form-' . $row->id . '"
+                                action="' . route('customfiles.destroy', $row->id) . '"
+                                method="POST"
+                                style="display:none;"
+                            >
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                            </form>
+
+                        </div>
+                    ';
+                })
+
+                ->rawColumns([
+                    'status_column',
+                    'action',
+                ])
+
+                ->make(true);
         }
 
-        // Return a view with the list of CustomFiles
-        return view('admin.customfiles.index', compact('customFiles'));
+        return view('admin.customfiles.index');
     }
+
+
+
+    // public function index()
+    // {
+    //     // Retrieve all CustomFile records from the database and order by status
+    //     // and then by created_at in descending order
+    //     $customFiles = CustomFile::orderBy('status', 'desc')
+    //         ->get();
+
+    //     //If auth user have checker or payunpay role then redirect him to custom file page
+    //     if (auth()->user()->hasRole('payunpay')|| auth()->user()->hasRole('checker')) {
+    //         $customFiles = CustomFile::where('status', 'Unpaid')
+    //         ->get();
+    //     }
+
+    //     // Return a view with the list of CustomFiles
+    //     return view('admin.customfiles.index', compact('customFiles'));
+    // }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -62,10 +195,10 @@ class CustomFileController extends Controller
         ->count();
         // Return a view to display the form for creating a new CustomFile
         return view('admin.customfiles.create', compact(
-            'customFiles', 
-            'totalUnpaidFiles', 
-            'totalPaidFiles', 
-            'totalUnpaidAmount', 
+            'customFiles',
+            'totalUnpaidFiles',
+            'totalPaidFiles',
+            'totalUnpaidAmount',
             'totalPaidAmount',
             'totalFiles'
         ));

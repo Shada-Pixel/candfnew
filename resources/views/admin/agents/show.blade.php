@@ -7,6 +7,8 @@
     <x-slot name="headerstyle">
         {{-- Datatable css --}}
         <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
         <style>
             .tablinks.active {
                 color: #6d28d9;
@@ -496,9 +498,24 @@
     <x-slot name="script">
         <!-- Datatable script-->
         <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+        <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
         <script>
             var datatablelist = $('#donationTable').DataTable();
-            var customsfiles = $('#customsfiles').DataTable();
+            var customsfiles = $('#customsfiles').DataTable({
+                dom: 'Bfrtip',
+
+                buttons: [
+                    {
+                        extend: 'print',
+                        text: '<i class="mdi mdi-printer"></i> Print',
+                        title: 'Custom Files - {{ $agent->name }}',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    }
+                ]
+            });
 
             // Tab functionality
             $(document).ready(function() {

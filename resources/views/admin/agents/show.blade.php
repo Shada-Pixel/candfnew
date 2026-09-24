@@ -172,7 +172,6 @@
                                             <th class="text-left">B/E No</th>
                                             <th class="text-left">Date</th>
                                             <th class="text-left">Fees</th>
-                                            <th class="text-left">Agent Name in Chada</th>
                                             <th class="text-left">Type</th>
                                             <th class="text-left">Status</th>
                                             @unlessrole('agent')
@@ -189,7 +188,6 @@
                                             <td>{{$file->be_number}}</td>
                                             <td>{{$file->date ? \Carbon\Carbon::parse($file->date)->format('d-M-Y') : 'N/A'}}</td>
                                             <td>৳{{number_format($file->fees, 2)}}</td>
-                                            <td>{{$file->agent ? $file->agent->name : 'Unknown'}}</td>
                                             <td>{{$file->type}}</td>
                                             <td>
                                                 <button @role('payunpay') onclick="toggleStatus({{ $file->id }})" @endrole class="status-btn cursor-pointer hover:opacity-75 transition-opacity {{ $file->status == 'Unpaid' ? 'text-red-400' : 'text-green-600' }}"

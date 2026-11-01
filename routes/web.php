@@ -10,7 +10,6 @@ use App\Http\Controllers\{
     RoleController,
     UserController,
     BankController,
-    QueryController,
     ProfileController,
     DashboardController,
     PermissionController,
@@ -119,6 +118,11 @@ Route::middleware(['auth'])->group(function () {
         'itc-reports'=> ITCReportController::class,
         'agents'=> AgentController::class,
     ]);
+
+    Route::get(
+        '/customfiles/thisyear', [CustomFileController::class, 'thisYear']
+    )->name('customfiles.thisyear');
+
 
     // Custom Files Status Toggle and Clear Old
     Route::post('/customfiles/{id}/toggle-status', [CustomFileController::class, 'toggleStatus'])->name('customfiles.toggle-status');

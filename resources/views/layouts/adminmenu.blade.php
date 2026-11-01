@@ -30,7 +30,7 @@
     <!--- Menu -->
     <div data-simplebar="">
         <ul class="menu" data-fc-type="accordion">
-            
+
             <li class="menu-item">
                 <a href="{{route('home')}}" class="menu-link">
                     <span class="menu-icon"><i class="mdi mdi-eye"></i></span>
@@ -91,7 +91,7 @@
                         <a href="{{route('customfiles.index')}}" class="menu-link">
                             <span class="menu-text">Customs Files</span>
                         </a>
-                        
+
                     </li>
                     @endrole
                 </ul>
@@ -432,10 +432,26 @@
             @endrole
             @role('admin|payunpay')
             <li class="menu-item">
-                <a href="{{route('customfiles.create')}}" class="menu-link">
-                    <span class="menu-icon"><i class="mdi mdi-archive-eye-outline"></i></span>
-                    <span class="menu-text"> Due CF {{ date('Y') - 1 }} </span>
+                <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
+                    <span class="menu-icon"><i class="mdi mdi-developer-board"></i></span>
+                    <span class="menu-text"> Due CFs </span>
+                    <span class="menu-arrow"></span>
                 </a>
+
+                <ul class="sub-menu hidden">
+                    <li class="menu-item">
+                        <a href="{{route('customfiles.create')}}" class="menu-link">
+                            <span class="menu-icon"><i class="mdi mdi-archive-eye-outline"></i></span>
+                            <span class="menu-text"> {{ date('Y') - 1 }} </span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{route('customfiles.thisyear')}}" class="menu-link">
+                            <span class="menu-icon"><i class="mdi mdi-archive-eye-outline"></i></span>
+                            <span class="menu-text"> {{ date('Y') }} </span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             @endrole
         </ul>

@@ -1,6 +1,6 @@
 <x-app-layout>
     {{-- Title --}}
-    <x-slot name="title">Due CF {{ date('Y') -1 }}</x-slot>
+    <x-slot name="title">Due CF {{ date('Y') }}</x-slot>
 
 
     {{-- Header Style --}}
@@ -30,16 +30,15 @@
         {{-- Form --}}
         <div class="card mx-auto">
             <div class="p-6">
-                <div class="flex justify-center items-center mb-4 gap-4 font-bold">
-                    <span>Total Unpaid File: {{ $totalUnpaidFiles }}</span>
+                <div class="flex justify-between items-center mb-4">
+
+                    <h2 class="text-xl">Due CF {{ date('Y') }}</h2>
+                    <p class="flex justify-center items-center mb-4 gap-4 font-bold">
+                        <span>Total Unpaid File: {{ $totalUnpaidFiles }}</span>
                     <span>Total Paid File: {{ $totalPaidFiles }}</span>
                     <span>Total Unpaid Amount: {{ $totalUnpaidAmount }}</span>
                     <span>Total Paid Amount: {{ $totalPaidAmount }}</span>
-                </div>
-
-                <div class="flex justify-between items-center mb-4">
-
-                    <h2 class="text-xl">Due CF {{ date('Y') -1 }}</h2>
+                    </p>
                 </div>
 
                 <form id="customFileCreateForm" action="{{route('customfiles.store')}}" method="POST">
@@ -73,7 +72,7 @@
 
                         <div>
                             <label for="year" class="block mb-2">Year</label>
-                            <input type="text" class="form-input" id="year" name="year" value="{{ date('Y') -1 }}" >
+                            <input type="text" class="form-input" id="year" name="year" value="{{ date('Y') }}" >
                         </div> <!-- end -->
 
                         <div class="self-end flex justify-end">
@@ -85,8 +84,8 @@
             </div>
         </div>
         @endrole
-            
-        
+
+
 
         {{-- Custom Files List --}}
         <div class="card">

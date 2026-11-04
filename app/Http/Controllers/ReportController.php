@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\CustomFile;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ReportController extends Controller
 {
@@ -141,66 +142,136 @@ class ReportController extends Controller
     }
 
     // Unpaid Customs File Report
+    // public function unpaid_report(Request $request)
+    // {
+    //     // Get overall statistics
+    //     $statistics = [
+    //         'total_unpaid' => CustomFile::where('status', 'Unpaid')->count(),
+    //         'total_unpaid_im' => CustomFile::where('status', 'Unpaid')->where('type', 'IM')->count(),
+    //         'total_unpaid_ex' => CustomFile::where('status', 'Unpaid')->where('type', 'EX')->count(),
+    //         'total_due' => CustomFile::where('status', 'Unpaid')->sum('fees'),
+    //     ];
+
+    //     if ($request->ajax()) {
+    //         $query = Agent::query()
+    //             ->select([
+    //                 'agents.id',
+    //                 'agents.name',
+    //                 DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "IM") as unpaid_im_count'),
+    //                 DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "EX") as unpaid_ex_count'),
+    //                 DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") as total_unpaid_count'),
+    //                 DB::raw('(SELECT SUM(fees) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") as total_unpaid_amount')
+    //             ])
+    //             ->whereExists(function ($query) {
+    //                 $query->select(DB::raw(1))
+    //                     ->from('custom_files')
+    //                     ->whereColumn('custom_files.agent_id', 'agents.id')
+    //                     ->where('status', 'Unpaid');
+    //             });
+
+    //         return DataTables::of($query)
+    //             ->filterColumn('name', function($query, $keyword) {
+    //                 $query->where('agents.name', 'like', "%{$keyword}%");
+    //             })
+    //             ->filterColumn('unpaid_im_count', function($query, $keyword) {
+    //                 $query->whereRaw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "IM") like ?', ["%{$keyword}%"]);
+    //             })
+    //             ->filterColumn('unpaid_ex_count', function($query, $keyword) {
+    //                 $query->whereRaw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "EX") like ?', ["%{$keyword}%"]);
+    //             })
+    //             ->filterColumn('total_unpaid_count', function($query, $keyword) {
+    //                 $query->whereRaw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") like ?', ["%{$keyword}%"]);
+    //             })
+    //             ->filterColumn('total_unpaid_amount', function($query, $keyword) {
+    //                 $query->whereRaw('(SELECT SUM(fees) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") like ?', ["%{$keyword}%"]);
+    //             })
+    //             ->addIndexColumn()
+    //             ->editColumn('total_unpaid_amount', function($row) {
+    //                 return '৳' . number_format($row->total_unpaid_amount ?? 0, 2);
+    //             })
+    //             ->editColumn('unpaid_im_count', function($row) {
+    //                 return $row->unpaid_im_count ?? 0;
+    //             })
+    //             ->editColumn('unpaid_ex_count', function($row) {
+    //                 return $row->unpaid_ex_count ?? 0;
+    //             })
+    //             ->editColumn('total_unpaid_count', function($row) {
+    //                 return $row->total_unpaid_count ?? 0;
+    //             })
+    //             ->make(true);
+    //     }
+
+    //     return view('admin.reports.unpaid', compact('statistics'));
+    // }
+
+
+
+
+
     public function unpaid_report(Request $request)
     {
-        // Get overall statistics
-        $statistics = [
-            'total_unpaid' => CustomFile::where('status', 'Unpaid')->count(),
-            'total_unpaid_im' => CustomFile::where('status', 'Unpaid')->where('type', 'IM')->count(),
-            'total_unpaid_ex' => CustomFile::where('status', 'Unpaid')->where('type', 'EX')->count(),
-            'total_due' => CustomFile::where('status', 'Unpaid')->sum('fees'),
-        ];
+        $request->validate([
+            'year' => ['nullable', 'integer', 'digits:4', 'min:2000', 'max:2100'],
+        ]);
+
+        // Defaults to the current year
+        $year = (int) $request->input('year', now()->year);
+        $from = Carbon::create($year, 1, 1)->startOfYear();
+        $to   = $from->copy()->endOfYear();
 
         if ($request->ajax()) {
+            $unpaid = CustomFile::query()
+                ->select('agent_id')
+                ->selectRaw("SUM(CASE WHEN type = 'IM' THEN 1 ELSE 0 END) AS unpaid_im_count")
+                ->selectRaw("SUM(CASE WHEN type = 'EX' THEN 1 ELSE 0 END) AS unpaid_ex_count")
+                ->selectRaw('COUNT(*) AS total_unpaid_count')
+                ->selectRaw('COALESCE(SUM(fees), 0) AS total_unpaid_amount')
+                ->where('status', 'Unpaid')
+                ->whereBetween('date', [$from, $to])   // <- change to created_at if needed
+                ->groupBy('agent_id');
+
             $query = Agent::query()
+                ->joinSub($unpaid, 'u', 'u.agent_id', '=', 'agents.id')
                 ->select([
                     'agents.id',
                     'agents.name',
-                    DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "IM") as unpaid_im_count'),
-                    DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "EX") as unpaid_ex_count'),
-                    DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") as total_unpaid_count'),
-                    DB::raw('(SELECT SUM(fees) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") as total_unpaid_amount')
-                ])
-                ->whereExists(function ($query) {
-                    $query->select(DB::raw(1))
-                        ->from('custom_files')
-                        ->whereColumn('custom_files.agent_id', 'agents.id')
-                        ->where('status', 'Unpaid');
-                });
+                    'u.unpaid_im_count',
+                    'u.unpaid_ex_count',
+                    'u.total_unpaid_count',
+                    'u.total_unpaid_amount',
+                ]);
 
             return DataTables::of($query)
-                ->filterColumn('name', function($query, $keyword) {
-                    $query->where('agents.name', 'like', "%{$keyword}%");
-                })
-                ->filterColumn('unpaid_im_count', function($query, $keyword) {
-                    $query->whereRaw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "IM") like ?', ["%{$keyword}%"]);
-                })
-                ->filterColumn('unpaid_ex_count', function($query, $keyword) {
-                    $query->whereRaw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "EX") like ?', ["%{$keyword}%"]);
-                })
-                ->filterColumn('total_unpaid_count', function($query, $keyword) {
-                    $query->whereRaw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") like ?', ["%{$keyword}%"]);
-                })
-                ->filterColumn('total_unpaid_amount', function($query, $keyword) {
-                    $query->whereRaw('(SELECT SUM(fees) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid") like ?', ["%{$keyword}%"]);
-                })
+                ->filterColumn('name', fn ($q, $keyword) => $q->where('agents.name', 'like', "%{$keyword}%"))
                 ->addIndexColumn()
-                ->editColumn('total_unpaid_amount', function($row) {
-                    return '৳' . number_format($row->total_unpaid_amount ?? 0, 2);
-                })
-                ->editColumn('unpaid_im_count', function($row) {
-                    return $row->unpaid_im_count ?? 0;
-                })
-                ->editColumn('unpaid_ex_count', function($row) {
-                    return $row->unpaid_ex_count ?? 0;
-                })
-                ->editColumn('total_unpaid_count', function($row) {
-                    return $row->total_unpaid_count ?? 0;
-                })
+                ->editColumn('total_unpaid_amount', fn ($row) => '৳' . number_format($row->total_unpaid_amount, 2))
+                // Stats for the cards, sent along with the table data so they follow the year
+                ->with('statistics', $this->unpaidStatistics($from, $to))
                 ->make(true);
         }
 
-        return view('admin.reports.unpaid', compact('statistics'));
+        // Year dropdown: from the earliest record up to the current year
+        $firstYear = (int) (CustomFile::min('date') ? Carbon::parse(CustomFile::min('date'))->year : now()->year);
+        $years = range(now()->year, min($firstYear, now()->year));
+
+        return view('admin.reports.unpaid', [
+            'statistics' => $this->unpaidStatistics($from, $to),
+            'year'       => $year,
+            'years'      => $years,
+        ]);
+    }
+
+    private function unpaidStatistics(Carbon $from, Carbon $to): array
+    {
+        $stats = CustomFile::where('status', 'Unpaid')
+            ->whereBetween('date', [$from, $to])       // <- change to created_at if needed
+            ->selectRaw('COUNT(*) AS total_unpaid')
+            ->selectRaw("COALESCE(SUM(CASE WHEN type = 'IM' THEN 1 ELSE 0 END), 0) AS total_unpaid_im")
+            ->selectRaw("COALESCE(SUM(CASE WHEN type = 'EX' THEN 1 ELSE 0 END), 0) AS total_unpaid_ex")
+            ->selectRaw('COALESCE(SUM(fees), 0) AS total_due')
+            ->first();
+
+        return $stats->toArray();
     }
 
 

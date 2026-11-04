@@ -145,25 +145,6 @@ class CustomFileController extends Controller
 
 
 
-    // public function index()
-    // {
-    //     // Retrieve all CustomFile records from the database and order by status
-    //     // and then by created_at in descending order
-    //     $customFiles = CustomFile::orderBy('status', 'desc')
-    //         ->get();
-
-    //     //If auth user have checker or payunpay role then redirect him to custom file page
-    //     if (auth()->user()->hasRole('payunpay')|| auth()->user()->hasRole('checker')) {
-    //         $customFiles = CustomFile::where('status', 'Unpaid')
-    //         ->get();
-    //     }
-
-    //     // Return a view with the list of CustomFiles
-    //     return view('admin.customfiles.index', compact('customFiles'));
-    // }
-
-
-
     /**
      * Show the form for creating a new resource.
      */

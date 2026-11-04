@@ -433,7 +433,23 @@
 
                         topStart: {
                             buttons: [
-                                'print'
+                                {
+                                    extend: 'print',
+                                    title: 'Daily Paid Files Report',
+                                    action: printAllAction,
+                                    customize: function (win) {
+                                        $(win.document).find('link[rel="stylesheet"], style').remove();
+                                        $(win.document.head).append(`
+                                            <style>
+                                                body { font-family: Arial, sans-serif; font-size: 12px; color: #000; background: #fff; }
+                                                h1 { font-size: 18px; text-align: center; }
+                                                table { width: 100%; border-collapse: collapse; }
+                                                th, td { border: 1px solid #000; padding: 6px 8px; color: #000; background: #fff; text-align: left; }
+                                                th { background: #eee; }
+                                            </style>
+                                        `);
+                                    }
+                                }
                             ]
                         },
 
@@ -927,6 +943,37 @@
 
                 return wrap;
             });
+
+
+
+
+            function printAllAction(e, dt, button, config) {
+                const self = this;
+                const oldStart = dt.settings()[0]._iDisplayStart;
+
+                // 1. On the next AJAX request, ask the server for ALL rows
+                dt.one('preXhr', function (e, s, data) {
+                    data.start = 0;
+                    data.length = 2147483647;
+
+                    // 2. When those rows arrive, run the normal print action
+                    //    and cancel the on-screen redraw
+                    dt.one('preDraw', function (e, settings) {
+                        DataTable.ext.buttons.print.action.call(self, e, dt, button, config);
+
+                        // 3. Restore the original page afterwards
+                        dt.one('preXhr', function (e, s, data) {
+                            settings._iDisplayStart = oldStart;
+                            data.start = oldStart;
+                        });
+
+                        setTimeout(dt.ajax.reload, 0);
+                        return false; // don't draw the full list in the table
+                    });
+                });
+
+                dt.ajax.reload();
+            }
 
         </script>
 

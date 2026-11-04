@@ -102,22 +102,57 @@
                     }
                 });
 
-                // Initialize DataTable
                 $('#paidFilesTable').DataTable({
                     processing: true,
                     serverSide: true,
                     layout: {
                         topStart: {
-                            buttons: ['print']
+                            buttons: [
+                                {
+                                    extend: 'print',
+                                    title: 'Daily Paid Files Report',
+                                    exportOptions: {
+                                        columns: ':visible'
+                                    },
+                                    customize: function (win) {
+                                        // remove the app's stylesheets (dark theme, hidden-on-print rules, etc.)
+                                        $(win.document).find('link[rel="stylesheet"], style').remove();
+
+                                        // add simple, safe print styles
+                                        $(win.document.head).append(`
+                                            <style>
+                                                body {
+                                                    font-family: Arial, sans-serif;
+                                                    font-size: 12px;
+                                                    color: #000;
+                                                    background: #fff;
+                                                }
+                                                h1 { font-size: 18px; text-align: center; }
+                                                table {
+                                                    width: 100%;
+                                                    border-collapse: collapse;
+                                                }
+                                                th, td {
+                                                    border: 1px solid #000;
+                                                    padding: 6px 8px;
+                                                    color: #000;
+                                                    background: #fff;
+                                                    text-align: left;
+                                                }
+                                                th { background: #eee; }
+                                            </style>
+                                        `);
+                                    }
+                                }
+                            ]
                         },
-                        // topStart: 'info',
                         bottom: 'paging',
                         bottomStart: 'info',
-                        bottomEnd: null,
+                        bottomEnd: null
                     },
                     ajax: {
                         url: "{{ route('reports.paid') }}",
-                        data: function(d) {
+                        data: function (d) {
                             d.date = $('#date').val();
                         }
                     },

@@ -168,14 +168,13 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th class="text-left">Agent Name In Customs File</th>
                                             <th class="text-left">B/E No</th>
                                             <th class="text-left">Date</th>
                                             <th class="text-left">Fees</th>
                                             <th class="text-left">Type</th>
                                             <th class="text-left">Status</th>
                                             @unlessrole('agent')
-                                            <th class="text-right">Action</th>
+                                            <th class="text-right print:hidden">Action</th>
                                             @endunlessrole
                                         </tr>
                                     </thead>
@@ -184,7 +183,6 @@
                                     @foreach ($agent->custom_files as $file)
                                         <tr class="{{ $file->status == 'Unpaid' ? 'bg-red-50' : '' }}">
                                             <th>{{ $loop->index+1 }}</th>
-                                            <td>{{$file->name}}</td>
                                             <td>{{$file->be_number}}</td>
                                             <td>{{$file->date ? \Carbon\Carbon::parse($file->date)->format('d-M-Y') : 'N/A'}}</td>
                                             <td>৳{{number_format($file->fees, 2)}}</td>
@@ -196,7 +194,7 @@
                                                 </button>
                                             </td>
                                             @unlessrole('agent')
-                                            <td class="flex justify-end items-center gap-2">
+                                            <td class="flex justify-end items-center gap-2 print:hidden">
                                                 @role('admin')
                                                 <a class="text-seagreen/70 hover:text-seagreen  hover:scale-105 transition duration-150 ease-in-out text-2xl" href="{{route('customfiles.edit', $file->id)}}">
                                                     <span class="menu-icon"><i class="mdi mdi-table-edit"></i></span>
@@ -507,7 +505,7 @@
                     {
                         extend: 'print',
                         text: '<i class="mdi mdi-printer"></i> Print',
-                        title: 'Custom Files - {{ $agent->name }}',
+                        title: 'Custom Files - {{ $agent->name }} - {{ $unpaidCount }} Unpaid, Toral ৳{{ number_format($unpaidTotal, 2) }}',
                         exportOptions: {
                             columns: ':visible'
                         }

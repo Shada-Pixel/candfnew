@@ -437,14 +437,13 @@
                             ]
                         },
 
-                        bottom: 'paging',
+                        // bottom: 'paging',
 
-                        bottomStart: 'info',
+                        // bottomStart: 'info',
+                        bottomStart: 'paging',
 
-                        bottomEnd: null
-
+                        bottomEnd: 'gotoPage'
                     }
-
                 });
 
 
@@ -879,6 +878,55 @@
                 });
 
             }
+
+
+            DataTable.feature.register('gotoPage', function (settings, opts) {
+                const api = new DataTable.Api(settings);
+
+                const wrap = document.createElement('div');
+                wrap.className = 'd-flex align-items-center gap-2 me-3';
+
+                const label = document.createElement('span');
+                label.textContent = 'Go to page:';
+
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.min = 1;
+                input.className = 'form-control form-control-sm';
+                input.style.width = '80px';
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = 'Go';
+                btn.className = 'btn btn-sm btn-primary';
+
+                wrap.append(label, input, btn);
+
+                function go() {
+                    let page = parseInt(input.value, 10);
+                    if (isNaN(page)) return;
+
+                    const totalPages = api.page.info().pages;
+                    page = Math.max(1, Math.min(page, totalPages));
+                    input.value = page;
+
+                    api.page(page - 1).draw('page'); // 0-indexed
+                }
+
+                btn.addEventListener('click', go);
+                input.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') go();
+                });
+
+                // keep max/placeholder in sync after every AJAX draw
+                api.on('draw', function () {
+                    const info = api.page.info();
+                    input.max = info.pages;
+                    input.placeholder = (info.page + 1) + ' / ' + info.pages;
+                });
+
+                return wrap;
+            });
 
         </script>
 

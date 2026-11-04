@@ -279,6 +279,11 @@
                         </a>
                     </li>
                     <li class="menu-item">
+                        <a href="{{route('reports.unpaid')}}" class="menu-link">
+                            <span class="menu-text">Unpaid Files Report 2025</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
                         <a href="{{route('reports.paid')}}" class="menu-link">
                             <span class="menu-text">Daily Paid Report</span>
                         </a>

@@ -893,7 +893,7 @@
                 input.type = 'number';
                 input.min = 1;
                 input.className = 'form-control form-control-sm';
-                input.style.width = '80px';
+                input.style.width = '120px';
 
                 const btn = document.createElement('button');
                 btn.type = 'button';

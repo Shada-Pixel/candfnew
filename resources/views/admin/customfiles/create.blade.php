@@ -1,6 +1,6 @@
 <x-app-layout>
     {{-- Title --}}
-    <x-slot name="title">Due CF {{ date('Y') }}</x-slot>
+    <x-slot name="title">Due CF {{ date('Y') -1 }}</x-slot>
 
 
     {{-- Header Style --}}
@@ -32,7 +32,7 @@
             <div class="p-6">
                 <div class="flex justify-between items-center mb-4">
 
-                    <h2 class="text-xl">Due CF {{ date('Y') }}</h2>
+                    <h2 class="text-xl">Due CF {{ date('Y') -1 }}</h2>
                     <p class="flex justify-center items-center mb-4 gap-4 font-bold">
                         <span>Total Unpaid File: {{ $totalUnpaidFiles }}</span>
                     <span>Total Paid File: {{ $totalPaidFiles }}</span>
@@ -72,7 +72,7 @@
 
                         <div>
                             <label for="year" class="block mb-2">Year</label>
-                            <input type="text" class="form-input" id="year" name="year" value="{{ date('Y') }}" >
+                            <input type="text" class="form-input" id="year" name="year" value="{{ date('Y') -1 }}" >
                         </div> <!-- end -->
 
                         <div class="self-end flex justify-end">

@@ -169,30 +169,30 @@ class CustomFileController extends Controller
      */
     public function create()
     {
-        $customFiles = CustomFile::where('year', date('Y'))
+        $customFiles = CustomFile::where('year', date('Y') -1)
             ->orderBy('status', 'desc')
             ->where('status', 'Unpaid')
             ->get();
 
         //If auth user have checker or payunpay role then redirect him to custom file page
         if (auth()->user()->hasRole('payunpay')|| auth()->user()->hasRole('checker')) {
-            $customFiles = CustomFile::where('year', date('Y'))
+            $customFiles = CustomFile::where('year', date('Y') -1)
             ->where('status', 'Unpaid')
             ->get();
         }
-        $totalUnpaidFiles = CustomFile::where('year', date('Y'))
+        $totalUnpaidFiles = CustomFile::where('year', date('Y') -1)
         ->where('status', 'Unpaid')
         ->count();
-        $totalPaidFiles = CustomFile::where('year', date('Y'))
+        $totalPaidFiles = CustomFile::where('year', date('Y') -1)
         ->where('status', 'Paid')
         ->count();
-        $totalUnpaidAmount = CustomFile::where('year', date('Y'))
+        $totalUnpaidAmount = CustomFile::where('year', date('Y') -1)
         ->where('status', 'Unpaid')
         ->sum('fees');
-        $totalPaidAmount = CustomFile::where('year', date('Y'))
+        $totalPaidAmount = CustomFile::where('year', date('Y') -1)
         ->where('status', 'Paid')
         ->sum('fees');
-        $totalFiles = CustomFile::where('year', date('Y'))
+        $totalFiles = CustomFile::where('year', date('Y') -1)
         ->count();
         // Return a view to display the form for creating a new CustomFile
         return view('admin.customfiles.create', compact(

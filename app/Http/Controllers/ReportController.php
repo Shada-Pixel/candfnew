@@ -204,6 +204,70 @@ class ReportController extends Controller
     }
 
 
+    // Unpaid Customs File Report OnlY last year
+    public function unpaid_report_last_year(Request $request)
+    {
+        // Get overall statistics
+        $statistics = [
+            'total_unpaid' => CustomFile::where('status', 'Unpaid')->where('date', date('Y') -1)->count(),
+            'total_unpaid_im' => CustomFile::where('status', 'Unpaid')->where('type', 'IM')->where('date', date('Y') -1)->count(),
+            'total_unpaid_ex' => CustomFile::where('status', 'Unpaid')->where('type', 'EX')->where('date', date('Y') -1)->count(),
+            'total_due' => CustomFile::where('status', 'Unpaid')->where('date', date('Y') -1)->sum('fees'),
+        ];
+
+        if ($request->ajax()) {
+            $query = Agent::query()
+                ->select([
+                    'agents.id',
+                    'agents.name',
+                    DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "IM" AND date = ' . (date('Y') - 1) . ') as unpaid_im_count'),
+                    DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "EX" AND date = ' . (date('Y') - 1) . ') as unpaid_ex_count'),
+                    DB::raw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND date = ' . (date('Y') - 1) . ') as total_unpaid_count'),
+                    DB::raw('(SELECT SUM(fees) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND date = ' . (date('Y') - 1) . ') as total_unpaid_amount')
+                ])
+                ->whereExists(function ($query) {
+                    $query->select(DB::raw(1))
+                        ->from('custom_files')
+                        ->whereColumn('custom_files.agent_id', 'agents.id')
+                        ->where('status', 'Unpaid');
+                });
+
+            return DataTables::of($query)
+                ->filterColumn('name', function($query, $keyword) {
+                    $query->where('agents.name', 'like', "%{$keyword}%");
+                })
+                ->filterColumn('unpaid_im_count', function($query, $keyword) {
+                    $query->whereRaw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "IM" AND date = ' . (date('Y') - 1) . ') like ?', ["%{$keyword}%"]);
+                })
+                ->filterColumn('unpaid_ex_count', function($query, $keyword) {
+                    $query->whereRaw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND type = "EX" AND date = ' . (date('Y') - 1) . ') like ?', ["%{$keyword}%"]);
+                })
+                ->filterColumn('total_unpaid_count', function($query, $keyword) {
+                    $query->whereRaw('(SELECT COUNT(*) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND date = ' . (date('Y') - 1) . ') like ?', ["%{$keyword}%"]);
+                })
+                ->filterColumn('total_unpaid_amount', function($query, $keyword) {
+                    $query->whereRaw('(SELECT SUM(fees) FROM custom_files WHERE custom_files.agent_id = agents.id AND status = "Unpaid" AND date = ' . (date('Y') - 1) . ') like ?', ["%{$keyword}%"]);
+                })
+                ->addIndexColumn()
+                ->editColumn('total_unpaid_amount', function($row) {
+                    return '৳' . number_format($row->total_unpaid_amount ?? 0, 2);
+                })
+                ->editColumn('unpaid_im_count', function($row) {
+                    return $row->unpaid_im_count ?? 0;
+                })
+                ->editColumn('unpaid_ex_count', function($row) {
+                    return $row->unpaid_ex_count ?? 0;
+                })
+                ->editColumn('total_unpaid_count', function($row) {
+                    return $row->total_unpaid_count ?? 0;
+                })
+                ->make(true);
+        }
+
+        return view('admin.reports.unpaid', compact('statistics'));
+    }
+
+
     // Daily Paid Customs File Report
     public function paid_report(Request $request)
     {

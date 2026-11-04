@@ -88,17 +88,37 @@ class FileDataController extends Controller
     public function store(Request $request)
     {
         // Validate the request: `be_number` must be unique among rows whose created_at is in the current calendar year
-        $request->validate([
+        $validated = $request->validate([
             'be_number' => [
                 'nullable',
-                Rule::unique('file_datas', 'be_number')->where(function ($query) {
-                    $query->whereYear('created_at', Carbon::now()->year);
-                }),
+                'digits_between:1,999999', // digits only; adjust the max to your real length
+                Rule::unique('file_datas', 'be_number')->where(
+                    fn ($q) => $q->whereBetween('created_at', [
+                        now()->startOfYear(),
+                        now()->endOfYear(),
+                    ])
+                    // ->whereNull('deleted_at') // only if the model uses SoftDeletes
+                ),
             ],
-            'manifest_no' => 'required|string',
-            'page' => 'nullable|integer',
-            'agentain' => 'nullable|string',
+            'manifest_no' => ['required', 'string', 'max:50'],
+            'page'        => ['nullable', 'integer', 'min:1'],
+            'agentain'    => ['nullable', 'string', 'max:50'],
+        ], [
+            'be_number.digits_between' => 'The BE number must contain digits only.',
+            'be_number.unique'         => 'This BE number already exists for this year.',
         ]);
+
+        // $request->validate([
+        //     'be_number' => [
+        //         'nullable',
+        //         Rule::unique('file_datas', 'be_number')->where(function ($query) {
+        //             $query->whereYear('created_at', Carbon::now()->year);
+        //         }),
+        //     ],
+        //     'manifest_no' => 'required|string',
+        //     'page' => 'nullable|integer',
+        //     'agentain' => 'nullable|string',
+        // ]);
 
         // Retrieve the latest File_data record
         $latest_file_data = File_data::latest()->first();

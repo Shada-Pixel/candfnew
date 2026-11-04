@@ -99,8 +99,9 @@
 
                             <div class="">
                                 <label for="be_number" class="block mb-2">B/E Number</label>
-                                <input type="text" class="form-input" id="be_number" name="be_number" placeholder="B/E Number" required>
+                                <input type="text" class="form-input onlynumber" id="be_number" name="be_number" placeholder="B/E Number" required>
                             </div> <!-- end -->
+
 
                             <div class="">
                                 <label for="be_date" class="block mb-2 dateText">B/E Date</label>

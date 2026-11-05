@@ -455,7 +455,7 @@
 
                         // bottom: 'paging',
 
-                        // bottomStart: 'info',
+                        bottom: 'info',
                         bottomStart: 'paging',
 
                         bottomEnd: 'gotoPage'

@@ -105,6 +105,7 @@
                 $('#paidFilesTable').DataTable({
                     processing: true,
                     serverSide: true,
+                    paging: false,
                     layout: {
                         topStart: {
                             buttons: [

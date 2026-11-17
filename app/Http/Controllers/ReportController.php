@@ -220,18 +220,16 @@ class ReportController extends Controller
         $to   = $from->copy()->endOfYear();
 
         if ($request->ajax()) {
+            // Subquery: NO get(), NO orderBy
             $unpaid = CustomFile::query()
-                ->join('agents', 'agents.id', '=', 'custom_files.agent_id')
-                ->select('custom_files.agent_id', 'agents.name as agent_name')
-                ->selectRaw("SUM(CASE WHEN custom_files.type = 'IM' THEN 1 ELSE 0 END) AS unpaid_im_count")
-                ->selectRaw("SUM(CASE WHEN custom_files.type = 'EX' THEN 1 ELSE 0 END) AS unpaid_ex_count")
+                ->select('agent_id')
+                ->selectRaw("SUM(CASE WHEN type = 'IM' THEN 1 ELSE 0 END) AS unpaid_im_count")
+                ->selectRaw("SUM(CASE WHEN type = 'EX' THEN 1 ELSE 0 END) AS unpaid_ex_count")
                 ->selectRaw('COUNT(*) AS total_unpaid_count')
-                ->selectRaw('COALESCE(SUM(custom_files.fees), 0) AS total_unpaid_amount')
-                ->where('custom_files.status', 'Unpaid')
-                ->whereBetween('custom_files.date', [$from, $to])   // <- change to created_at if needed
-                ->groupBy('custom_files.agent_id', 'agents.name')
-                ->orderBy('agents.name', 'asc')
-                ->get();
+                ->selectRaw('COALESCE(SUM(fees), 0) AS total_unpaid_amount')
+                ->where('status', 'Unpaid')
+                ->whereBetween('date', [$from, $to])
+                ->groupBy('agent_id');
 
             $query = Agent::query()
                 ->joinSub($unpaid, 'u', 'u.agent_id', '=', 'agents.id')
@@ -242,13 +240,14 @@ class ReportController extends Controller
                     'u.unpaid_ex_count',
                     'u.total_unpaid_count',
                     'u.total_unpaid_amount',
-                ]);
+                ])
+                ->orderBy('agents.name', 'asc');   // A-Z sorting goes here
 
             return DataTables::of($query)
                 ->filterColumn('name', fn ($q, $keyword) => $q->where('agents.name', 'like', "%{$keyword}%"))
+                ->orderColumn('name', 'agents.name $1')   // keeps clicking the "Name" header working
                 ->addIndexColumn()
                 ->editColumn('total_unpaid_amount', fn ($row) => '৳' . number_format($row->total_unpaid_amount, 2))
-                // Stats for the cards, sent along with the table data so they follow the year
                 ->with('statistics', $this->unpaidStatistics($from, $to))
                 ->make(true);
         }

@@ -221,14 +221,17 @@ class ReportController extends Controller
 
         if ($request->ajax()) {
             $unpaid = CustomFile::query()
-                ->select('agent_id')
-                ->selectRaw("SUM(CASE WHEN type = 'IM' THEN 1 ELSE 0 END) AS unpaid_im_count")
-                ->selectRaw("SUM(CASE WHEN type = 'EX' THEN 1 ELSE 0 END) AS unpaid_ex_count")
+                ->join('agents', 'agents.id', '=', 'custom_files.agent_id')
+                ->select('custom_files.agent_id', 'agents.name as agent_name')
+                ->selectRaw("SUM(CASE WHEN custom_files.type = 'IM' THEN 1 ELSE 0 END) AS unpaid_im_count")
+                ->selectRaw("SUM(CASE WHEN custom_files.type = 'EX' THEN 1 ELSE 0 END) AS unpaid_ex_count")
                 ->selectRaw('COUNT(*) AS total_unpaid_count')
-                ->selectRaw('COALESCE(SUM(fees), 0) AS total_unpaid_amount')
-                ->where('status', 'Unpaid')
-                ->whereBetween('date', [$from, $to])   // <- change to created_at if needed
-                ->groupBy('agent_id');
+                ->selectRaw('COALESCE(SUM(custom_files.fees), 0) AS total_unpaid_amount')
+                ->where('custom_files.status', 'Unpaid')
+                ->whereBetween('custom_files.date', [$from, $to])   // <- change to created_at if needed
+                ->groupBy('custom_files.agent_id', 'agents.name')
+                ->orderBy('agents.name', 'asc')
+                ->get();
 
             $query = Agent::query()
                 ->joinSub($unpaid, 'u', 'u.agent_id', '=', 'agents.id')

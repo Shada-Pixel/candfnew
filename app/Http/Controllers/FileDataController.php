@@ -94,9 +94,6 @@ class FileDataController extends Controller
             'page'            => ['nullable', 'integer', 'min:1'],
             'agentain'        => ['nullable', 'string', 'max:50'],
             'impexp'          => ['nullable', 'string', 'max:255'],
-            'be_date'         => ['nullable', 'date'],
-            'lodgement_date'  => ['nullable', 'date'],
-            'manifest_date'   => ['nullable', 'date'],
         ], [
             'be_number.regex'  => 'The BE number must contain digits only.',
             'be_number.unique' => 'This BE number already exists for this year.',

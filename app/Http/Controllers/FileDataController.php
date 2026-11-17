@@ -9,236 +9,163 @@ use App\Helpers\LogHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use App\Http\Requests\UpdateFile_dataRequest;
 
 class FileDataController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    private const LODGEMENT_MAX = 94020;
+
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $year = Carbon::now()->year; // Get the current year
-        $file_data = File_data::latest()->with('agent')->first(); // Retrieve the latest File_data with agent relationship
-
-        // Determine the next lodgement number
-        $currentYear = Carbon::now()->year;
-        $file_data_year = $file_data ? $file_data->created_at->year : null;
-
-        if ($file_data && $file_data_year == $currentYear) {
-            $next_lodgement_no = ($file_data->lodgement_no == '94020')
-            ? 1
-            : ($file_data->lodgement_no ?? 0) + 1;
-        } else {
-            $next_lodgement_no = 1; // Reset to 1 at the start of a new year
-        }
-
-        // Get the last agent name and ID if available
-        $lastagent = $file_data->agent->name ?? null;
-        $lastagent_id = $file_data->agent->id ?? null;
-
-        $agents = Agent::select('id', 'name', 'ain_no')->orderBy('name')->get(); // Retrieve only id, name, and ain_number of all agents, ordered by name
-        // Return the view for creating a new File_data record
-        return view('admin.file_datas.create', compact('next_lodgement_no', 'file_data', 'lastagent', 'lastagent_id', 'agents', 'year'));
+        return view('admin.file_datas.create', $this->formData());
     }
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function createin()
     {
-        $year = Carbon::now()->year; // Get the current year
-        $file_data = File_data::latest()->with('agent')->first(); // Retrieve the latest File_data with agent relationship
-
-        // Determine the next lodgement number
-        $currentYear = Carbon::now()->year;
-        $file_data_year = $file_data ? $file_data->created_at->year : null;
-
-        if ($file_data && $file_data_year == $currentYear) {
-            $next_lodgement_no = ($file_data->lodgement_no == '94020')
-            ? 1
-            : ($file_data->lodgement_no ?? 0) + 1;
-        } else {
-            $next_lodgement_no = 1; // Reset to 1 at the start of a new year
-        }
-
-        // Get the last agent name and ID if available
-        $lastagent = $file_data->agent->name ?? null;
-        $lastagent_id = $file_data->agent->id ?? null;
-
-        $agents = Agent::select('id', 'name', 'ain_no')->orderBy('name')->get(); // Retrieve only id, name, and ain_number of all agents, ordered by name
-        // Return the view for creating a new File_data record
-        return view('admin.file_datas.createin', compact('next_lodgement_no', 'file_data', 'lastagent', 'lastagent_id', 'agents', 'year'));
+        return view('admin.file_datas.createin', $this->formData());
     }
 
+    /**
+     * Shared data for create / createin (was duplicated).
+     */
+    private function formData(): array
+    {
+        $year = Carbon::now()->year;
+        $file_data = File_data::with('agent')->latest('id')->first();
+
+        $next_lodgement_no = $this->nextLodgementNo($file_data);
+
+        $lastagent = $file_data?->agent?->name;
+        $lastagent_id = $file_data?->agent?->id;
+
+        $agents = Agent::select('id', 'name', 'ain_no')->orderBy('name')->get();
+
+        return compact('next_lodgement_no', 'file_data', 'lastagent', 'lastagent_id', 'agents', 'year');
+    }
 
     /**
-     * Store a newly created resource in storage.
+     * Single source of truth for the lodgement number.
+     * Resets to 1 on a new year or after LODGEMENT_MAX.
+     * FIX: store() previously ignored the year reset that create() applied.
      */
+    private function nextLodgementNo(?File_data $latest): int
+    {
+        if (!$latest || $latest->created_at->year !== Carbon::now()->year) {
+            return 1;
+        }
+
+        $current = (int) $latest->lodgement_no;
+
+        return $current >= self::LODGEMENT_MAX ? 1 : $current + 1;
+    }
+
+    private function calculateItems($pages): int
+    {
+        $pages = (int) $pages;
+
+        return $pages > 1 ? (int) ceil(($pages - 1) / 3 + 1) : 1;
+    }
+
     public function store(Request $request)
     {
-        // Validate the request: `be_number` must be unique among rows whose created_at is in the current calendar year
-        $validated = $request->validate([
+        $request->validate([
             'be_number' => [
                 'nullable',
-                'digits_between:1,999999', // digits only; adjust the max to your real length
+                'regex:/^\d+$/',   // FIX: digits_between:1,999999 was a length range, not a sensible rule
+                'max:20',
                 Rule::unique('file_datas', 'be_number')->where(
                     fn ($q) => $q->whereBetween('created_at', [
                         now()->startOfYear(),
                         now()->endOfYear(),
                     ])
-                    // ->whereNull('deleted_at') // only if the model uses SoftDeletes
                 ),
             ],
-            'manifest_no' => ['required', 'string', 'max:50'],
-            'page'        => ['nullable', 'integer', 'min:1'],
-            'agentain'    => ['nullable', 'string', 'max:50'],
+            'manifest_no'     => ['required', 'string', 'max:50'],
+            'page'            => ['nullable', 'integer', 'min:1'],
+            'agentain'        => ['nullable', 'string', 'max:50'],
+            'impexp'          => ['nullable', 'string', 'max:255'],
+            'be_date'         => ['nullable', 'date'],
+            'lodgement_date'  => ['nullable', 'date'],
+            'manifest_date'   => ['nullable', 'date'],
         ], [
-            'be_number.digits_between' => 'The BE number must contain digits only.',
-            'be_number.unique'         => 'This BE number already exists for this year.',
+            'be_number.regex'  => 'The BE number must contain digits only.',
+            'be_number.unique' => 'This BE number already exists for this year.',
         ]);
 
-        // $request->validate([
-        //     'be_number' => [
-        //         'nullable',
-        //         Rule::unique('file_datas', 'be_number')->where(function ($query) {
-        //             $query->whereYear('created_at', Carbon::now()->year);
-        //         }),
-        //     ],
-        //     'manifest_no' => 'required|string',
-        //     'page' => 'nullable|integer',
-        //     'agentain' => 'nullable|string',
-        // ]);
+        $agent_id = $request->filled('agentain')
+            ? Agent::where('name', $request->agentain)->value('id')
+            : null;
 
-        // Retrieve the latest File_data record
-        $latest_file_data = File_data::latest()->first();
-        // Determine the next lodgement number
-        if ($latest_file_data) {
-            if ($latest_file_data->lodgement_no == '94020') {
-                $next_lodgement_no = 1;
-            } else {
-                $next_lodgement_no = $latest_file_data->lodgement_no + 1;
+        $ie_data_id = $request->filled('impexp')
+            ? Ie_data::where('name', $request->impexp)->value('id')
+            : null;
+
+        // FIX: lock + transaction so two simultaneous requests can't get the same lodgement number
+        $file_data = DB::transaction(function () use ($request, $agent_id, $ie_data_id) {
+            $latest = File_data::latest('id')->lockForUpdate()->first();
+
+            $file_data = new File_data();
+            $file_data->be_date         = $request->be_date;
+            $file_data->lodgement_date  = $request->lodgement_date;
+            $file_data->manifest_date   = $request->manifest_date;
+            $file_data->lodgement_no    = $this->nextLodgementNo($latest);
+            $file_data->manifest_no     = $request->manifest_no;
+
+            if ($request->filled('be_number')) {
+                $file_data->be_number = $request->be_number;
             }
-        } else {
-            $next_lodgement_no = 1;
-        }
+            if ($request->filled('page')) {
+                $file_data->page = (int) $request->page;
+                $file_data->no_of_items = $this->calculateItems($request->page);
+            }
+            if ($agent_id) {
+                $file_data->agent_id = $agent_id;
+            }
+            if ($ie_data_id) {
+                $file_data->ie_data_id = $ie_data_id;
+            }
 
-        // Check if the manifest_no already exists for the current year
-        $currentYear = Carbon::now()->year;
-        $isDuplicateManifest = File_data::where('manifest_no', $request->manifest_no)
-            ->whereYear('created_at', $currentYear)
-            ->exists();
-        $agent_id = null;
-        $ie_data_id = null;
+            $file_data->status = 'Received';
+            $file_data->reciver_id = Auth::id();
+            $file_data->save();
 
-        if ($request->agentain != null) {
-            $agent_id = Agent::where('name', $request->agentain)->value('id');
-        }
+            return $file_data;
+        });
 
-        if ($request->impexp != null) {
-            $ie_data_id = Ie_data::where('name', $request->impexp)->value('id');
-        }
-
-        $file_data = new File_data();
-
-        $file_data->be_date = $request->be_date; // Automatically handled by the model
-        $file_data->lodgement_date = $request->lodgement_date; // Automatically handled by the model
-        $file_data->manifest_date = $request->manifest_date; // Automatically handled by the model
-
-        // Lodgement No
-        $file_data->lodgement_no = $next_lodgement_no;
-
-        // Manifest No
-        if ($request->manifest_no) {
-            $file_data->manifest_no = $request->manifest_no;
-        }
-        if ($request->be_number) {
-            $file_data->be_number = $request->be_number;
-        }
-        if ($request->page) {
-            $pages = $request->page;
-            $numberofPages = ($pages > 1) ? ceil((($pages - 1) / 3 + 1)) : 1;
-            $file_data->page = $pages;
-            $file_data->no_of_items = $numberofPages;
-        }
-
-        // Assign agent_id if exist
-        if ($agent_id) {
-            $file_data->agent_id = $agent_id;
-        }
-        // Assign ie_data_id if exist
-        if ($ie_data_id) {
-            $file_data->ie_data_id = $ie_data_id;
-        }
-
-        $file_data->status = 'Received';
-        $file_data->reciver_id = Auth::user()->id;
-        $file_data->save();
-
-        if (Auth::user()->hasRole('extra') && $request->be_number) {
-
-
-            // In your main method
+        if (Auth::user()->hasRole('extra') && $request->filled('be_number')) {
             if (!$file_data->sms_sent) {
-                $smsSent = $this->sendRegistrationSms($agent_id, $ie_data_id, $request);
+                $smsSent = $this->sendRegistrationSms($file_data);
 
-                // Core work always happens, regardless of SMS result
                 $file_data->status = 'Printed';
-                $file_data->sms_sent = $smsSent; // true only if SMS actually succeeded
+                $file_data->sms_sent = $smsSent;
                 $file_data->save();
             }
 
-            // Email sending logic
-            try {
-                if ($agent_email) {
-                    Mail::send('emails.file_notification', [
-                        'be_number' => $request->be_number,
-                        'be_date' => $request->be_date,
-                        'ie_name' => $ie_name,
-                        'manifest_no' => $request->manifest_no,
-                        'manifest_date' => $request->manifest_date,
-                        'agent_name' => $agent->name
-                    ], function($message) use ($agent_email, $agent) {
-                        $message->to($agent_email, $agent->name)
-                            ->subject('File Registration Notification - Benapole C&F Agents Association');
-                    });
+            // FIX: $agent, $agent_email, $ie_name were undefined (fatal error)
+            $this->sendRegistrationEmail($file_data);
 
-                    LogHelper::log(
-                        action: "Email Sent",
-                        description: "Email notification sent to agent {$agent->name} at {$agent_email}",
-                        log_type: 'email'
-                    );
-                }
-            } catch (\Exception $e) {
-                LogHelper::log(
-                    action: "Email Failed",
-                    description: "Failed to send email to {$agent_email}: " . $e->getMessage(),
-                    log_type: 'error'
-                );
-            }
-
-            return redirect()->route('file_datas.show', $file_data->id)->with(['status' => 200, 'message' => 'File Received and Printed!']);
+            return redirect()->route('file_datas.show', $file_data->id)
+                ->with(['status' => 200, 'message' => 'File Received and Printed!']);
         }
 
-        return redirect()->route('file_datas.createin')->with(['status' => 200, 'message' => 'File Received!']);
+        return redirect()->route('file_datas.createin')
+            ->with(['status' => 200, 'message' => 'File Received!']);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(File_data $file_data)
     {
-        if (Auth::user()->hasRole('extra')) {
+        // FIX: previously overwrote ANY status (e.g. "Delivered") with "Printed" on every view
+        if (Auth::user()->hasRole('extra') && $file_data->status === 'Received') {
             $file_data->status = 'Printed';
             $file_data->save();
         }
@@ -246,178 +173,153 @@ class FileDataController extends Controller
         return view('admin.file_datas.show', compact('file_data'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(File_data $file_data)
     {
+        $year = Carbon::now()->year;
+        $file_data->load(['ie_data', 'agent']); // FIX: removed redundant re-query
 
-        $now = Carbon::now();
-        $year = $now->year;
-        $file_data = File_data::where('id', $file_data->id)->with('ie_data')->with('agent')->first();
-        $file_data->load(['ie_data', 'agent']);
-        return view('admin.file_datas.edit', compact('file_data','year'));
+        return view('admin.file_datas.edit', compact('file_data', 'year'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateFile_dataRequest $request, File_data $file_data)
     {
-        if ($request->agentain != null) {
+        // FIX: $agent_id / $ie_data_id were undefined when not supplied; now read from the model
+        if ($request->filled('agentain')) {
             $agent_id = Agent::where('name', $request->agentain)->value('id');
-            $file_data->agent_id = $agent_id;
-        }
-        // Assign ie_data_id if exist, if not create a new one and assign it
-
-        if (!empty($request->impexp)) {
-            $ie_data = Ie_data::firstOrCreate(
-                ['name' => $request->impexp], // Check if an Ie_data with this name exists
-                ['ie' => 'Import'] // If not, create it with the default 'Import' value
-            );
-
-            $file_data->ie_data_id = $ie_data->id; // Assign the ie_data_id to the file_data
-        }
-        // Calculate the number of pages
-        $pages = $request->page;
-        $numberofPages = ($pages > 1) ? ceil((($pages - 1) / 3 + 1)) : 1;
-        $file_data->no_of_items = $numberofPages;
-        $file_data->lodgement_no = $request->lodgement_no;
-        $file_data->manifest_no = $request->manifest_no;
-
-
-        $file_data->be_date = $request->be_date; // Automatically handled by the model
-        $file_data->lodgement_date = $request->lodgement_date; // Automatically handled by the model
-        $file_data->manifest_date = $request->manifest_date; // Automatically handled by the model
-
-
-        $file_data->ie_type = $request->ie_type;
-        $file_data->group = $request->group;
-        $file_data->goods_name = $request->goods_name;
-        $file_data->goods_type = $request->goods_type;
-        $file_data->be_number = $request->be_number;
-        $file_data->page = $request->page;
-
-        $file_data->fees = $request->fees;
-        $file_data->status = 'Delivered';
-        $file_data->delivered_at = Carbon::now();
-        $file_data->save();
-
-        // In your main method
-        if (!$file_data->sms_sent) {
-            $smsSent = $this->sendRegistrationSms($agent_id, $ie_data_id, $request);
-
-            // Core work always happens, regardless of SMS result
-            $file_data->status = 'Delivered';
-            $file_data->sms_sent = $smsSent; // true only if SMS actually succeeded
-            $file_data->save();
-        }
-
-
-        // Email sending logic
-        try {
-            if ($agent_email) {
-                Mail::send('emails.file_notification', [
-                    'be_number' => $file_data->be_number,
-                    'be_date' => $file_data->be_date,
-                    'ie_name' => $ie_name,
-                    'manifest_no' => $file_data->manifest_no,
-                    'manifest_date' => $file_data->manifest_date,
-                    'agent_name' => $agent->name
-                ], function($message) use ($agent_email, $agent) {
-                    $message->to($agent_email, $agent->name)
-                        ->subject('File Registration Notification - Benapole C&F Agents Association');
-                });
-
-                LogHelper::log(
-                    action: "Email Sent",
-                    description: "Email notification sent to agent {$agent->name} at {$agent_email}",
-                    log_type: 'email'
-                );
+            if ($agent_id) {
+                $file_data->agent_id = $agent_id;
             }
-        } catch (\Exception $e) {
-            LogHelper::log(
-                action: "Email Failed",
-                description: "Failed to send email to {$agent_email}: " . $e->getMessage(),
-                log_type: 'error'
-            );
         }
+
+        if ($request->filled('impexp')) {
+            $ie_data = Ie_data::firstOrCreate(
+                ['name' => $request->impexp],
+                ['ie' => 'Import']
+            );
+            $file_data->ie_data_id = $ie_data->id;
+        }
+
+        $file_data->no_of_items    = $this->calculateItems($request->page);
+        $file_data->lodgement_no   = $request->lodgement_no;
+        $file_data->manifest_no    = $request->manifest_no;
+        $file_data->be_date        = $request->be_date;
+        $file_data->lodgement_date = $request->lodgement_date;
+        $file_data->manifest_date  = $request->manifest_date;
+        $file_data->ie_type        = $request->ie_type;
+        $file_data->group          = $request->group;
+        $file_data->goods_name     = $request->goods_name;
+        $file_data->goods_type     = $request->goods_type;
+        $file_data->be_number      = $request->be_number;
+        $file_data->page           = $request->page;
+        $file_data->fees           = $request->fees;
+        $file_data->status         = 'Delivered';
+        $file_data->delivered_at   = Carbon::now();
 
         if (Auth::user()->hasRole('operator')) {
-            // Mark SMS as sent
-            $file_data->deliverer_id = Auth::user()->id;
+            $file_data->deliverer_id = Auth::id(); // FIX: merged into the single save (was a 4th save)
+        }
+
+        $file_data->save();
+
+        if (!$file_data->sms_sent) {
+            $file_data->sms_sent = $this->sendRegistrationSms($file_data);
             $file_data->save();
-            return redirect()->route('dashboard')->with(['status' => 200, 'message' => 'File Operated and Delivered!']);
+        }
+
+        $this->sendRegistrationEmail($file_data);
+
+        if (Auth::user()->hasRole('operator')) {
+            return redirect()->route('dashboard')
+                ->with(['status' => 200, 'message' => 'File Operated and Delivered!']);
         }
 
         return redirect()->route('file_datas.show', $file_data->id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(File_data $file_data)
     {
-        // Check if user has permission to delete files
         if (!Auth::user()->can('delete', $file_data)) {
             return redirect()->back()->with(['status' => 403, 'message' => 'Unauthorized to delete this file.']);
         }
 
         try {
-            // Log the deletion
+            $be_number = $file_data->be_number;
+            $file_data->delete();
+
+            // FIX: log only after the delete actually succeeded
             LogHelper::log(
                 action: "File Data Deleted",
-                description: "File Data with BE number: {$file_data->be_number} was deleted",
+                description: "File Data with BE number: {$be_number} was deleted",
                 log_type: 'delete'
             );
 
-            // Delete the record
-            $file_data->delete();
-
-            return redirect()->route('file_datas.index')->with(['status' => 200, 'message' => 'File deleted successfully!']);
+            // FIX: index() is empty (returns nothing), so redirect to a page that renders
+            return redirect()->route('dashboard')
+                ->with(['status' => 200, 'message' => 'File deleted successfully!']);
         } catch (\Exception $e) {
             return redirect()->back()->with(['status' => 500, 'message' => 'Error deleting file: ' . $e->getMessage()]);
         }
     }
 
-    public function isBeNumberUnique(Request $request){
+    /**
+     * Send the notification email to the agent. Never throws.
+     */
+    private function sendRegistrationEmail(File_data $file_data): void
+    {
+        $file_data->loadMissing(['agent', 'ie_data']);
 
-        // $year = date('Y');
-        $be_number = $request->be_number;
+        $agent = $file_data->agent;
+        $agent_email = $agent?->email;
 
-        // $file_data = File_data::whereYear('created_at', $year )->where('be_number', $be_number)->first();
-        $file_data = Dj_year_be_numbers::where('be_number', $be_number)->first();
+        if (!$agent || empty($agent_email)) {
+            return;
+        }
 
-      //  return $file_data;
-      return response()->json(['success' => $file_data]);
+        try {
+            Mail::send('emails.file_notification', [
+                'be_number'     => $file_data->be_number,
+                'be_date'       => $file_data->be_date,
+                'ie_name'       => $file_data->ie_data?->name ?? 'N/A',
+                'manifest_no'   => $file_data->manifest_no,
+                'manifest_date' => $file_data->manifest_date,
+                'agent_name'    => $agent->name,
+            ], function ($message) use ($agent_email, $agent) {
+                $message->to($agent_email, $agent->name)
+                    ->subject('File Registration Notification - Benapole C&F Agents Association');
+            });
+
+            $this->safeLog("Email Sent", "Email notification sent to agent {$agent->name} at {$agent_email}", 'email');
+        } catch (\Throwable $e) {
+            $this->safeLog("Email Failed", "Failed to send email to {$agent_email}: " . $e->getMessage(), 'error');
+        }
     }
-
 
     /**
      * Send registration SMS to the agent.
      * Never throws: returns true on success, false on any failure.
      */
-    private function sendRegistrationSms($agentId, $ieDataId, Request $request): bool
+    private function sendRegistrationSms(File_data $file_data): bool
     {
         $agentPhone = 'Unknown';
-        $responseData = null;
 
         try {
-            $agent = Agent::find($agentId);
+            $file_data->loadMissing(['agent', 'ie_data']);
+            $agent = $file_data->agent;
 
             if (!$agent || empty($agent->phone)) {
-                $this->safeSmsLog("SMS Skipped", "Agent not found or has no phone (agent_id: $agentId)");
+                $this->safeSmsLog("SMS Skipped", "Agent not found or has no phone (agent_id: {$file_data->agent_id})");
                 return false;
             }
 
             $agentPhone = $agent->phone;
-            $ieName = Ie_data::find($ieDataId)?->name ?? 'N/A';
+            $ieName = $file_data->ie_data?->name ?? 'N/A';
 
-            $smsText = 'Benapole C&F Agents Association, Your register B/E No: ' . $request->be_number
-                . ' Date:' . $request->be_date
+            // FIX: use saved model values, not raw request input
+            $smsText = 'Benapole C&F Agents Association, Your register B/E No: ' . $file_data->be_number
+                . ' Date:' . $file_data->be_date
                 . ' Im/Ex: ' . $ieName
-                . ', Manifest No: ' . $request->manifest_no
-                . ' Date:' . $request->manifest_date
+                . ', Manifest No: ' . $file_data->manifest_no
+                . ' Date:' . $file_data->manifest_date
                 . '. Thank you.';
 
             $response = Http::connectTimeout(5)
@@ -442,32 +344,33 @@ class FileDataController extends Controller
                 $responseData
             );
 
-            return $statusCode === 200;
-
+            // FIX: strict === 200 failed when the API returned "200" as a string
+            return (int) $statusCode === 200;
         } catch (\Throwable $e) {
-            $this->safeSmsLog(
-                "SMS Failed to $agentPhone",
-                "Exception: " . $e->getMessage(),
-                ['error' => $e->getMessage()]
-            );
+            $this->safeSmsLog("SMS Failed to $agentPhone", "Exception: " . $e->getMessage(), ['error' => $e->getMessage()]);
             return false;
         }
+    }
+
+    private function safeSmsLog(string $action, string $description, $responseData = null): void
+    {
+        $this->safeLog($action, $description, 'sms', $responseData);
     }
 
     /**
      * Logging that can never break the caller.
      */
-    private function safeSmsLog(string $action, string $description, $responseData = null): void
+    private function safeLog(string $action, string $description, string $type, $responseData = null): void
     {
         try {
             LogHelper::log(
                 action: $action,
                 description: $description,
-                log_type: 'sms',
+                log_type: $type,
                 responseData: $responseData
             );
         } catch (\Throwable $e) {
-            \Log::error('SMS log failed: ' . $e->getMessage());
+            Log::error('Log failed: ' . $e->getMessage());
         }
     }
 }

@@ -227,7 +227,7 @@ class CustomFileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCustomFileRequest $request)
+    public function storeold(StoreCustomFileRequest $request)
     {
         try {
             if ($request->hasFile('excel_file')) {
@@ -313,6 +313,98 @@ class CustomFileController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error processing request: ' . $e->getMessage());
         }
+    }
+
+    public function store(StoreCustomFileRequest $request)
+    {
+        try {
+            if ($request->hasFile('excel_file')) {
+                $data = Excel::toArray([], $request->file('excel_file'));
+
+                \DB::transaction(function () use ($data) {
+                    foreach ($data[0] as $index => $row) {
+                        // Skip header row
+                        if ($index === 0) continue;
+
+                        // Only process non-empty rows
+                        if (empty(array_filter($row))) continue;
+
+                        $type = trim(strtoupper($row[5] ?? ''));
+                        $fees = $type === 'IM' ? 600 : ($type === 'EX' ? 500 : null);
+
+                        $agentain = trim((string) ($row[2] ?? ''));
+                        $agent = $agentain ? Agent::where('ain_no', $agentain)->first() : null;
+
+                        CustomFile::create([
+                            'name'      => $row[1] ?? null,
+                            'be_number' => $row[3] ?? null,
+                            'fees'      => $fees,
+                            'type'      => $type,
+                            'status'    => 'Unpaid',
+                            'date'      => $this->parseDate($row[4] ?? null, $index + 1),
+                            'agent_id'  => $agent?->id,
+                            'year'      => date('Y'),
+                        ]);
+                    }
+                });
+
+                return redirect()->route('customfiles.index')->with('success', 'Data imported successfully.');
+            }
+
+            // Manual Entry
+            $type = $request->type;
+            $fees = $request->fees ?: ($type === 'IM' ? 600 : ($type === 'EX' ? 500 : null));
+
+            $agent = $request->agentain ? Agent::where('name', $request->agentain)->first() : null;
+
+            CustomFile::create([
+                'name'      => $agent?->name ?? $request->agentain,
+                'be_number' => $request->be_number,
+                'fees'      => $fees,
+                'type'      => $type,
+                'status'    => 'Unpaid',
+                'date'      => $this->parseDate($request->date),
+                'year'      => $request->year ?? date('Y'),
+                'agent_id'  => $agent?->id,
+            ]);
+
+            if ($request->year) {
+                return redirect()->route('customfiles.create')->with('success', 'Custom file created successfully.');
+            }
+
+            return redirect()->route('customfiles.index')->with('success', 'Custom file created successfully.');
+        } catch (\Throwable $e) { // Throwable also catches TypeError
+            return redirect()->back()->with('error', 'Error processing request: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Accepts a real Excel serial number OR a text date like 24/11/2026.
+     */
+    private function parseDate($value, ?int $excelRow = null): ?string
+    {
+        if ($value === null || trim((string) $value) === '') {
+            return null;
+        }
+
+        // Real Excel date cell (numeric serial)
+        if (is_numeric($value)) {
+            return \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject((float) $value)->format('Y-m-d');
+        }
+
+        // Text date
+        $value = trim($value);
+        foreach (['j/n/Y', 'j-n-Y', 'Y-m-d'] as $format) {
+            try {
+                return \Carbon\Carbon::createFromFormat($format, $value)->format('Y-m-d');
+            } catch (\Throwable $e) {
+                // try next format
+            }
+        }
+
+        throw new \RuntimeException(
+            ($excelRow ? "Row {$excelRow}: " : '') . "Invalid date \"{$value}\". Use dd/mm/yyyy."
+        );
     }
 
     /**

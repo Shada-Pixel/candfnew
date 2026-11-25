@@ -88,14 +88,14 @@
                     serverSide: true,
                     pageLength: -1,
                     lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'All']],
-                    order: [[1, 'asc']],   // <- default sort: Name column, A-Z
-                    layout: {
-                        topStart: ['pageLength', { buttons: [{ text: 'Print', action: printAllAction }] }],
-                        bottomStart: 'info',
-                        bottom: 'paging',
-                        bottomEnd: null
-                    },
-                    // removed: dom: 'Bfrtip'  (see note below)
+                    order: [[1, 'asc']],
+
+                    // B = buttons, l = page length, f = search, r = processing, t = table, i = info, p = paging
+                    dom: 'Blfrtip',
+                    buttons: [
+                        { text: 'Print', className: 'dt-button', action: printAllAction }
+                    ],
+
                     ajax: {
                         url: "{{ route('reports.unpaid') }}",
                         data: function (d) {
@@ -104,7 +104,7 @@
                     },
                     columns: [
                         {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-                        {data: 'name', name: 'name'},   // <- changed from 'agents.name'
+                        {data: 'name', name: 'name'},
                         {data: 'unpaid_im_count', name: 'unpaid_im_count', searchable: false},
                         {data: 'unpaid_ex_count', name: 'unpaid_ex_count', searchable: false},
                         {data: 'total_unpaid_count', name: 'total_unpaid_count', searchable: false},

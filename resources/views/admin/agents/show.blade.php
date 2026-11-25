@@ -500,12 +500,13 @@
             var datatablelist = $('#donationTable').DataTable();
             var customsfiles = $('#customsfiles').DataTable({
                 dom: 'Bfrtip',
+                pageLength: 100,
 
                 buttons: [
                     {
                         extend: 'print',
                         text: '<i class="mdi mdi-printer"></i> Print',
-                        title: 'Custom Files - {{ $agent->name }} - {{ $unpaidCount }} Unpaid, Toral ৳{{ number_format($unpaidTotal, 2) }}',
+                        title: 'Custom Files - {{ $agent->name }} - {{ $unpaidCount }} Unpaid, Total ৳{{ number_format($unpaidTotal, 2) }}',
                         exportOptions: {
                             columns: ':visible'
                         }

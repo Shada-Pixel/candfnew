@@ -169,11 +169,11 @@
                     win.document.write(`
                         <html>
                         <head>
-                            <title>${title}</title>
+                            <title>Benapole Customs Agents Association</title>
                             <style>
-                                body { font-family: Arial, sans-serif; font-size: 6px; color: #000; background: #fff; }
-                                h1 { font-size: 8px; text-align: center; }
-                                .stats { text-align: center; margin-bottom: 10px; }
+                                body { font-family: Arial, sans-serif; font-size: 10px; color: #000; background: #fff; }
+                                h1 { font-size: 16px; text-align: center; }
+                                .stats { text-align: center; margin-bottom: 10px; font-size: 12px; }
                                 table { width: 100%; border-collapse: collapse; }
                                 th, td { border: 1px solid #eee; padding: 6px 8px; text-align: left; }
                                 th { background: #eee; }

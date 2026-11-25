@@ -78,25 +78,28 @@ class FileDataController extends Controller
 
     public function store(Request $request)
     {
+        // Year of the BE date (falls back to the current year if be_date is empty/unreadable)
+        $beYear = $this->yearFromDate($request->be_date);
+
         $request->validate([
             'be_number' => [
                 'nullable',
-                'regex:/^\d+$/',   // FIX: digits_between:1,999999 was a length range, not a sensible rule
+                'regex:/^\d+$/',
                 'max:20',
                 Rule::unique('file_datas', 'be_number')->where(
-                    fn ($q) => $q->whereBetween('created_at', [
-                        now()->startOfYear(),
-                        now()->endOfYear(),
+                    fn ($q) => $q->whereBetween('be_date', [
+                        "{$beYear}-01-01",
+                        "{$beYear}-12-31",
                     ])
                 ),
             ],
-            'manifest_no'     => ['required', 'string', 'max:50'],
-            'page'            => ['nullable', 'integer', 'min:1'],
-            'agentain'        => ['nullable', 'string', 'max:50'],
-            'impexp'          => ['nullable', 'string', 'max:255'],
+            'manifest_no' => ['required', 'string', 'max:50'],
+            'page'        => ['nullable', 'integer', 'min:1'],
+            'agentain'    => ['nullable', 'string', 'max:50'],
+            'impexp'      => ['nullable', 'string', 'max:255'],
         ], [
             'be_number.regex'  => 'The BE number must contain digits only.',
-            'be_number.unique' => 'This BE number already exists for this year.',
+            'be_number.unique' => "This BE number already exists for {$beYear}.",
         ]);
 
         $agent_id = $request->filled('agentain')
@@ -157,6 +160,26 @@ class FileDataController extends Controller
 
         return redirect()->route('file_datas.createin')
             ->with(['status' => 200, 'message' => 'File Received!']);
+    }
+
+
+    /**
+     * Extract the year from a date like 2025-03-22 (also accepts 22/03/2025).
+     */
+    private function yearFromDate($value): int
+    {
+        $value = trim((string) $value);
+
+        if ($value !== '') {
+            foreach (['Y-m-d', 'd/m/Y', 'j/n/Y', 'd-m-Y'] as $format) {
+                try {
+                    return (int) Carbon::createFromFormat($format, $value)->year;
+                } catch (\Throwable $e) {
+                    // try next format
+                }
+            }
+        }
+        return (int) now()->year;
     }
 
     public function show(File_data $file_data)
